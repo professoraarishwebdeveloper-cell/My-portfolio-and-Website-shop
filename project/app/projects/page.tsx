@@ -1,8 +1,18 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useRef, useState, useEffect } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { ArrowRight, ExternalLink, Github, Star, Code, Layers, Globe, Cpu, TrendingUp, Zap, Bot } from 'lucide-react'
+import { use3DDepth } from '@/hooks/use3DDepth'
+import { Card3DParallax } from '@/components/3d-parallax-card'
+
+interface ParticleData {
+  id: number
+  xValues: [number, number, number]
+  yValues: [number, number, number]
+  left: string
+  top: string
+}
 
 // Project data
 const projects = [
@@ -100,134 +110,195 @@ const projects = [
 
 const categories = ['All', 'Web Application', 'AI & Automation', 'Template']
 
-// Project card component
+// Premium 3D abstract project card
 function ProjectCard({ project, index }: { project: typeof projects[0]; index: number }) {
-  const cardRef = useRef<HTMLDivElement>(null)
+  const depth = use3DDepth(0.5)
+  const [isHovered, setIsHovered] = useState(false)
+  const [particles, setParticles] = useState<ParticleData[]>([])
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return
-    const rect = cardRef.current.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
-    const centerX = rect.width / 2
-    const centerY = rect.height / 2
-    const rotateX = ((y - centerY) / centerY) * -6
-    const rotateY = ((x - centerX) / centerX) * 6
-
-    cardRef.current.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`
-  }
-
-  const handleMouseLeave = () => {
-    if (!cardRef.current) return
-    cardRef.current.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)'
-  }
+  useEffect(() => {
+    const generatedParticles: ParticleData[] = []
+    for (let i = 0; i < 4; i++) {
+      generatedParticles.push({
+        id: i,
+        xValues: [0, Math.random() * 60 - 30, 0],
+        yValues: [0, Math.random() * 60 - 30, 0],
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+      })
+    }
+    setParticles(generatedParticles)
+  }, [])
 
   return (
-    <motion.div
-      ref={cardRef}
-      initial={{ opacity: 0, y: 60 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6, delay: index * 0.1 }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="glass-card overflow-hidden cursor-hover group"
-      style={{ transformStyle: 'preserve-3d', transition: 'transform 0.15s ease-out' }}
-    >
-      {/* Image */}
-      <div className="relative aspect-[16/10] overflow-hidden">
-        <img
-          src={project.image}
-          alt={project.title}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-cosmic-void via-cosmic-void/30 to-transparent" />
-
-        {/* Category badge */}
-        <div
-          className="absolute top-4 left-4 px-3 py-1 rounded-full text-xs font-medium backdrop-blur-sm"
-          style={{
-            background: `${project.color}20`,
-            border: `1px solid ${project.color}40`,
-            color: project.color,
-          }}
-        >
-          {project.category}
+    <Card3DParallax intensity={0.6} delay={index * 0.1}>
+      <motion.div
+        style={{
+          transform: `perspective(1200px) rotateX(${depth.rotateX * 0.4}deg) rotateY(${depth.rotateY * 0.4}deg) translateZ(${depth.intensity * 10}px)`,
+          transformStyle: 'preserve-3d',
+        }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className="group h-full"
+      >
+        {/* Gradient border overlay */}
+        <div className="absolute inset-0 rounded-3xl p-px bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity z-10">
+          <div className="absolute inset-0 rounded-3xl bg-cosmic-void" />
         </div>
 
-        {/* Featured badge */}
-        {project.featured && (
-          <div className="absolute top-4 right-4 px-2 py-1 rounded-full bg-cosmic-accent/20 border border-cosmic-accent/30 text-cosmic-accent text-xs flex items-center gap-1">
-            <Star className="w-3 h-3" /> Featured
+        {/* Main card */}
+        <div className="relative glass-card overflow-hidden h-full flex flex-col">
+          {/* Abstract 3D visualization */}
+          <div className="relative aspect-[16/10] overflow-hidden bg-gradient-to-br from-cosmic-deep/50 to-cosmic-void flex items-center justify-center">
+            {/* Animated 3D geometry background */}
+            <div className="absolute inset-0">
+              {/* Floating geometric shapes */}
+              <motion.div
+                animate={{
+                  rotate: 360,
+                  scale: [1, 1.2, 1],
+                }}
+                transition={{
+                  duration: 8,
+                  repeat: Infinity,
+                  ease: 'linear',
+                }}
+                className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+              >
+                <div
+                  className="w-32 h-32 rounded-2xl opacity-30"
+                  style={{
+                    background: `linear-gradient(135deg, ${project.color}40, ${project.color}10)`,
+                    border: `2px solid ${project.color}40`,
+                  }}
+                />
+              </motion.div>
+
+              {/* Animated grid lines */}
+              <svg className="absolute inset-0 w-full h-full opacity-20">
+                <defs>
+                  <pattern id={`grid-${project.id}`} width="40" height="40" patternUnits="userSpaceOnUse">
+                    <path d={`M 40 0 L 0 0 0 40`} fill="none" stroke={project.color} strokeWidth="0.5" />
+                  </pattern>
+                </defs>
+                <rect width="100%" height="100%" fill={`url(#grid-${project.id})`} />
+              </svg>
+
+              {/* Floating particles */}
+              {particles.map((particle, i) => (
+                <motion.div
+                  key={particle.id}
+                  animate={{
+                    x: particle.xValues,
+                    y: particle.yValues,
+                    opacity: [0.4, 1, 0.4],
+                  }}
+                  transition={{
+                    duration: 5 + i,
+                    repeat: Infinity,
+                    delay: i * 0.4,
+                  }}
+                  className="absolute w-2 h-2 rounded-full"
+                  style={{
+                    background: project.color,
+                    left: particle.left,
+                    top: particle.top,
+                    boxShadow: `0 0 12px ${project.color}`,
+                  }}
+                />
+              ))}
+            </div>
+
+            {/* Icon and category in center */}
+            <div className="relative z-10 flex flex-col items-center gap-3">
+              <div
+                className="w-16 h-16 rounded-2xl flex items-center justify-center"
+                style={{
+                  background: `linear-gradient(135deg, ${project.color}30, ${project.color}10)`,
+                  border: `2px solid ${project.color}`,
+                }}
+              >
+                <project.icon className="w-8 h-8" style={{ color: project.color }} />
+              </div>
+              <div
+                className="px-3 py-1 rounded-full text-xs font-medium"
+                style={{
+                  background: `${project.color}20`,
+                  border: `1px solid ${project.color}40`,
+                  color: project.color,
+                }}
+              >
+                {project.category}
+              </div>
+            </div>
+
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-cosmic-void via-transparent to-transparent" />
           </div>
-        )}
 
-        {/* Icon overlay */}
-        <div
-          className="absolute bottom-4 left-4 w-12 h-12 rounded-xl flex items-center justify-center"
-          style={{ background: `${project.color}30` }}
-        >
-          <project.icon className="w-6 h-6" style={{ color: project.color }} />
+          {/* Content */}
+          <div className="p-6 flex-grow flex flex-col">
+            <div className="flex items-start justify-between mb-2">
+              <h3 className="text-lg font-display font-semibold text-white flex-1">{project.title}</h3>
+              {project.featured && (
+                <Star className="w-4 h-4" style={{ color: project.color }} />
+              )}
+            </div>
+            <p className="text-white/60 text-sm mb-4 line-clamp-2">{project.description}</p>
+
+            {/* Technologies */}
+            <div className="flex flex-wrap gap-2 mb-auto pb-4">
+              {project.technologies.slice(0, 3).map((tech) => (
+                <span
+                  key={tech}
+                  className="px-2 py-1 text-xs rounded-md bg-white/5 text-white/70 border border-white/10"
+                >
+                  {tech}
+                </span>
+              ))}
+            </div>
+
+            {/* Links */}
+            <div className="flex items-center gap-3 pt-4 border-t border-white/10">
+              <a
+                href={`/projects/${project.slug}`}
+                className="flex items-center gap-1 text-sm hover:gap-2 transition-all flex-1"
+                style={{ color: project.color }}
+              >
+                View Case <ArrowRight className="w-4 h-4" />
+              </a>
+              {project.github_url && (
+                <a
+                  href={project.github_url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-white/50 hover:text-white transition-colors"
+                >
+                  <Github className="w-4 h-4" />
+                </a>
+              )}
+            </div>
+          </div>
+
+          {/* Glow effect on hover */}
+          <motion.div
+            animate={{ opacity: isHovered ? 1 : 0 }}
+            className="absolute inset-0 rounded-3xl pointer-events-none"
+            style={{
+              boxShadow: `inset 0 0 40px ${project.color}20, 0 0 40px ${project.color}15`,
+            }}
+          />
         </div>
-      </div>
-
-      {/* Content */}
-      <div className="p-6">
-        <h3 className="text-xl font-display font-semibold text-white group-hover:text-cosmic-accent transition-colors">
-          {project.title}
-        </h3>
-        <p className="text-white/60 text-sm mt-2 line-clamp-2">{project.description}</p>
-
-        {/* Technologies */}
-        <div className="flex flex-wrap gap-2 mt-4">
-          {project.technologies.slice(0, 4).map((tech) => (
-            <span
-              key={tech}
-              className="px-2 py-1 text-xs rounded-md bg-white/5 text-white/70 border border-white/10"
-            >
-              {tech}
-            </span>
-          ))}
-        </div>
-
-        {/* Links */}
-        <div className="flex items-center gap-4 mt-6 pt-4 border-t border-white/10">
-          <a
-            href={`/projects/${project.slug}`}
-            className="flex items-center gap-1 text-cosmic-accent text-sm hover:gap-2 transition-all"
-          >
-            View Case Study <ArrowRight className="w-4 h-4" />
-          </a>
-          <div className="flex-1" />
-          {project.github_url && (
-            <a
-              href={project.github_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white/50 hover:text-white transition-colors"
-            >
-              <Github className="w-5 h-5" />
-            </a>
-          )}
-          {project.live_url && (
-            <a
-              href={project.live_url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-white/50 hover:text-white transition-colors"
-            >
-              <ExternalLink className="w-5 h-5" />
-            </a>
-          )}
-        </div>
-      </div>
-    </motion.div>
+      </motion.div>
+    </Card3DParallax>
   )
 }
 
-// Featured project hero
+// Featured project hero with 3D abstract visualization
 function FeaturedProjectHero({ project }: { project: typeof projects[0] }) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true })
+  const depth = use3DDepth(0.4)
 
   return (
     <motion.div
@@ -238,15 +309,76 @@ function FeaturedProjectHero({ project }: { project: typeof projects[0] }) {
       className="glass-card overflow-hidden max-w-6xl mx-auto"
     >
       <div className="grid lg:grid-cols-2 gap-0">
-        {/* Image */}
-        <div className="relative aspect-[16/10] lg:aspect-auto">
-          <img
-            src={project.image}
-            alt={project.title}
-            className="w-full h-full object-cover"
-          />
+        {/* 3D Abstract visualization */}
+        <div
+          className="relative aspect-[16/10] lg:aspect-auto bg-gradient-to-br from-cosmic-deep/70 to-cosmic-void flex items-center justify-center overflow-hidden"
+          style={{
+            transform: `perspective(1200px) rotateX(${depth.rotateX * 0.2}deg) rotateY(${depth.rotateY * 0.2}deg)`,
+            transformStyle: 'preserve-3d',
+          }}
+        >
+          {/* Animated 3D background */}
+          <div className="absolute inset-0">
+            {/* Rotating cube */}
+            <motion.div
+              animate={{ rotateX: 360, rotateY: 360 }}
+              transition={{ duration: 10, repeat: Infinity, ease: 'linear' }}
+              className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"
+              style={{ perspective: '1000px' }}
+            >
+              <div
+                className="w-40 h-40"
+                style={{
+                  background: `linear-gradient(135deg, ${project.color}40, ${project.color}10)`,
+                  border: `2px solid ${project.color}`,
+                  borderRadius: '8px',
+                }}
+              />
+            </motion.div>
+
+            {/* Floating particles */}
+            {[...Array(6)].map((_, i) => (
+              <motion.div
+                key={i}
+                animate={{
+                  x: [0, Math.cos(i * Math.PI / 3) * 100, 0],
+                  y: [0, Math.sin(i * Math.PI / 3) * 100, 0],
+                  opacity: [0.3, 1, 0.3],
+                }}
+                transition={{
+                  duration: 6 + i,
+                  repeat: Infinity,
+                  delay: i * 0.2,
+                }}
+                className="absolute w-2.5 h-2.5 rounded-full"
+                style={{
+                  background: project.color,
+                  left: '50%',
+                  top: '50%',
+                  boxShadow: `0 0 15px ${project.color}`,
+                  marginLeft: '-5px',
+                  marginTop: '-5px',
+                }}
+              />
+            ))}
+          </div>
+
+          {/* Gradient overlay */}
           <div className="absolute inset-0 bg-gradient-to-r from-transparent to-cosmic-void lg:block hidden" />
           <div className="absolute inset-0 bg-gradient-to-t from-cosmic-void to-transparent lg:hidden" />
+
+          {/* Icon overlay */}
+          <div className="relative z-10 flex flex-col items-center gap-4">
+            <div
+              className="w-20 h-20 rounded-2xl flex items-center justify-center"
+              style={{
+                background: `linear-gradient(135deg, ${project.color}30, ${project.color}10)`,
+                border: `2px solid ${project.color}`,
+              }}
+            >
+              <project.icon className="w-10 h-10" style={{ color: project.color }} />
+            </div>
+          </div>
         </div>
 
         {/* Content */}
@@ -281,7 +413,8 @@ function FeaturedProjectHero({ project }: { project: typeof projects[0] }) {
 
           <a
             href={`/projects/${project.slug}`}
-            className="inline-flex items-center gap-2 text-cosmic-accent font-medium hover:gap-4 transition-all"
+            className="inline-flex items-center gap-2 font-medium hover:gap-4 transition-all"
+            style={{ color: project.color }}
           >
             View Full Project <ArrowRight className="w-5 h-5" />
           </a>

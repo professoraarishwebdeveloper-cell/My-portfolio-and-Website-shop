@@ -1,10 +1,20 @@
 'use client'
 
-import { useRef, useState } from 'react'
+import { useRef, useState, ReactNode, useEffect } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Award, ExternalLink, X, Calendar, Building2 } from 'lucide-react'
+import { use3DDepth } from '@/hooks/use3DDepth'
+import { Card3DParallax } from '@/components/3d-parallax-card'
 
-// Certificate data
+interface ParticleData {
+  id: number
+  xValues: [number, number, number]
+  yValues: [number, number, number]
+  left: string
+  top: string
+}
+
+// Certificate data - using real uploaded images
 const certificates = [
   {
     id: 1,
@@ -12,108 +22,167 @@ const certificates = [
     organization: 'OpenAI Community',
     date: '2025-01-15',
     description: 'Comprehensive workshop on leveraging ChatGPT and AI tools for productivity and development.',
-    image: 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=800&h=600&fit=crop',
+    image: '/certificates/chatgpt-ai-workshop.png',
     credential_url: '#',
+    color: '#8b5cf6',
   },
   {
     id: 2,
-    title: 'Public Speaking Mastery',
+    title: 'Public Speaking Course',
     organization: 'Toastmasters International',
     date: '2024-08-20',
     description: 'Advanced public speaking certification focusing on presentation skills and audience engagement.',
-    image: 'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=800&h=600&fit=crop',
+    image: '/certificates/public-speaking-course.png',
     credential_url: '#',
+    color: '#06b6d4',
   },
   {
     id: 3,
-    title: 'Multitasking Excellence',
+    title: 'Multitasking Course',
     organization: 'Productivity Institute',
     date: '2024-05-10',
     description: 'Certification in effective multitasking and time management strategies.',
-    image: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&h=600&fit=crop',
+    image: '/certificates/multitasking-course.png',
     credential_url: '#',
+    color: '#ec4899',
   },
 ]
 
-// Certificate card component
-function CertificateCard({ certificate, onClick }: { certificate: typeof certificates[0]; onClick: () => void }) {
-  const cardRef = useRef<HTMLDivElement>(null)
+// Premium 3D certificate vault card
+function CertificateCard({ certificate, onClick, index }: { certificate: typeof certificates[0]; onClick: () => void; index: number }) {
+  const depth = use3DDepth(0.5)
+  const [isHovered, setIsHovered] = useState(false)
+  const [particles, setParticles] = useState<ParticleData[]>([])
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return
-    const rect = cardRef.current.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
-    const centerX = rect.width / 2
-    const centerY = rect.height / 2
-    const rotateX = ((y - centerY) / centerY) * -8
-    const rotateY = ((x - centerX) / centerX) * 8
-
-    cardRef.current.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`
-  }
-
-  const handleMouseLeave = () => {
-    if (!cardRef.current) return
-    cardRef.current.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)'
-  }
+  useEffect(() => {
+    const generatedParticles: ParticleData[] = []
+    for (let i = 0; i < 5; i++) {
+      generatedParticles.push({
+        id: i,
+        xValues: [0, Math.random() * 100 - 50, 0],
+        yValues: [0, Math.random() * 100 - 50, 0],
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+      })
+    }
+    setParticles(generatedParticles)
+  }, [])
 
   return (
-    <motion.div
-      ref={cardRef}
-      initial={{ opacity: 0, y: 40 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.6 }}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      onClick={onClick}
-      className="glass-card overflow-hidden cursor-hover group"
-      style={{ transformStyle: 'preserve-3d', transition: 'transform 0.1s ease-out' }}
-    >
-      {/* Image */}
-      <div className="relative aspect-[4/3] overflow-hidden">
-        <img
-          src={certificate.image}
-          alt={certificate.title}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-cosmic-void via-cosmic-void/50 to-transparent opacity-60" />
-
-        {/* Organization badge */}
-        <div className="absolute top-4 left-4 px-3 py-1 rounded-full bg-cosmic-deep/80 backdrop-blur-sm border border-white/10 text-xs text-white/80">
-          {certificate.organization}
+    <Card3DParallax intensity={0.6} delay={index * 0.1}>
+      <motion.div
+        style={{
+          transform: `perspective(1200px) rotateX(${depth.rotateX * 0.4}deg) rotateY(${depth.rotateY * 0.4}deg) translateZ(${depth.intensity * 12}px)`,
+          transformStyle: 'preserve-3d',
+        }}
+        onClick={onClick}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className="group cursor-pointer relative h-full"
+      >
+        {/* Gradient border effect */}
+        <div className="absolute inset-0 rounded-3xl p-px bg-gradient-to-br from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
+          <div className="absolute inset-0 rounded-3xl bg-cosmic-void" />
         </div>
 
-        {/* View icon on hover */}
-        <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity">
-          <div className="w-16 h-16 rounded-full bg-cosmic-accent/20 backdrop-blur-sm flex items-center justify-center">
-            <ExternalLink className="w-6 h-6 text-white" />
+        {/* Main card */}
+        <div className="relative glass-card overflow-hidden h-full flex flex-col">
+          {/* Certificate image container with 3D depth */}
+          <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-cosmic-deep to-cosmic-void">
+            {/* Animated background particles */}
+            <div className="absolute inset-0">
+              {particles.map((particle, i) => (
+                <motion.div
+                  key={particle.id}
+                  animate={{
+                    x: particle.xValues,
+                    y: particle.yValues,
+                    opacity: [0.3, 0.8, 0.3],
+                  }}
+                  transition={{
+                    duration: 4 + i,
+                    repeat: Infinity,
+                    delay: i * 0.3,
+                  }}
+                  className="absolute w-2 h-2 rounded-full"
+                  style={{
+                    background: certificate.color,
+                    left: particle.left,
+                    top: particle.top,
+                    boxShadow: `0 0 10px ${certificate.color}`,
+                  }}
+                />
+              ))}
+            </div>
+
+            {/* Certificate image with glow */}
+            {/* Note: Using placeholder - replace with actual certificate image */}
+            <div className="absolute inset-0 flex items-center justify-center">
+              <div
+                className="w-24 h-24 rounded-2xl flex items-center justify-center"
+                style={{
+                  background: `linear-gradient(135deg, ${certificate.color}30, ${certificate.color}10)`,
+                  border: `2px solid ${certificate.color}`,
+                }}
+              >
+                <Award className="w-12 h-12" style={{ color: certificate.color }} />
+              </div>
+            </div>
+
+            {/* Gradient overlay */}
+            <div className="absolute inset-0 bg-gradient-to-t from-cosmic-void via-cosmic-void/20 to-transparent" />
+
+            {/* Organization badge */}
+            <div
+              className="absolute top-4 left-4 px-3 py-1 rounded-full backdrop-blur-md border text-xs font-medium"
+              style={{
+                background: `${certificate.color}20`,
+                borderColor: certificate.color,
+                color: certificate.color,
+              }}
+            >
+              {certificate.organization}
+            </div>
+
+            {/* View icon on hover */}
+            <motion.div
+              animate={{ scale: isHovered ? 1 : 0.8, opacity: isHovered ? 1 : 0 }}
+              className="absolute inset-0 flex items-center justify-center pointer-events-none"
+            >
+              <div
+                className="w-16 h-16 rounded-full flex items-center justify-center backdrop-blur-sm"
+                style={{ background: `${certificate.color}30`, border: `2px solid ${certificate.color}` }}
+              >
+                <ExternalLink className="w-6 h-6" style={{ color: certificate.color }} />
+              </div>
+            </motion.div>
           </div>
+
+          {/* Content */}
+          <div className="p-6 flex-grow flex flex-col">
+            <h3 className="text-lg font-display font-semibold text-white group-hover:text-white transition-colors line-clamp-2">
+              {certificate.title}
+            </h3>
+
+            <div className="flex flex-wrap gap-3 mt-auto pt-4 text-xs text-white/60">
+              <span className="flex items-center gap-1">
+                <Calendar className="w-3 h-3" />
+                {new Date(certificate.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
+              </span>
+            </div>
+          </div>
+
+          {/* Glow effect on hover */}
+          <motion.div
+            animate={{ opacity: isHovered ? 1 : 0 }}
+            className="absolute inset-0 rounded-3xl pointer-events-none"
+            style={{
+              boxShadow: `inset 0 0 40px ${certificate.color}30, 0 0 40px ${certificate.color}20`,
+            }}
+          />
         </div>
-      </div>
-
-      {/* Content */}
-      <div className="p-6">
-        <h3 className="text-xl font-display font-semibold text-white group-hover:text-cosmic-accent transition-colors">
-          {certificate.title}
-        </h3>
-
-        <div className="flex items-center gap-4 mt-3 text-white/50 text-sm">
-          <span className="flex items-center gap-1">
-            <Calendar className="w-4 h-4" />
-            {new Date(certificate.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}
-          </span>
-          <span className="flex items-center gap-1">
-            <Building2 className="w-4 h-4" />
-            {certificate.organization}
-          </span>
-        </div>
-      </div>
-
-      {/* Glow border effect */}
-      <div className="absolute inset-0 rounded-2xl opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-        <div className="absolute inset-0 rounded-2xl" style={{ boxShadow: 'inset 0 0 30px rgba(0,212,255,0.2), 0 0 30px rgba(0,212,255,0.1)' }} />
-      </div>
-    </motion.div>
+      </motion.div>
+    </Card3DParallax>
   )
 }
 
@@ -220,11 +289,12 @@ export default function CertificatesPage() {
       <section className="section-padding">
         <div className="container mx-auto px-4">
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {certificates.map((cert) => (
+            {certificates.map((cert, index) => (
               <CertificateCard
                 key={cert.id}
                 certificate={cert}
                 onClick={() => setSelectedCertificate(cert)}
+                index={index}
               />
             ))}
           </div>

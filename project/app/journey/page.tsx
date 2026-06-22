@@ -3,6 +3,8 @@
 import { useRef, useState } from 'react'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { Code, TrendingUp, Award, Rocket, Star, ChevronRight, MapPin } from 'lucide-react'
+import { TimelineNode3D } from '@/components/timeline-node-3d'
+import { Card3DParallax } from '@/components/3d-parallax-card'
 
 // Journey data
 const journeyData = [
@@ -178,20 +180,23 @@ function TimelineCard({ data, index, isLeft }: { data: typeof journeyData[0]; in
   )
 }
 
-// Roadmap visualization
+// Roadmap visualization with 3D timeline nodes
 function RoadmapVisualization() {
   const containerRef = useRef<HTMLDivElement>(null)
 
   return (
-    <div ref={containerRef} className="relative max-w-4xl mx-auto py-20">
-      {/* Vertical line */}
-      <div className="absolute left-1/2 top-0 bottom-0 w-1 bg-gradient-to-b from-cosmic-accent via-cosmic-glow to-cosmic-aurora-end transform -translate-x-1/2" />
-
-      {/* Timeline cards */}
+    <div ref={containerRef} className="relative max-w-4xl mx-auto py-12">
+      {/* Timeline nodes */}
       {journeyData.map((data, i) => (
-        <div key={data.year} className={`relative mb-20 ${i % 2 === 0 ? 'pr-1/2' : 'pl-1/2 ml-auto'}`}>
-          <TimelineCard data={data} index={i} isLeft={i % 2 === 0} />
-        </div>
+        <TimelineNode3D
+          key={data.year}
+          year={data.year.toString()}
+          title={data.title}
+          description={data.description}
+          details={data.milestones}
+          index={i}
+          isLast={i === journeyData.length - 1}
+        />
       ))}
     </div>
   )
@@ -280,27 +285,49 @@ export default function JourneyPage() {
       {/* Current Status */}
       <section className="section-padding bg-gradient-to-b from-cosmic-void via-cosmic-deep/30 to-cosmic-void">
         <div className="container mx-auto px-4">
-          <div className="glass-card p-12 md:p-20 text-center max-w-4xl mx-auto">
-            <MapPin className="w-16 h-16 text-cosmic-accent mx-auto mb-6" />
-            <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">
-              Current <span className="text-gradient">Location</span>
-            </h2>
-            <p className="text-white/60 text-lg mb-8">
-              Building premium digital experiences for clients worldwide.
-              Always learning, always growing, always creating.
-            </p>
+          <Card3DParallax intensity={0.7} delay={0.2}>
+            <div className="glass-card p-12 md:p-20 text-center max-w-4xl mx-auto relative overflow-hidden">
+              {/* Animated background gradient */}
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                className="absolute inset-0 bg-gradient-to-br from-cosmic-accent/5 via-cosmic-glow/5 to-cosmic-aurora-end/5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none"
+              />
 
-            <div className="flex flex-wrap justify-center gap-4">
-              {['Next.js', 'Three.js', 'AI Integration', 'Enterprise Apps', 'Trading Systems'].map((tag) => (
-                <span
-                  key={tag}
-                  className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/70 text-sm"
+              <div className="relative z-10">
+                <motion.div
+                  animate={{ scale: [1, 1.1, 1], rotate: [0, 10, 0] }}
+                  transition={{ duration: 4, repeat: Infinity }}
+                  className="w-16 h-16 mx-auto mb-6"
                 >
-                  {tag}
-                </span>
-              ))}
+                  <MapPin className="w-full h-full text-cosmic-accent" />
+                </motion.div>
+
+                <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">
+                  Current <span className="text-gradient">Location</span>
+                </h2>
+                <p className="text-white/60 text-lg mb-8">
+                  Building premium digital experiences for clients worldwide.
+                  Always learning, always growing, always creating.
+                </p>
+
+                <div className="flex flex-wrap justify-center gap-4">
+                  {['Next.js', 'Three.js', 'AI Integration', 'Enterprise Apps', 'Trading Systems'].map((tag, i) => (
+                    <motion.span
+                      key={tag}
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      transition={{ delay: i * 0.1 }}
+                      whileHover={{ scale: 1.05, translateY: -2 }}
+                      className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/70 text-sm hover:border-cosmic-accent/50 transition-colors"
+                    >
+                      {tag}
+                    </motion.span>
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
+          </Card3DParallax>
         </div>
       </section>
 

@@ -4,6 +4,8 @@ import { useRef, useMemo, useState, useEffect } from 'react'
 import { Canvas, useFrame } from '@react-three/fiber'
 import { motion, useInView } from 'framer-motion'
 import * as THREE from 'three'
+import { Card3DParallax } from '@/components/3d-parallax-card'
+import { use3DDepth } from '@/hooks/use3DDepth'
 
 // Skill data
 const skillCategories = [
@@ -114,23 +116,42 @@ function SkillGalaxyScene() {
   )
 }
 
-// Skill orbit visualization
+// Skill orbit visualization with 3D depth
 function SkillOrbit({ skills }: { skills: { name: string; level: number; color: string }[] }) {
-  return (
-    <div className="relative w-full max-w-md mx-auto aspect-square">
-      {/* Center */}
-      <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-cosmic-accent animate-pulse-glow" />
+  const depth = use3DDepth(0.3)
 
-      {/* Orbit rings */}
+  return (
+    <motion.div
+      style={{
+        transform: `perspective(1200px) rotateX(${depth.rotateX * 0.3}deg) rotateY(${depth.rotateY * 0.3}deg) translateZ(${depth.intensity * 10}px)`,
+        transformStyle: 'preserve-3d',
+      }}
+      className="relative w-full max-w-md mx-auto aspect-square"
+    >
+      {/* Center */}
+      <motion.div
+        animate={{ scale: [1, 1.2, 1], opacity: [0.6, 1, 0.6] }}
+        transition={{ duration: 2, repeat: Infinity }}
+        className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full bg-cosmic-accent"
+        style={{ boxShadow: '0 0 30px rgba(0, 212, 255, 0.8)' }}
+      />
+
+      {/* Orbit rings with gradient */}
       {[0.3, 0.5, 0.7, 0.9].map((radius, i) => (
-        <div
+        <motion.div
           key={i}
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border border-white/10"
-          style={{ width: `${radius * 100}%`, height: `${radius * 100}%` }}
+          animate={{ opacity: [0.3, 0.6, 0.3] }}
+          transition={{ duration: 3 + i * 0.5, repeat: Infinity, delay: i * 0.2 }}
+          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full border"
+          style={{
+            width: `${radius * 100}%`,
+            height: `${radius * 100}%`,
+            borderColor: `rgba(0, 212, 255, ${0.3 - i * 0.05})`,
+          }}
         />
       ))}
 
-      {/* Skills as orbiting dots */}
+      {/* Skills as orbiting dots with 3D depth */}
       {skills.map((skill, i) => {
         const angle = (i / skills.length) * Math.PI * 2
         const radius = (skill.level / 100) * 45 + 5 // percentage to radius
@@ -142,89 +163,84 @@ function SkillOrbit({ skills }: { skills: { name: string; level: number; color: 
             key={skill.name}
             initial={{ opacity: 0, scale: 0 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ delay: i * 0.1 }}
+            transition={{ delay: i * 0.1, duration: 0.6 }}
             className="absolute group"
-            style={{ left: `${x}%`, top: `${y}%`, transform: 'translate(-50%, -50%)' }}
+            style={{
+              left: `${x}%`,
+              top: `${y}%`,
+              transform: `perspective(800px) translate(-50%, -50%) rotateX(${depth.rotateX * 0.2}deg) rotateY(${depth.rotateY * 0.2}deg)`,
+              transformStyle: 'preserve-3d',
+            }}
+            whileHover={{ scale: 1.8 }}
           >
             <div
-              className="w-3 h-3 rounded-full transform transition-all duration-300 group-hover:scale-150 group-hover:shadow-glow"
-              style={{ backgroundColor: skill.color, boxShadow: `0 0 10px ${skill.color}` }}
+              className="w-3 h-3 rounded-full transform transition-all duration-300 group-hover:scale-150"
+              style={{
+                backgroundColor: skill.color,
+                boxShadow: `0 0 10px ${skill.color}`,
+              }}
             />
-            <div className="absolute left-full ml-2 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap z-10 pointer-events-none">
-              <span className="text-sm text-white bg-cosmic-deep/90 px-2 py-1 rounded">
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileHover={{ opacity: 1, scale: 1 }}
+              className="absolute left-full ml-2 whitespace-nowrap z-10 pointer-events-none"
+            >
+              <span className="text-sm text-white bg-cosmic-deep/95 px-2 py-1 rounded border border-white/10">
                 {skill.name} ({skill.level}%)
               </span>
-            </div>
+            </motion.div>
           </motion.div>
         )
       })}
-    </div>
+    </motion.div>
   )
 }
 
-// Skill card with 3D effect
+// Skill card with 3D parallax effect
 function SkillCard({ skill, index }: { skill: { name: string; level: number; color: string }; index: number }) {
-  const cardRef = useRef<HTMLDivElement>(null)
+  const depth = use3DDepth(0.4)
   const [isHovered, setIsHovered] = useState(false)
 
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return
-    const rect = cardRef.current.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    const y = e.clientY - rect.top
-    const centerX = rect.width / 2
-    const centerY = rect.height / 2
-    const rotateX = ((y - centerY) / centerY) * -10
-    const rotateY = ((x - centerX) / centerX) * 10
-
-    cardRef.current.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.05)`
-  }
-
-  const handleMouseLeave = () => {
-    if (!cardRef.current) return
-    cardRef.current.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale(1)'
-    setIsHovered(false)
-  }
-
   return (
-    <motion.div
-      ref={cardRef}
-      initial={{ opacity: 0, y: 30 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.05 }}
-      onMouseMove={handleMouseMove}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={handleMouseLeave}
-      className="glass-card p-4 cursor-hover transition-transform duration-200"
-      style={{ transformStyle: 'preserve-3d' }}
-    >
-      <div className="flex items-center justify-between mb-2">
-        <span className="text-white font-medium">{skill.name}</span>
-        <span className="text-white/60 text-sm">{skill.level}%</span>
-      </div>
+    <Card3DParallax intensity={0.5} delay={index * 0.05}>
+      <motion.div
+        style={{
+          transform: `perspective(1200px) rotateX(${depth.rotateX * 0.5}deg) rotateY(${depth.rotateY * 0.5}deg) translateZ(${depth.intensity * 10}px)`,
+          transformStyle: 'preserve-3d',
+        }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+        className="glass-card p-4 cursor-hover transition-all duration-200"
+      >
+        <div className="flex items-center justify-between mb-2">
+          <span className="text-white font-medium">{skill.name}</span>
+          <span className="text-white/60 text-sm">{skill.level}%</span>
+        </div>
 
-      {/* Skill level ring instead of progress bar */}
-      <div className="relative w-full h-2 rounded-full bg-white/10 overflow-hidden">
+        {/* Skill level bar with glow */}
+        <div className="relative w-full h-2 rounded-full bg-white/10 overflow-hidden">
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: `${skill.level}%` }}
+            transition={{ delay: index * 0.05 + 0.3, duration: 0.8 }}
+            className="h-full rounded-full"
+            style={{
+              background: `linear-gradient(90deg, ${skill.color}, ${skill.color}88)`,
+              boxShadow: isHovered ? `0 0 15px ${skill.color}` : 'none',
+            }}
+          />
+        </div>
+
+        {/* Hover glow effect */}
         <motion.div
-          initial={{ width: 0 }}
-          animate={{ width: `${skill.level}%` }}
-          transition={{ delay: index * 0.05 + 0.3, duration: 0.8 }}
-          className="h-full rounded-full"
+          animate={{ opacity: isHovered ? 1 : 0 }}
+          className="absolute inset-0 rounded-2xl pointer-events-none"
           style={{
-            background: `linear-gradient(90deg, ${skill.color}, ${skill.color}88)`,
+            boxShadow: `inset 0 0 30px ${skill.color}20, 0 0 30px ${skill.color}10`,
           }}
         />
-      </div>
-
-      {/* Glow effect on hover */}
-      <div
-        className="absolute inset-0 rounded-2xl opacity-0 transition-opacity pointer-events-none"
-        style={{
-          boxShadow: `inset 0 0 30px ${skill.color}20, 0 0 30px ${skill.color}10`,
-          opacity: isHovered ? 1 : 0,
-        }}
-      />
-    </motion.div>
+      </motion.div>
+    </Card3DParallax>
   )
 }
 

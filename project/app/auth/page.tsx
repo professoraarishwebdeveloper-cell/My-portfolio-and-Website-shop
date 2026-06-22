@@ -1,12 +1,23 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { supabase } from '@/lib/supabase'
 import { useAuthStore } from '@/lib/store'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Mail, Lock, User, ArrowRight, Loader2, AlertCircle, Chrome } from 'lucide-react'
+import { Card3DParallax } from '@/components/3d-parallax-card'
+
+interface Particle {
+  id: number
+  xValues: [number, number, number]
+  yValues: [number, number, number]
+  duration: number
+  delay: number
+  left: string
+  top: string
+}
 
 export default function AuthPage() {
   const router = useRouter()
@@ -15,12 +26,30 @@ export default function AuthPage() {
   const [mode, setMode] = useState<'login' | 'signup' | 'forgot'>('login')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [particles, setParticles] = useState<Particle[]>([])
 
   const [formData, setFormData] = useState({
     email: '',
     password: '',
     full_name: '',
   })
+
+  // Generate particles only on client side
+  useEffect(() => {
+    const generatedParticles: Particle[] = []
+    for (let i = 0; i < 20; i++) {
+      generatedParticles.push({
+        id: i,
+        xValues: [Math.random() * 100 - 50, Math.random() * 100 - 50, Math.random() * 100 - 50],
+        yValues: [Math.random() * window.innerHeight, Math.random() * window.innerHeight, Math.random() * window.innerHeight],
+        duration: 20 + Math.random() * 10,
+        delay: i * 0.5,
+        left: Math.random() * 100 + '%',
+        top: Math.random() * 100 + '%',
+      })
+    }
+    setParticles(generatedParticles)
+  }, [])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
@@ -104,10 +133,11 @@ export default function AuthPage() {
     setError(null)
 
     try {
+      const origin = typeof window !== 'undefined' ? window.location.origin : ''
       const { error } = await supabase.auth.signInWithOAuth({
         provider: 'google',
         options: {
-          redirectTo: `${window.location.origin}/auth/callback`,
+          redirectTo: `${origin}/auth/callback`,
         },
       })
 
@@ -124,8 +154,9 @@ export default function AuthPage() {
     setError(null)
 
     try {
+      const origin = typeof window !== 'undefined' ? window.location.origin : ''
       const { error } = await supabase.auth.resetPasswordForEmail(formData.email, {
-        redirectTo: `${window.location.origin}/auth/reset-password`,
+        redirectTo: `${origin}/auth/reset-password`,
       })
 
       if (error) throw error
@@ -140,19 +171,51 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-20 px-4">
+    <div className="relative min-h-screen flex items-center justify-center py-20 px-4 overflow-hidden">
+      {/* Animated particle background */}
+      <div className="absolute inset-0 pointer-events-none">
+        {particles.map((particle) => (
+          <motion.div
+            key={particle.id}
+            animate={{
+              x: particle.xValues,
+              y: particle.yValues,
+              opacity: [0, 0.5, 0],
+            }}
+            transition={{
+              duration: particle.duration,
+              repeat: Infinity,
+              delay: particle.delay,
+            }}
+            className="absolute w-2 h-2 rounded-full bg-cosmic-accent"
+            style={{
+              left: particle.left,
+              top: particle.top,
+              filter: 'blur(1px)',
+            }}
+          />
+        ))}
+      </div>
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md"
+        className="w-full max-w-md relative z-10"
       >
         {/* Logo */}
-        <Link href="/" className="block text-center mb-8">
-          <span className="text-4xl font-display font-bold text-gradient-animated">AK</span>
+        <Link href="/" className="block text-center mb-12">
+          <motion.span
+            animate={{ scale: [1, 1.05, 1] }}
+            transition={{ duration: 3, repeat: Infinity }}
+            className="text-4xl font-display font-bold text-gradient-animated inline-block"
+          >
+            AK
+          </motion.span>
         </Link>
 
-        {/* Auth card */}
-        <div className="glass-card p-8">
+        {/* Auth card with 3D parallax */}
+        <Card3DParallax intensity={0.6} delay={0}>
+          <div className="glass-card p-8">
           <h1 className="text-2xl font-display font-bold text-white mb-2 text-center">
             {mode === 'login' && 'Welcome Back'}
             {mode === 'signup' && 'Create Account'}
@@ -322,7 +385,8 @@ export default function AuthPage() {
               </button>
             )}
           </div>
-        </div>
+          </div>
+        </Card3DParallax>
       </motion.div>
     </div>
   )

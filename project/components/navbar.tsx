@@ -61,16 +61,28 @@ export function Navbar() {
           <motion.nav
             className={`relative flex items-center justify-between px-6 py-4 rounded-2xl transition-all duration-500 ${
               isScrolled
-                ? 'bg-cosmic-deep/80 backdrop-blur-xl border border-white/10 shadow-lg'
+                ? 'bg-cosmic-deep/60 backdrop-blur-2xl border border-cosmic-accent/20 shadow-2xl shadow-cosmic-accent/10'
                 : 'bg-transparent border border-transparent'
             }`}
+            style={{
+              boxShadow: isScrolled ? '0 0 40px rgba(0, 255, 255, 0.1)' : 'none',
+            }}
           >
             {/* Logo */}
             <Link href="/" className="relative z-10 group">
-              <span className="text-xl font-display font-bold text-gradient-animated">
+              <motion.span
+                animate={{ scale: [1, 1.05, 1] }}
+                transition={{ duration: 3, repeat: Infinity }}
+                className="text-xl font-display font-bold text-gradient-animated"
+              >
                 AK
-              </span>
-              <span className="absolute inset-0 blur-lg bg-cosmic-aurora-start/30 opacity-0 group-hover:opacity-100 transition-opacity" />
+              </motion.span>
+              <motion.span
+                className="absolute inset-0 blur-lg opacity-0 group-hover:opacity-100 transition-opacity rounded"
+                style={{
+                  background: 'radial-gradient(circle at center, rgba(0, 255, 255, 0.4) 0%, transparent 70%)',
+                }}
+              />
             </Link>
 
             {/* Desktop Nav */}
@@ -81,10 +93,10 @@ export function Navbar() {
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="relative px-4 py-2 text-sm font-medium transition-colors group"
+                    className="relative px-4 py-2 text-sm font-medium transition-all group"
                   >
                     <span
-                      className={`relative z-10 ${
+                      className={`relative z-10 transition-all ${
                         isActive ? 'text-cosmic-accent' : 'text-white/70 group-hover:text-white'
                       }`}
                     >
@@ -93,10 +105,16 @@ export function Navbar() {
                     {isActive && (
                       <motion.div
                         layoutId="nav-indicator"
-                        className="absolute inset-0 rounded-lg bg-white/10"
+                        className="absolute inset-0 rounded-lg bg-cosmic-accent/15 border border-cosmic-accent/30"
                         transition={{ type: 'spring', damping: 25, stiffness: 400 }}
                       />
                     )}
+                    <motion.div
+                      className="absolute inset-0 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity"
+                      style={{
+                        background: 'radial-gradient(circle at center, rgba(0, 255, 255, 0.1) 0%, transparent 70%)',
+                      }}
+                    />
                   </Link>
                 )
               })}

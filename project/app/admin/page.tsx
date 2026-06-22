@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { supabase } from '@/lib/supabase'
 import { useAuthStore } from '@/lib/store'
+import { use3DDepth } from '@/hooks/use3DDepth'
+import { Card3DParallax } from '@/components/3d-parallax-card'
 import {
   Users,
   ShoppingCart,
@@ -150,48 +152,39 @@ export default function AdminPage() {
 
         {/* Stats Grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-8">
-          <div className="glass-card p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-white/50 text-sm">Total Revenue</p>
-                <p className="text-2xl font-display font-bold text-white">
-                  <IndianRupee className="w-5 h-5 inline mr-1" />
-                  {stats.totalRevenue.toLocaleString()}
-                </p>
-              </div>
-              <TrendingUp className="w-10 h-10 text-green-400/50" />
-            </div>
-          </div>
-
-          <div className="glass-card p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-white/50 text-sm">Pending Orders</p>
-                <p className="text-2xl font-display font-bold text-white">{stats.pendingOrders}</p>
-              </div>
-              <Clock className="w-10 h-10 text-yellow-400/50" />
-            </div>
-          </div>
-
-          <div className="glass-card p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-white/50 text-sm">Completed</p>
-                <p className="text-2xl font-display font-bold text-white">{stats.completedOrders}</p>
-              </div>
-              <CheckCircle2 className="w-10 h-10 text-green-400/50" />
-            </div>
-          </div>
-
-          <div className="glass-card p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <p className="text-white/50 text-sm">Total Users</p>
-                <p className="text-2xl font-display font-bold text-white">{stats.totalUsers}</p>
-              </div>
-              <Users className="w-10 h-10 text-cosmic-accent/50" />
-            </div>
-          </div>
+          {[
+            { icon: TrendingUp, label: 'Total Revenue', value: `₹${stats.totalRevenue.toLocaleString()}`, color: 'text-green-400' },
+            { icon: Clock, label: 'Pending Orders', value: stats.pendingOrders, color: 'text-yellow-400' },
+            { icon: CheckCircle2, label: 'Completed', value: stats.completedOrders, color: 'text-green-400' },
+            { icon: Users, label: 'Total Users', value: stats.totalUsers, color: 'text-cosmic-accent' },
+          ].map((stat, index) => {
+            const depth = use3DDepth(0.3)
+            return (
+              <Card3DParallax key={stat.label} intensity={0.5} delay={index * 0.05}>
+                <motion.div
+                  style={{
+                    transform: `perspective(1000px) rotateX(${depth.rotateX * 0.3}deg) rotateY(${depth.rotateY * 0.3}deg) translateZ(${depth.intensity * 8}px)`,
+                    transformStyle: 'preserve-3d',
+                  }}
+                  className="glass-card p-6"
+                >
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="text-white/50 text-sm">{stat.label}</p>
+                      <p className="text-2xl font-display font-bold text-white mt-1">{stat.value}</p>
+                    </div>
+                    <motion.div
+                      animate={{ scale: [1, 1.05, 1], rotate: [0, 5, 0] }}
+                      transition={{ duration: 4, repeat: Infinity, delay: index * 0.2 }}
+                      className={`w-10 h-10 ${stat.color}/50`}
+                    >
+                      <stat.icon className="w-full h-full" />
+                    </motion.div>
+                  </div>
+                </motion.div>
+              </Card3DParallax>
+            )
+          })}
         </div>
 
         {/* Main Content */}
@@ -224,8 +217,15 @@ export default function AdminPage() {
                     </tr>
                   </thead>
                   <tbody>
-                    {orders.map((order) => (
-                      <tr key={order.id} className="border-b border-white/5 hover:bg-white/5">
+                    {orders.map((order, index) => (
+                      <motion.tr
+                        key={order.id}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: index * 0.05 }}
+                        whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.08)' }}
+                        className="border-b border-white/5 transition-colors"
+                      >
                         <td className="p-4">
                           <div>
                             <p className="text-white text-sm">{order.order_number}</p>
@@ -236,16 +236,23 @@ export default function AdminPage() {
                           <p className="text-white text-sm">{order.profiles?.email || order.user_id || 'Guest'}</p>
                         </td>
                         <td className="p-4">
-                          <p className="text-cosmic-accent font-medium">₹{(order.amount || 0).toLocaleString()}</p>
+                          <motion.p
+                            animate={{ scale: [1, 1.05, 1] }}
+                            transition={{ duration: 2, repeat: Infinity, delay: index * 0.1 }}
+                            className="text-cosmic-accent font-medium"
+                          >
+                            ₹{(order.amount || 0).toLocaleString()}
+                          </motion.p>
                         </td>
                         <td className="p-4">
                           <StatusBadge status={order.status} />
                         </td>
                         <td className="p-4">
-                          <select
+                          <motion.select
+                            whileHover={{ scale: 1.05 }}
                             value={order.status}
                             onChange={(e) => updateOrderStatus(order.id, e.target.value)}
-                            className="bg-white/5 border border-white/10 rounded-lg px-3 py-1 text-sm text-white cursor-hover"
+                            className="bg-white/5 border border-white/10 rounded-lg px-3 py-1 text-sm text-white cursor-hover hover:bg-white/10 transition-colors"
                           >
                             <option value="pending">Pending</option>
                             <option value="processing">Processing</option>
@@ -253,9 +260,9 @@ export default function AdminPage() {
                             <option value="review">Review</option>
                             <option value="completed">Completed</option>
                             <option value="cancelled">Cancelled</option>
-                          </select>
+                          </motion.select>
                         </td>
-                      </tr>
+                      </motion.tr>
                     ))}
                   </tbody>
                 </table>
@@ -274,20 +281,31 @@ export default function AdminPage() {
               </div>
 
               <div className="divide-y divide-white/5">
-                {contacts.map((contact) => (
-                  <div key={contact.id} className="p-4 hover:bg-white/5">
+                {contacts.map((contact, index) => (
+                  <motion.div
+                    key={contact.id}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: index * 0.05 }}
+                    whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
+                    className="p-4 transition-colors"
+                  >
                     <div className="flex items-start justify-between mb-2">
                       <div>
                         <p className="text-white font-medium">{contact.name}</p>
                         <p className="text-white/50 text-sm">{contact.email}</p>
                       </div>
                       {contact.status === 'unread' && (
-                        <span className="w-2 h-2 rounded-full bg-cosmic-accent" />
+                        <motion.span
+                          animate={{ scale: [1, 1.2, 1], opacity: [1, 0.7, 1] }}
+                          transition={{ duration: 2, repeat: Infinity }}
+                          className="w-2 h-2 rounded-full bg-cosmic-accent"
+                        />
                       )}
                     </div>
                     <p className="text-white/70 text-sm line-clamp-2">{contact.message}</p>
                     <p className="text-white/30 text-xs mt-2">{new Date(contact.created_at).toLocaleDateString()}</p>
-                  </div>
+                  </motion.div>
                 ))}
               </div>
             </div>

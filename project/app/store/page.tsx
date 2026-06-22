@@ -26,8 +26,11 @@ import {
   CreditCard,
   QrCode,
   AlertCircle,
+  Copy,
 } from 'lucide-react'
 import QRCode from 'react-qr-code'
+import { use3DDepth } from '@/hooks/use3DDepth'
+import { Card3DParallax } from '@/components/3d-parallax-card'
 
 // Website types
 const websiteTypes = [
@@ -109,40 +112,53 @@ function formatPrice(price: number): string {
   }).format(price)
 }
 
-// Step 1: Website Type
+// Step 1: Website Type - Enhanced with 3D depth
 function WebsiteTypeStep() {
   const { websiteType, setWebsiteType } = useQuotationStore()
+  const depth = use3DDepth(0.3)
 
   return (
     <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-      {websiteTypes.map((type) => {
+      {websiteTypes.map((type, index) => {
         const isActive = websiteType === type.id
         return (
-          <motion.button
-            key={type.id}
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => setWebsiteType(type.id)}
-            className={`glass-card p-6 text-left cursor-hover transition-all ${
-              isActive
-                ? 'ring-2 ring-cosmic-accent bg-cosmic-accent/10'
-                : 'hover:bg-white/5'
-            }`}
-          >
-            <div className="flex items-center gap-4 mb-4">
-              <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${
-                isActive ? 'bg-cosmic-accent text-white' : 'bg-white/10 text-white/70'
-              }`}>
-                <type.icon className="w-6 h-6" />
+          <Card3DParallax key={type.id} intensity={0.5} delay={index * 0.05}>
+            <motion.button
+              style={{
+                transform: `perspective(1000px) rotateX(${depth.rotateX * 0.2}deg) rotateY(${depth.rotateY * 0.2}deg)`,
+                transformStyle: 'preserve-3d',
+              }}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => setWebsiteType(type.id)}
+              className={`glass-card p-6 text-left cursor-hover transition-all w-full ${
+                isActive
+                  ? 'ring-2 ring-cosmic-accent bg-cosmic-accent/10'
+                  : 'hover:bg-white/5'
+              }`}
+            >
+              <div className="flex items-center gap-4 mb-4">
+                <motion.div
+                  className={`w-12 h-12 rounded-xl flex items-center justify-center transition-all ${
+                    isActive ? 'bg-cosmic-accent text-white' : 'bg-white/10 text-white/70'
+                  }`}
+                  animate={{ scale: isActive ? 1.1 : 1 }}
+                >
+                  <type.icon className="w-6 h-6" />
+                </motion.div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-white">{type.name}</h3>
+                  <p className="text-white/50 text-sm">{formatPrice(type.basePrice)}</p>
+                </div>
+                {isActive && (
+                  <motion.div initial={{ scale: 0 }} animate={{ scale: 1 }}>
+                    <Check className="w-6 h-6 text-cosmic-accent" />
+                  </motion.div>
+                )}
               </div>
-              <div className="flex-1">
-                <h3 className="text-lg font-semibold text-white">{type.name}</h3>
-                <p className="text-white/50 text-sm">{formatPrice(type.basePrice)}</p>
-              </div>
-              {isActive && <Check className="w-6 h-6 text-cosmic-accent" />}
-            </div>
-            <p className="text-white/60 text-sm">{type.description}</p>
-          </motion.button>
+              <p className="text-white/60 text-sm">{type.description}</p>
+            </motion.button>
+          </Card3DParallax>
         )
       })}
     </div>
@@ -345,8 +361,16 @@ function PriceSummary() {
     '7083632058@fam',
   ]
 
+  const depth = use3DDepth(0.4)
+
   return (
-    <div className="glass-card p-6 sticky top-24">
+    <motion.div
+      style={{
+        transform: `perspective(1200px) rotateX(${depth.rotateX * 0.2}deg) rotateY(${depth.rotateY * 0.2}deg) translateZ(${depth.intensity * 8}px)`,
+        transformStyle: 'preserve-3d',
+      }}
+      className="glass-card p-6 sticky top-24"
+    >
       {/* Selected options summary */}
       <div className="space-y-4 mb-6">
         {websiteType && (
@@ -437,27 +461,48 @@ function PriceSummary() {
           </motion.button>
         </div>
 
-        {/* QR Code modal */}
+        {/* QR Code and UPI Payment modal */}
         <AnimatePresence>
           {showQR && (
             <motion.div
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 10 }}
-              className="mt-6 p-4 glass-card"
+              className="mt-6 p-6 glass-card space-y-4"
             >
-              <h4 className="text-center text-white font-medium mb-4">Scan to Pay</h4>
-              <div className="flex justify-center p-4 bg-white rounded-xl">
-                <QRCode value={`upi://pay?pa=${upiIDs[0]}&pn=Aarish%20Khatib&am=${totalPrice}&cu=INR`} size={150} />
+              <div>
+                <h4 className="text-center text-white font-semibold mb-4">Scan to Pay</h4>
+                <div className="flex justify-center p-6 bg-white rounded-2xl">
+                  <QRCode value={`upi://pay?pa=${upiIDs[0]}&pn=Aarish%20Khatib&am=${totalPrice}&cu=INR`} size={150} />
+                </div>
               </div>
-              <p className="text-center text-white/50 text-sm mt-4">
-                Amount: {formatPrice(totalPrice)}
-              </p>
-              <div className="mt-4 space-y-2">
-                <p className="text-white/70 text-xs">UPI IDs:</p>
-                {upiIDs.map(id => (
-                  <p key={id} className="text-white/50 text-xs font-mono">{id}</p>
+
+              <div className="border-t border-white/10 pt-4">
+                <p className="text-white/60 text-xs mb-3">Amount to Pay</p>
+                <p className="text-2xl font-display font-bold text-cosmic-accent mb-4">{formatPrice(totalPrice)}</p>
+              </div>
+
+              <div className="border-t border-white/10 pt-4 space-y-3">
+                <p className="text-white/70 text-xs font-semibold mb-3">Or pay directly using UPI ID:</p>
+                {upiIDs.map((id, idx) => (
+                  <button
+                    key={id}
+                    onClick={() => {
+                      navigator.clipboard.writeText(id)
+                    }}
+                    className="w-full p-3 rounded-lg bg-white/5 border border-white/10 hover:border-cosmic-accent/50 hover:bg-cosmic-accent/5 transition-all group text-left"
+                  >
+                    <div className="flex items-center justify-between">
+                      <p className="text-white/70 text-sm font-mono">{id}</p>
+                      <Copy className="w-4 h-4 text-white/40 group-hover:text-cosmic-accent transition-colors" />
+                    </div>
+                  </button>
                 ))}
+              </div>
+
+              <div className="bg-cosmic-accent/10 border border-cosmic-accent/20 rounded-lg p-3 text-xs text-white/70 flex items-start gap-2">
+                <AlertCircle className="w-4 h-4 mt-0.5 shrink-0 text-cosmic-accent" />
+                <span>Please contact Aarish before making payment for final confirmation.</span>
               </div>
             </motion.div>
           )}
@@ -468,7 +513,7 @@ function PriceSummary() {
           Prices are estimates. Final quote will be provided after consultation.
         </p>
       </div>
-    </div>
+    </motion.div>
   )
 }
 
@@ -504,14 +549,24 @@ export default function StorePage() {
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center mb-12"
+          className="text-center mb-16"
         >
-          <span className="text-cosmic-accent font-medium tracking-widest uppercase text-sm">Build Your Vision</span>
-          <h1 className="text-4xl md:text-6xl font-display font-bold mt-4 mb-4">
-            <span className="text-gradient">Website Configurator</span>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.1 }}
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cosmic-accent/10 border border-cosmic-accent/20 text-cosmic-accent text-sm mb-6"
+          >
+            <ShoppingCart className="w-4 h-4" />
+            Configure & Launch
+          </motion.div>
+          <h1 className="text-4xl md:text-6xl font-display font-bold mt-6 mb-6">
+            <span className="text-white">Premium Website</span>
+            <br />
+            <span className="text-gradient">Configurator</span>
           </h1>
-          <p className="text-white/60 max-w-xl mx-auto">
-            Configure your perfect website. Live pricing updates as you make selections.
+          <p className="text-white/60 max-w-2xl mx-auto text-lg">
+            Build your perfect website with live pricing. Customize every detail and get an instant quote.
           </p>
         </motion.div>
 

@@ -4,6 +4,8 @@ import { useState, useRef } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { supabase } from '@/lib/supabase'
 import { Mail, Phone, MapPin, Send, Github, Twitter, Linkedin, MessageSquare, Loader2, CheckCircle, AlertCircle } from 'lucide-react'
+import { Card3DParallax } from '@/components/3d-parallax-card'
+import { use3DDepth } from '@/hooks/use3DDepth'
 
 export default function ContactPage() {
   const formRef = useRef(null)
@@ -213,7 +215,8 @@ export default function ContactPage() {
               animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 40 }}
               transition={{ duration: 0.6, delay: 0.2 }}
             >
-              <div className="glass-card p-8">
+              <Card3DParallax intensity={0.6} delay={0.2}>
+                <div className="glass-card p-8">
                 <h3 className="text-2xl font-display font-bold text-white mb-6">
                   Send a Message
                 </h3>
@@ -355,7 +358,8 @@ export default function ContactPage() {
                     </motion.div>
                   )}
                 </form>
-              </div>
+                </div>
+              </Card3DParallax>
             </motion.div>
           </div>
         </div>
