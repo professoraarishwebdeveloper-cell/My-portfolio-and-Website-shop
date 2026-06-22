@@ -168,7 +168,10 @@ export default function HomePage() {
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-cosmic-accent/10 to-cosmic-glow/10 border border-white/10 text-sm text-white/70 mb-8 backdrop-blur-md"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-cosmic-accent/10 to-cosmic-glow/10 border border-cosmic-accent/40 text-sm text-white/70 mb-8 backdrop-blur-md"
+              style={{
+                boxShadow: '0 0 20px rgba(0, 255, 255, 0.15), inset 0 0 20px rgba(0, 255, 255, 0.05)',
+              }}
             >
               <motion.div
                 animate={{ rotate: 360 }}
