@@ -1,10 +1,18 @@
 'use client'
 
-import { useRef, useState, ReactNode } from 'react'
+import { useRef, useState, ReactNode, useEffect } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { Award, ExternalLink, X, Calendar, Building2 } from 'lucide-react'
 import { use3DDepth } from '@/hooks/use3DDepth'
 import { Card3DParallax } from '@/components/3d-parallax-card'
+
+interface ParticleData {
+  id: number
+  xValues: [number, number, number]
+  yValues: [number, number, number]
+  left: string
+  top: string
+}
 
 // Certificate data - using real uploaded images
 const certificates = [
@@ -44,6 +52,21 @@ const certificates = [
 function CertificateCard({ certificate, onClick, index }: { certificate: typeof certificates[0]; onClick: () => void; index: number }) {
   const depth = use3DDepth(0.5)
   const [isHovered, setIsHovered] = useState(false)
+  const [particles, setParticles] = useState<ParticleData[]>([])
+
+  useEffect(() => {
+    const generatedParticles: ParticleData[] = []
+    for (let i = 0; i < 5; i++) {
+      generatedParticles.push({
+        id: i,
+        xValues: [0, Math.random() * 100 - 50, 0],
+        yValues: [0, Math.random() * 100 - 50, 0],
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+      })
+    }
+    setParticles(generatedParticles)
+  }, [])
 
   return (
     <Card3DParallax intensity={0.6} delay={index * 0.1}>
@@ -68,12 +91,12 @@ function CertificateCard({ certificate, onClick, index }: { certificate: typeof 
           <div className="relative aspect-[4/3] overflow-hidden bg-gradient-to-br from-cosmic-deep to-cosmic-void">
             {/* Animated background particles */}
             <div className="absolute inset-0">
-              {[...Array(5)].map((_, i) => (
+              {particles.map((particle, i) => (
                 <motion.div
-                  key={i}
+                  key={particle.id}
                   animate={{
-                    x: [0, Math.random() * 100 - 50, 0],
-                    y: [0, Math.random() * 100 - 50, 0],
+                    x: particle.xValues,
+                    y: particle.yValues,
                     opacity: [0.3, 0.8, 0.3],
                   }}
                   transition={{
@@ -84,8 +107,8 @@ function CertificateCard({ certificate, onClick, index }: { certificate: typeof 
                   className="absolute w-2 h-2 rounded-full"
                   style={{
                     background: certificate.color,
-                    left: `${Math.random() * 100}%`,
-                    top: `${Math.random() * 100}%`,
+                    left: particle.left,
+                    top: particle.top,
                     boxShadow: `0 0 10px ${certificate.color}`,
                   }}
                 />
