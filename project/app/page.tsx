@@ -1,13 +1,19 @@
 'use client'
 
-import { useRef, useEffect, useState } from 'react'
+import { useRef, useState, ReactNode } from 'react'
 import Link from 'next/link'
 import { motion, useScroll, useTransform, useInView } from 'framer-motion'
 import { HeroSphere } from '@/components/hero-sphere'
-import { ArrowRight, Sparkles, Code, Palette, Zap, Star, ExternalLink } from 'lucide-react'
+import { StarField } from '@/components/star-field'
+import { ParallaxSection } from '@/components/parallax-section'
+import { FloatingText } from '@/components/floating-text'
+import { BloomEffect } from '@/components/bloom-effect'
+import { TiltCard } from '@/components/tilt-card'
+import { CounterStat } from '@/components/counter-stat'
+import { ArrowRight, Sparkles, Code, Palette, Zap, Star, ExternalLink, Lightbulb, Rocket, Cpu } from 'lucide-react'
 
-// Magnetic button component
-function MagneticButton({ children, className, href }: { children: React.ReactNode; className?: string; href?: string }) {
+// Magnetic button with premium effects
+function MagneticButton({ children, className, href }: { children: ReactNode; className?: string; href?: string }) {
   const buttonRef = useRef<HTMLDivElement>(null)
   const [position, setPosition] = useState({ x: 0, y: 0 })
 
@@ -47,8 +53,8 @@ function MagneticButton({ children, className, href }: { children: React.ReactNo
   return motionDiv
 }
 
-// Animated section reveal
-function RevealSection({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
+// Premium reveal animation
+function RevealSection({ children, className = '', delay = 0 }: { children: ReactNode; className?: string; delay?: number }) {
   const ref = useRef(null)
   const isInView = useInView(ref, { once: true, margin: '-100px' })
 
@@ -65,119 +71,66 @@ function RevealSection({ children, className = '', delay = 0 }: { children: Reac
   )
 }
 
-// Stats counter component
-function StatCounter({ value, suffix = '', label }: { value: number; suffix?: string; label: string }) {
-  const ref = useRef(null)
-  const isInView = useInView(ref, { once: true })
-  const [count, setCount] = useState(0)
-
-  useEffect(() => {
-    if (isInView) {
-      let start = 0
-      const end = value
-      const duration = 2000
-      const incrementTime = duration / end
-
-      const timer = setInterval(() => {
-        start += 1
-        setCount(start)
-        if (start >= end) clearInterval(timer)
-      }, incrementTime)
-
-      return () => clearInterval(timer)
-    }
-  }, [isInView, value])
-
+// Enhanced feature card with 3D tilt
+function FeatureCard({ icon: Icon, title, description, accent = 'accent' }: { icon: React.ElementType; title: string; description: string; accent?: 'accent' | 'glow' | 'aurora' }) {
   return (
-    <div ref={ref} className="text-center">
-      <div className="text-4xl md:text-6xl font-display font-bold text-gradient-animated">
-        {count}{suffix}
-      </div>
-      <div className="text-white/50 text-sm md:text-base mt-2">{label}</div>
-    </div>
+    <TiltCard className="glass-card glass-card-hover p-8 group cursor-hover h-full">
+      <motion.div
+        initial={{ y: 0 }}
+        whileHover={{ y: -5 }}
+        transition={{ duration: 0.3 }}
+      >
+        <BloomEffect color={accent} intensity="medium" className="mb-6">
+          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-cosmic-accent/20 to-cosmic-glow/20 flex items-center justify-center">
+            <Icon className="w-8 h-8 text-cosmic-accent" />
+          </div>
+        </BloomEffect>
+        <h3 className="text-xl font-display font-semibold text-white mb-3">{title}</h3>
+        <p className="text-white/60 text-sm leading-relaxed">{description}</p>
+      </motion.div>
+    </TiltCard>
   )
 }
 
-// Project card for preview
-function ProjectPreviewCard({ title, description, image, href, technologies }: {
+// Showcase card with enhanced visuals
+function ShowcaseCard({ 
+  title, 
+  description, 
+  technologies,
+  icon: Icon,
+  gradient = 'from-cosmic-accent to-cosmic-glow'
+}: {
   title: string
   description: string
-  image: string
-  href: string
   technologies: string[]
+  icon: React.ElementType
+  gradient?: string
 }) {
-  const cardRef = useRef<HTMLDivElement>(null)
-  const [rotateX, setRotateX] = useState(0)
-  const [rotateY, setRotateY] = useState(0)
-
-  const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (!cardRef.current) return
-    const rect = cardRef.current.getBoundingClientRect()
-    const centerX = rect.left + rect.width / 2
-    const centerY = rect.top + rect.height / 2
-    const rotateXAmount = ((e.clientY - centerY) / (rect.height / 2)) * -5
-    const rotateYAmount = ((e.clientX - centerX) / (rect.width / 2)) * 5
-    setRotateX(rotateXAmount)
-    setRotateY(rotateYAmount)
-  }
-
-  const handleMouseLeave = () => {
-    setRotateX(0)
-    setRotateY(0)
-  }
-
   return (
-    <motion.div
-      ref={cardRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      style={{
-        transform: `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
-        transformStyle: 'preserve-3d',
-      }}
-      className="group glass-card overflow-hidden cursor-hover"
-    >
-      <div className="relative h-48 md:h-64 overflow-hidden">
-        <img
-          src={image}
-          alt={title}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-cosmic-void via-transparent to-transparent" />
-      </div>
-      <div className="p-6">
-        <h3 className="text-xl font-display font-semibold text-white group-hover:text-cosmic-accent transition-colors">
-          {title}
-        </h3>
-        <p className="text-white/60 text-sm mt-2 line-clamp-2">{description}</p>
-        <div className="flex flex-wrap gap-2 mt-4">
-          {technologies.slice(0, 3).map((tech) => (
-            <span key={tech} className="px-3 py-1 text-xs rounded-full bg-white/5 text-white/70 border border-white/10">
-              {tech}
-            </span>
-          ))}
+    <TiltCard className={`glass-card glass-card-hover group overflow-hidden h-full`}>
+      <div className={`bg-gradient-to-br ${gradient} p-px h-full`}>
+        <div className="bg-cosmic-void p-8 h-full flex flex-col">
+          <BloomEffect intensity="light" className="mb-6">
+            <div className="w-12 h-12 rounded-xl bg-white/10 flex items-center justify-center">
+              <Icon className="w-6 h-6 text-cosmic-accent" />
+            </div>
+          </BloomEffect>
+          <h3 className="text-lg font-display font-semibold text-white mb-3">{title}</h3>
+          <p className="text-white/60 text-sm mb-6 flex-grow">{description}</p>
+          <div className="flex flex-wrap gap-2">
+            {technologies.map((tech) => (
+              <motion.span
+                key={tech}
+                whileHover={{ scale: 1.05 }}
+                className="px-2 py-1 text-xs rounded-full bg-white/5 text-white/70 border border-white/10 cursor-default"
+              >
+                {tech}
+              </motion.span>
+            ))}
+          </div>
         </div>
-        <Link
-          href={href}
-          className="inline-flex items-center gap-2 mt-4 text-cosmic-accent text-sm font-medium hover:gap-4 transition-all"
-        >
-          View Project <ArrowRight className="w-4 h-4" />
-        </Link>
       </div>
-    </motion.div>
-  )
-}
-
-// Feature highlight card
-function FeatureHighlight({ icon: Icon, title, description }: { icon: React.ElementType; title: string; description: string }) {
-  return (
-    <div className="glass-card glass-card-hover p-8 text-center group cursor-hover">
-      <div className="w-16 h-16 mx-auto mb-6 rounded-2xl bg-gradient-to-br from-cosmic-accent/20 to-cosmic-glow/20 flex items-center justify-center group-hover:scale-110 transition-transform">
-        <Icon className="w-8 h-8 text-cosmic-accent" />
-      </div>
-      <h3 className="text-xl font-display font-semibold text-white mb-3">{title}</h3>
-      <p className="text-white/60 text-sm">{description}</p>
-    </div>
+    </TiltCard>
   )
 }
 
@@ -192,10 +145,12 @@ export default function HomePage() {
   const heroScale = useTransform(scrollYProgress, [0, 0.5], [1, 0.8])
 
   return (
-    <div className="relative">
-      {/* Hero Section */}
+    <div className="relative overflow-hidden">
+      <StarField />
+
+      {/* ===== HERO SECTION ===== */}
       <section ref={heroRef} className="relative min-h-screen flex items-center justify-center overflow-hidden">
-        {/* 3D Sphere Background */}
+        {/* 3D Particle Universe */}
         <HeroSphere />
 
         {/* Hero Content */}
@@ -208,209 +163,354 @@ export default function HomePage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, ease: [0.25, 0.46, 0.45, 0.94] }}
           >
-            {/* Badge */}
+            {/* Animated Badge */}
             <motion.div
               initial={{ opacity: 0, scale: 0.9 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.2 }}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 text-sm text-white/70 mb-8"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-gradient-to-r from-cosmic-accent/10 to-cosmic-glow/10 border border-white/10 text-sm text-white/70 mb-8 backdrop-blur-md"
             >
-              <Sparkles className="w-4 h-4 text-cosmic-accent" />
-              Creating Digital Universes
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'linear' }}
+              >
+                <Sparkles className="w-4 h-4 text-cosmic-accent" />
+              </motion.div>
+              Premium Digital Universe
             </motion.div>
 
-            {/* Main Heading */}
-            <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold mb-6 tracking-tight">
-              <span className="block text-white">AARISH</span>
-              <span className="block text-gradient-animated">KHATIB</span>
+            {/* Main Heading with Animation */}
+            <h1 className="text-5xl md:text-7xl lg:text-8xl font-display font-bold mb-6 tracking-tight leading-tight">
+              <motion.span
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="block text-white"
+              >
+                AARISH
+              </motion.span>
+              <motion.span
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.4 }}
+                className="block text-gradient-animated"
+              >
+                KHATIB
+              </motion.span>
             </h1>
 
-            {/* Roles */}
-            <div className="flex flex-wrap justify-center gap-3 md:gap-6 text-sm md:text-base text-white/70 mb-12">
-              {['Creative Developer', 'Trader', 'AI Enthusiast', 'Website Architect'].map((role, i) => (
-                <motion.span
-                  key={role}
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 + i * 0.1 }}
-                  className="flex items-center gap-2"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-cosmic-accent" />
-                  {role}
-                </motion.span>
+            {/* Role Pills */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 0.6 }}
+              className="flex flex-wrap justify-center gap-3 md:gap-4 text-sm md:text-base text-white/70 mb-12"
+            >
+              {['Creative Developer', 'Full-Stack Engineer', 'AI Innovator', 'Web Architect'].map((role, i) => (
+                <FloatingText key={role} delay={0.8 + i * 0.1} duration={5} intensity={10}>
+                  <motion.span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/10 hover:border-cosmic-accent/50 transition-colors cursor-default">
+                    <span className="w-1.5 h-1.5 rounded-full bg-cosmic-accent" />
+                    {role}
+                  </motion.span>
+                </FloatingText>
               ))}
-            </div>
+            </motion.div>
+
+            {/* Hero Description */}
+            <motion.p
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ delay: 1.1 }}
+              className="text-white/60 max-w-2xl mx-auto mb-12 text-base md:text-lg"
+            >
+              Crafting Awwwards-level digital experiences with cutting-edge technology, cinematic interactions, and premium design.
+            </motion.p>
 
             {/* CTA Buttons */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.8 }}
+              transition={{ delay: 1.2 }}
               className="flex flex-wrap justify-center gap-4"
             >
               <MagneticButton href="/store" className="magnetic-btn">
-                <span className="relative z-10">Explore Universe</span>
+                <span className="relative z-10 flex items-center gap-2">
+                  Explore Services <Rocket className="w-4 h-4" />
+                </span>
                 <div className="magnetic-btn-glow" />
               </MagneticButton>
 
               <MagneticButton href="/contact" className="btn-secondary">
                 <span className="relative z-10 flex items-center gap-2">
-                  Hire Me <ArrowRight className="w-4 h-4" />
-                </span>
-              </MagneticButton>
-
-              <MagneticButton href="/store" className="btn-secondary">
-                <span className="relative z-10 flex items-center gap-2">
-                  Store <ExternalLink className="w-4 h-4" />
+                  Start a Project <ArrowRight className="w-4 h-4" />
                 </span>
               </MagneticButton>
             </motion.div>
           </motion.div>
         </motion.div>
 
-        {/* Scroll indicator */}
+        {/* Animated Scroll Indicator */}
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 1.2 }}
+          transition={{ delay: 1.5 }}
           className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
         >
           <motion.div
-            animate={{ y: [0, 10, 0] }}
-            transition={{ duration: 1.5, repeat: Infinity }}
-            className="w-6 h-10 rounded-full border-2 border-white/30 flex justify-center pt-2"
+            animate={{ y: [0, 12, 0] }}
+            transition={{ duration: 2, repeat: Infinity }}
+            className="w-6 h-10 rounded-full border-2 border-white/20 flex justify-center pt-2"
           >
-            <div className="w-1 h-2 rounded-full bg-cosmic-accent" />
+            <motion.div
+              animate={{ opacity: [0.5, 1, 0.5] }}
+              transition={{ duration: 2, repeat: Infinity }}
+              className="w-1 h-2 rounded-full bg-cosmic-accent"
+            />
           </motion.div>
         </motion.div>
       </section>
 
-      {/* Stats Section */}
-      <RevealSection className="section-padding bg-gradient-to-b from-transparent via-cosmic-deep/50 to-cosmic-void">
-        <div className="container mx-auto px-4">
+      {/* ===== STATS SECTION ===== */}
+      <RevealSection className="section-padding bg-gradient-to-b from-transparent via-cosmic-deep/30 to-cosmic-void relative overflow-hidden">
+        <div className="absolute inset-0 bg-gradient-radial from-cosmic-accent/5 to-transparent pointer-events-none" />
+        <div className="container mx-auto px-4 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-5xl font-display font-bold mb-4">
+              <span className="text-gradient">Track Record</span>
+            </h2>
+            <p className="text-white/60 max-w-2xl mx-auto">Proven expertise in delivering premium digital solutions</p>
+          </motion.div>
+
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-12">
-            <StatCounter value={50} suffix="+" label="Projects Delivered" />
-            <StatCounter value={100} suffix="%" label="Client Satisfaction" />
-            <StatCounter value={3} suffix="+" label="Years Experience" />
-            <StatCounter value={24} suffix="/7" label="Support Available" />
+            <CounterStat value={50} suffix="+" label="Projects" description="Completed & Delivered" />
+            <CounterStat value={100} suffix="%" label="Satisfaction" description="Client Retention" />
+            <CounterStat value={3} suffix="+" label="Years" description="Industry Experience" />
+            <CounterStat value={24} suffix="/7" label="Support" description="Always Available" />
           </div>
         </div>
       </RevealSection>
 
-      {/* What I Do Section */}
-      <RevealSection className="section-padding">
+      {/* ===== CAPABILITIES SECTION ===== */}
+      <RevealSection className="section-padding bg-cosmic-void">
         <div className="container mx-auto px-4">
-          <div className="text-center mb-16">
-            <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
-              <span className="text-gradient">What I Do</span>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-5xl font-display font-bold mb-4">
+              <span className="text-gradient">What I Create</span>
             </h2>
-            <p className="text-white/60 max-w-2xl mx-auto">
-              Transforming ideas into digital realities with cutting-edge technology and creative excellence.
-            </p>
-          </div>
+            <p className="text-white/60 max-w-2xl mx-auto">Specialized in premium digital experiences powered by cutting-edge technology</p>
+          </motion.div>
 
-          <div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-            <FeatureHighlight
+          <div className="grid md:grid-cols-3 gap-6">
+            <FeatureCard
               icon={Code}
               title="Full-Stack Development"
-              description="Building enterprise-grade applications with React, Next.js, and modern technologies."
+              description="Enterprise-grade applications with React, Next.js, TypeScript, and modern architecture. Performance-optimized and production-ready."
+              accent="accent"
             />
-            <FeatureHighlight
+            <FeatureCard
               icon={Palette}
               title="Creative Design"
-              description="Crafting visually stunning experiences that captivate and convert."
+              description="Awwwards-level interfaces with glassmorphism, 3D effects, and cinematic micro-interactions that captivate and convert."
+              accent="glow"
             />
-            <FeatureHighlight
-              icon={Zap}
+            <FeatureCard
+              icon={Cpu}
               title="AI Integration"
-              description="Leveraging AI tools to automate, optimize, and innovate solutions."
+              description="Intelligent solutions leveraging AI/ML, automation, and advanced analytics to optimize and innovate your digital presence."
+              accent="aurora"
             />
           </div>
         </div>
       </RevealSection>
 
-      {/* Featured Projects Preview */}
-      <RevealSection className="section-padding bg-gradient-to-b from-cosmic-void via-cosmic-deep/30 to-cosmic-void">
+      {/* ===== FEATURED SERVICES SECTION ===== */}
+      <RevealSection className="section-padding bg-gradient-to-b from-cosmic-void via-cosmic-deep/20 to-cosmic-void">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-12">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="flex flex-col md:flex-row justify-between items-start md:items-center gap-8 mb-16"
+          >
             <div>
-              <h2 className="text-4xl md:text-5xl font-display font-bold mb-4">
-                <span className="text-gradient">Featured Work</span>
+              <h2 className="text-3xl md:text-5xl font-display font-bold mb-4">
+                <span className="text-gradient">Featured Expertise</span>
               </h2>
-              <p className="text-white/60">Explore some of my recent projects</p>
+              <p className="text-white/60 max-w-xl">Specialized capabilities tailored for modern digital challenges</p>
             </div>
             <Link
               href="/projects"
-              className="btn-secondary flex items-center gap-2 cursor-hover"
+              className="btn-secondary flex items-center gap-2 cursor-hover whitespace-nowrap"
             >
-              View All Projects <ArrowRight className="w-4 h-4" />
+              Explore All <ArrowRight className="w-4 h-4" />
             </Link>
-          </div>
+          </motion.div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <ProjectPreviewCard
-              title="Trading Bot"
-              description="AI-powered automated trading system with real-time market analysis"
-              image="https://images.unsplash.com/photo-1611974789855-9c2a0a723214?w=800&h=600&fit=crop"
-              href="/projects/trading-bot"
-              technologies={['Python', 'TensorFlow', 'WebSocket']}
+            <ShowcaseCard
+              icon={Rocket}
+              title="Web Applications"
+              description="Scalable, performant web apps with real-time capabilities and seamless user experiences"
+              technologies={['React', 'Next.js', 'Node.js']}
+              gradient="from-cosmic-accent/20 to-cosmic-glow/20"
             />
-            <ProjectPreviewCard
-              title="Crypto Dashboard"
-              description="Real-time cryptocurrency portfolio tracker with advanced analytics"
-              image="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?w=800&h=600&fit=crop"
-              href="/projects/crypto-dashboard"
-              technologies={['React', 'Next.js', 'Chart.js']}
+            <ShowcaseCard
+              icon={Lightbulb}
+              title="AI Solutions"
+              description="Intelligent systems with machine learning, chatbots, and autonomous automation"
+              technologies={['Python', 'TensorFlow', 'LLMs']}
+              gradient="from-cosmic-glow/20 to-cosmic-aurora-end/20"
             />
-            <ProjectPreviewCard
-              title="Portfolio Template"
-              description="Premium portfolio template for creative professionals"
-              image="https://images.unsplash.com/photo-1467232004584-a241de8bcf5d?w=800&h=600&fit=crop"
-              href="/projects/portfolio-template"
-              technologies={['Next.js', 'Three.js', 'Framer Motion']}
+            <ShowcaseCard
+              icon={Star}
+              title="Premium UI/UX"
+              description="Cinematic interfaces with 3D, particles, animations, and glassmorphism effects"
+              technologies={['Three.js', 'Framer', 'GSAP']}
+              gradient="from-cosmic-aurora-end/20 to-cosmic-accent/20"
             />
           </div>
         </div>
       </RevealSection>
 
-      {/* CTA Section */}
+      {/* ===== JOURNEY PREVIEW ===== */}
       <RevealSection className="section-padding">
         <div className="container mx-auto px-4">
-          <div className="glass-card p-12 md:p-20 text-center relative overflow-hidden">
-            {/* Background gradient */}
-            <div className="absolute inset-0 bg-gradient-to-br from-cosmic-accent/10 via-transparent to-cosmic-glow/10" />
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="text-center mb-16"
+          >
+            <h2 className="text-3xl md:text-5xl font-display font-bold mb-4">
+              <span className="text-gradient">My Journey</span>
+            </h2>
+            <p className="text-white/60 max-w-2xl mx-auto">From crypto trading to premium web development</p>
+          </motion.div>
 
-            <div className="relative z-10">
-              <Star className="w-12 h-12 text-cosmic-accent mx-auto mb-6" />
-              <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-6">
-                Ready to Build Something{' '}
-                <span className="text-gradient">Extraordinary?</span>
-              </h2>
-              <p className="text-white/60 max-w-xl mx-auto mb-8">
-                Let's collaborate and create digital experiences that leave lasting impressions.
-              </p>
-              <div className="flex flex-wrap justify-center gap-4">
-                <MagneticButton href="/store" className="magnetic-btn">
-                  <span className="relative z-10">Get Started</span>
-                </MagneticButton>
-                <MagneticButton href="/contact" className="btn-secondary">
-                  <span className="relative z-10">Let's Talk</span>
-                </MagneticButton>
-              </div>
-            </div>
+          <div className="max-w-3xl mx-auto">
+            {[
+              { year: '2021', title: 'Forex & Crypto Trading', desc: 'Started trading in financial markets' },
+              { year: '2022', title: 'First Websites', desc: 'Built my first web development projects' },
+              { year: '2023', title: 'Full Stack Development', desc: 'Mastered full-stack development' },
+              { year: '2024', title: 'Creative Development', desc: 'Focused on Awwwards-level design' },
+            ].map((item, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                transition={{ delay: i * 0.1 }}
+                viewport={{ once: true }}
+                className="mb-8 relative"
+              >
+                <div className="glass-card p-6 md:p-8 flex gap-6">
+                  <div className="flex flex-col items-center">
+                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cosmic-accent to-cosmic-glow flex items-center justify-center font-display font-bold text-cosmic-void">
+                      {i + 1}
+                    </div>
+                    {i < 3 && <div className="w-1 h-16 bg-gradient-to-b from-cosmic-accent to-transparent mt-2" />}
+                  </div>
+                  <div>
+                    <span className="text-cosmic-accent text-sm font-semibold">{item.year}</span>
+                    <h3 className="text-xl font-display font-semibold text-white mt-1">{item.title}</h3>
+                    <p className="text-white/60 text-sm mt-2">{item.desc}</p>
+                  </div>
+                </div>
+              </motion.div>
+            ))}
           </div>
         </div>
       </RevealSection>
 
-      {/* Footer Preview */}
-      <footer className="py-12 border-t border-white/5">
+      {/* ===== CTA SECTION ===== */}
+      <RevealSection className="section-padding">
         <div className="container mx-auto px-4">
-          <div className="flex flex-col md:flex-row justify-between items-center gap-6">
-            <div className="text-xl font-display font-bold text-gradient">AK</div>
-            <div className="text-white/40 text-sm">
-              © 2026 Aarish Khatib. All rights reserved.
+          <ParallaxSection offset={40}>
+            <div className="glass-card p-12 md:p-20 text-center relative overflow-hidden group">
+              {/* Animated background gradient */}
+              <motion.div
+                animate={{ rotate: 360 }}
+                transition={{ duration: 20, repeat: Infinity, ease: 'linear' }}
+                className="absolute inset-0 bg-gradient-to-br from-cosmic-accent/5 via-cosmic-glow/5 to-cosmic-aurora-end/5 opacity-0 group-hover:opacity-100 transition-opacity"
+              />
+
+              <div className="relative z-10">
+                <motion.div
+                  animate={{ scale: [1, 1.1, 1] }}
+                  transition={{ duration: 3, repeat: Infinity }}
+                  className="w-16 h-16 mx-auto mb-8 bg-gradient-to-br from-cosmic-accent to-cosmic-glow rounded-full flex items-center justify-center"
+                >
+                  <Star className="w-8 h-8 text-cosmic-void" />
+                </motion.div>
+
+                <h2 className="text-3xl md:text-5xl font-display font-bold text-white mb-6">
+                  Ready to Build Something{' '}
+                  <span className="text-gradient">Extraordinary?</span>
+                </h2>
+                <p className="text-white/60 max-w-xl mx-auto mb-10 text-lg">
+                  Let's collaborate to create premium digital experiences that leave lasting impressions on your audience.
+                </p>
+
+                <div className="flex flex-wrap justify-center gap-4">
+                  <MagneticButton href="/store" className="magnetic-btn">
+                    <span className="relative z-10 flex items-center gap-2">
+                      View Packages <Rocket className="w-4 h-4" />
+                    </span>
+                  </MagneticButton>
+                  <MagneticButton href="/contact" className="btn-secondary">
+                    <span className="relative z-10">Schedule Call</span>
+                  </MagneticButton>
+                </div>
+              </div>
             </div>
-          </div>
+          </ParallaxSection>
+        </div>
+      </RevealSection>
+
+      {/* ===== FOOTER ===== */}
+      <footer className="py-12 border-t border-white/5 relative">
+        <div className="container mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            transition={{ duration: 0.8 }}
+            viewport={{ once: true }}
+            className="flex flex-col md:flex-row justify-between items-center gap-8"
+          >
+            <div>
+              <div className="text-2xl font-display font-bold text-gradient mb-2">Aarish Khatib</div>
+              <p className="text-white/40 text-sm">Premium Digital Architect</p>
+            </div>
+            <div className="text-center text-white/40 text-sm">
+              <p>© 2026 Aarish Khatib. All rights reserved.</p>
+              <p className="mt-2">Crafted with precision. Delivered with excellence.</p>
+            </div>
+            <div className="flex gap-4">
+              {['GitHub', 'Twitter', 'LinkedIn'].map((social) => (
+                <motion.a
+                  key={social}
+                  href="#"
+                  whileHover={{ scale: 1.1, color: '#00d4ff' }}
+                  className="text-white/40 hover:text-cosmic-accent transition-colors text-sm"
+                >
+                  {social}
+                </motion.a>
+              ))}
+            </div>
+          </motion.div>
         </div>
       </footer>
     </div>
