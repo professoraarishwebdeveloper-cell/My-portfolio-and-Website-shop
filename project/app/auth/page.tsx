@@ -6,7 +6,7 @@ import { supabase } from '@/lib/supabase'
 import { useAuthStore } from '@/lib/store'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Mail, Lock, User, ArrowRight, Loader2, AlertCircle, Chrome } from 'lucide-react'
+import { Mail, Lock, User, ArrowRight, Loader2, AlertCircle, Chrome, MessageCircle } from 'lucide-react'
 import { Card3DParallax } from '@/components/3d-parallax-card'
 
 interface Particle {
