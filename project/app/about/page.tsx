@@ -3,6 +3,9 @@
 import { useRef } from 'react'
 import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { Code, TrendingUp, Bot, Globe, Target, Rocket, Lightbulb, Heart, Award, Users } from 'lucide-react'
+import { Particles3DVisualization } from '@/components/particles-3d-visualization'
+import { Card3DParallax } from '@/components/3d-parallax-card'
+import { use3DDepth } from '@/hooks/use3DDepth'
 
 // Animated reveal section
 function RevealSection({ children, className = '', delay = 0 }: { children: React.ReactNode; className?: string; delay?: number }) {
@@ -144,26 +147,65 @@ export default function AboutPage() {
         </motion.div>
       </section>
 
+      {/* 3D Visualization Section */}
+      <section className="relative h-screen">
+        <Particles3DVisualization />
+      </section>
+
       {/* Main Content */}
       <section className="section-padding">
         <div className="container mx-auto px-4">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
-            {/* Image Side */}
+            {/* 3D Depth Visualization Side */}
             <RevealSection className="relative">
-              <div className="relative aspect-[4/5] max-w-md mx-auto">
-                <div className="absolute inset-0 bg-gradient-to-br from-cosmic-accent/20 to-cosmic-glow/20 rounded-3xl transform rotate-3" />
-                <div className="absolute inset-0 bg-cosmic-deep rounded-3xl overflow-hidden">
-                  <img
-                    src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=600&h=750&fit=crop&crop=face"
-                    alt="Aarish Khatib"
-                    className="w-full h-full object-cover opacity-90"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-cosmic-void via-transparent to-transparent" />
+              <Card3DParallax intensity={0.6} delay={0.1}>
+                <div className="relative">
+                  <div className="absolute inset-0 bg-gradient-to-br from-cosmic-accent/20 to-cosmic-glow/20 rounded-3xl transform -rotate-3" />
+                  <div className="absolute inset-0 bg-cosmic-deep rounded-3xl overflow-hidden">
+                    {/* Abstract geometric visualization */}
+                    <div className="w-full h-full flex items-center justify-center p-8">
+                      <div className="relative w-full h-64">
+                        {/* Animated geometric shapes */}
+                        <motion.div
+                          animate={{ rotate: 360, scale: [1, 1.1, 1] }}
+                          transition={{ duration: 8, repeat: Infinity }}
+                          className="absolute inset-0 flex items-center justify-center"
+                        >
+                          <div className="w-32 h-32 border-2 border-cosmic-accent/40 rounded-full" />
+                          <div className="absolute w-24 h-24 border-2 border-cosmic-glow/40 rounded-full" />
+                          <div className="absolute w-16 h-16 border-2 border-cosmic-aurora-end/40 rounded-full" />
+                        </motion.div>
+                        
+                        {/* Floating particles */}
+                        {[...Array(6)].map((_, i) => (
+                          <motion.div
+                            key={i}
+                            animate={{
+                              y: [0, -30, 0],
+                              x: [0, Math.cos(i * Math.PI / 3) * 40, 0],
+                              opacity: [0.3, 1, 0.3],
+                            }}
+                            transition={{
+                              duration: 4 + i,
+                              repeat: Infinity,
+                              delay: i * 0.3,
+                            }}
+                            className="absolute w-2 h-2 rounded-full bg-cosmic-accent"
+                            style={{
+                              left: `${50 + Math.cos(i * Math.PI / 3) * 40}%`,
+                              top: `${50 + Math.sin(i * Math.PI / 3) * 40}%`,
+                            }}
+                          />
+                        ))}
+                      </div>
+                    </div>
+                    <div className="absolute inset-0 bg-gradient-to-t from-cosmic-void via-transparent to-transparent" />
+                  </div>
+                  {/* Decorative elements */}
+                  <div className="absolute -bottom-6 -right-6 w-24 h-24 border-2 border-cosmic-accent/30 rounded-full" />
+                  <div className="absolute -top-6 -left-6 w-32 h-32 border-2 border-cosmic-glow/30 rounded-full" />
                 </div>
-                {/* Decorative elements */}
-                <div className="absolute -bottom-6 -right-6 w-24 h-24 border-2 border-cosmic-accent/30 rounded-full" />
-                <div className="absolute -top-6 -left-6 w-32 h-32 border-2 border-cosmic-glow/30 rounded-full" />
-              </div>
+              </Card3DParallax>
             </RevealSection>
 
             {/* Text Side */}
