@@ -7,6 +7,7 @@ import { useAuthStore } from '@/lib/store'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { Mail, Lock, User, ArrowRight, Loader2, AlertCircle, Chrome } from 'lucide-react'
+import { Card3DParallax } from '@/components/3d-parallax-card'
 
 export default function AuthPage() {
   const router = useRouter()
@@ -140,19 +141,51 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center py-20 px-4">
+    <div className="relative min-h-screen flex items-center justify-center py-20 px-4 overflow-hidden">
+      {/* Animated particle background */}
+      <div className="absolute inset-0 pointer-events-none">
+        {[...Array(20)].map((_, i) => (
+          <motion.div
+            key={i}
+            animate={{
+              x: [Math.random() * 100 - 50, Math.random() * 100 - 50, Math.random() * 100 - 50],
+              y: [Math.random() * window.innerHeight, Math.random() * window.innerHeight, Math.random() * window.innerHeight],
+              opacity: [0, 0.5, 0],
+            }}
+            transition={{
+              duration: 20 + Math.random() * 10,
+              repeat: Infinity,
+              delay: i * 0.5,
+            }}
+            className="absolute w-2 h-2 rounded-full bg-cosmic-accent"
+            style={{
+              left: Math.random() * 100 + '%',
+              top: Math.random() * 100 + '%',
+              filter: 'blur(1px)',
+            }}
+          />
+        ))}
+      </div>
+
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        className="w-full max-w-md"
+        className="w-full max-w-md relative z-10"
       >
         {/* Logo */}
-        <Link href="/" className="block text-center mb-8">
-          <span className="text-4xl font-display font-bold text-gradient-animated">AK</span>
+        <Link href="/" className="block text-center mb-12">
+          <motion.span
+            animate={{ scale: [1, 1.05, 1] }}
+            transition={{ duration: 3, repeat: Infinity }}
+            className="text-4xl font-display font-bold text-gradient-animated inline-block"
+          >
+            AK
+          </motion.span>
         </Link>
 
-        {/* Auth card */}
-        <div className="glass-card p-8">
+        {/* Auth card with 3D parallax */}
+        <Card3DParallax intensity={0.6} delay={0}>
+          <div className="glass-card p-8">
           <h1 className="text-2xl font-display font-bold text-white mb-2 text-center">
             {mode === 'login' && 'Welcome Back'}
             {mode === 'signup' && 'Create Account'}
@@ -322,7 +355,8 @@ export default function AuthPage() {
               </button>
             )}
           </div>
-        </div>
+          </div>
+        </Card3DParallax>
       </motion.div>
     </div>
   )
