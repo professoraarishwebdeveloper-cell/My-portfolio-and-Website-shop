@@ -22,7 +22,7 @@ export default function NotFound() {
         <h1 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
           Page Not Found
         </h1>
-        <p className="text-white/60 max-w-xl mx-auto mb-8">
+        <p className="mx-auto mb-8 max-w-xl font-medium leading-[1.8] text-[#DCE7F7]">
           The page you&apos;re looking for doesn&apos;t exist. Let&apos;s get you back on track.
         </p>
         <Link href="/">

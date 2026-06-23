@@ -45,8 +45,8 @@ export function CounterStat({ value, suffix = '', prefix = '', label, descriptio
       <div className="text-5xl md:text-7xl font-display font-bold mb-2">
         <span className="text-gradient">{prefix}{count}{suffix}</span>
       </div>
-      <div className="text-white/60 text-sm md:text-base mb-1">{label}</div>
-      {description && <p className="text-white/40 text-xs">{description}</p>}
+      <div className="mb-1 text-sm font-medium text-[#DCE7F7] md:text-base">{label}</div>
+      {description && <p className="text-xs font-medium text-[#B8C6DC]">{description}</p>}
     </motion.div>
   )
 }

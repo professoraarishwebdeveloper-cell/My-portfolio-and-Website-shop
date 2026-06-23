@@ -36,14 +36,14 @@ const ShowcaseCard = ({ title, description, technologies, icon }: { title: strin
             <div className="glass-card group relative flex h-full flex-col overflow-hidden p-7">
                 <div className="absolute inset-0 bg-gradient-to-br from-cyan-300/0 via-transparent to-violet-500/0 opacity-0 transition-opacity group-hover:opacity-100" />
                 <div className="relative">
-                    <div className="mb-5 inline-flex rounded-2xl border border-white/10 bg-white/5 p-3 text-cyan-200">
+                    <div className="mb-5 inline-flex rounded-2xl border border-white/15 bg-white/[0.07] p-3 text-cyan-200">
                         <Icon className="w-6 h-6" />
                     </div>
                     <h3 className="text-xl font-semibold text-white mb-2">{title}</h3>
-                    <p className="text-slate-200/90 text-sm leading-6 mb-5 flex-grow">{description}</p>
+                    <p className="mb-5 flex-grow text-sm font-medium leading-6 text-[#CBD5E1]">{description}</p>
                     {technologies.length > 0 && (
                         <div className="flex flex-wrap gap-2">
-                            {technologies.map(tech => <span key={tech} className="rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-white/70">{tech}</span>)}
+                            {technologies.map(tech => <span key={tech} className="rounded-full border border-white/15 bg-white/[0.07] px-3 py-1 text-xs text-[#CBD5E1]">{tech}</span>)}
                         </div>
                     )}
                 </div>
@@ -112,7 +112,7 @@ export default function HomePage() {
             <div className="glass-card p-8">
                 <AlertCircle className="w-12 h-12 mx-auto mb-4 text-red-500"/>
                 <p className="text-xl text-white">Something went wrong</p>
-                <p className="text-white/60">{error}</p>
+                <p className="text-[#CBD5E1]">{error}</p>
             </div>
         </div>;
     }
@@ -129,7 +129,7 @@ export default function HomePage() {
                         transition={{ duration: 0.8 }}
                         className="relative z-10 max-w-2xl"
                     >
-            <div className="mb-4 inline-flex rounded-full border border-white/12 bg-white/6 px-4 py-2 text-sm text-slate-100/88 backdrop-blur">
+            <div className="mb-4 inline-flex rounded-full border border-white/15 bg-white/[0.07] px-4 py-2 text-sm text-[#E5E7EB] backdrop-blur">
                             Minimal motion. Quiet depth. Clean interaction.
                         </div>
                         <h1 className="text-5xl font-bold leading-none md:text-7xl lg:text-8xl">
@@ -137,9 +137,9 @@ export default function HomePage() {
                             <span className="block text-gradient-animated">{heroData?.subtitle}</span>
                         </h1>
                         <div className="flex flex-wrap gap-3 my-6">
-                            {heroData?.roles.map((role: string) => <span key={role} className="px-4 py-2 text-sm rounded-full bg-white/10 border border-white/10 text-white/80">{role}</span>)}
+                            {heroData?.roles.map((role: string) => <span key={role} className="rounded-full border border-white/15 bg-white/[0.09] px-4 py-2 text-sm text-white">{role}</span>)}
                         </div>
-                        <p className="text-slate-100/92 max-w-2xl my-8 text-lg leading-relaxed">{heroData?.description}</p>
+                        <p className="my-8 max-w-2xl text-lg font-medium leading-[1.8] text-[#CBD5E1]">{heroData?.description}</p>
                         <div className="flex flex-wrap gap-4">
                             <MagneticButton href="/store">Explore Services <ArrowRight className="w-4 h-4 ml-2"/></MagneticButton>
                             <MagneticButton href="/contact">Start a Project</MagneticButton>
@@ -172,7 +172,7 @@ export default function HomePage() {
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gradient">Featured Expertise</h2>
-                        <p className="text-slate-200/88 max-w-2xl mx-auto">Specialized capabilities for modern digital challenges, presented with a quieter, more premium hand.</p>
+                        <p className="mx-auto max-w-2xl font-medium leading-[1.8] text-[#CBD5E1]">Specialized capabilities for modern digital challenges, presented with a quieter, more premium hand.</p>
                     </div>
                     <div className="grid md:grid-cols-3 gap-6">
                         {services.map(service => (
@@ -186,7 +186,7 @@ export default function HomePage() {
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-16">
                         <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gradient">Featured Projects</h2>
-                        <p className="text-slate-200/88 max-w-2xl mx-auto">A compact gallery of the work that sets the tone for the rest of the site.</p>
+                        <p className="mx-auto max-w-2xl font-medium leading-[1.8] text-[#CBD5E1]">A compact gallery of the work that sets the tone for the rest of the site.</p>
                     </div>
                     <div className="grid md:grid-cols-3 gap-6">
                         {projects.map(project => (

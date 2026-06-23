@@ -82,7 +82,7 @@ function TimelineMilestone({ year, title, description, icon: Icon, isLeft = true
       <div className={`flex-1 ${isLeft ? 'text-right' : 'text-left'}`}>
         <span className="text-cosmic-accent font-display font-bold text-lg">{year}</span>
         <h3 className="text-2xl font-display font-semibold text-white mt-2">{title}</h3>
-        <p className="text-slate-300/85 mt-2">{description}</p>
+        <p className="mt-2 font-medium leading-[1.8] text-[#CBD5E1]">{description}</p>
       </div>
 
       <div className="w-16 h-16 rounded-full bg-gradient-to-br from-cosmic-accent to-cosmic-glow flex items-center justify-center z-10 shrink-0">
@@ -102,7 +102,7 @@ function ValueCard({ icon: Icon, title, description }: { icon: React.ElementType
         <Icon className="w-8 h-8 text-cosmic-accent" />
       </div>
       <h3 className="text-xl font-display font-semibold text-white mb-3">{title}</h3>
-      <p className="text-slate-300/85 text-sm">{description}</p>
+      <p className="text-sm font-medium leading-[1.8] text-[#CBD5E1]">{description}</p>
     </GlassCard>
   )
 }
@@ -139,7 +139,7 @@ export default function AboutPage() {
               <br />
               <span className="text-gradient">The Code</span>
             </h1>
-            <p className="text-slate-200/95 text-lg md:text-xl max-w-2xl mx-auto leading-8 font-medium">
+            <p className="mx-auto max-w-2xl text-lg font-medium leading-8 text-[#CBD5E1] md:text-xl">
               A passionate developer, trader, and AI enthusiast on a mission to create
               digital experiences that inspire and transform.
             </p>
@@ -214,7 +214,7 @@ export default function AboutPage() {
               <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-6 tracking-tight">
                 Hello, I'm <span className="text-gradient">Aarish Khatib</span>
               </h2>
-              <div className="space-y-5 text-slate-200/92 leading-8">
+              <div className="space-y-5 font-medium leading-8 text-[#CBD5E1]">
                 <p>
                   I'm a creative developer and digital architect passionate about building
                   experiences that push the boundaries of what's possible on the web.
@@ -236,15 +236,15 @@ export default function AboutPage() {
               <div className="grid grid-cols-3 gap-4 mt-8">
                 <div className="text-center p-4 rounded-xl bg-white/8 border border-white/12">
                   <div className="text-2xl font-display font-bold text-cosmic-accent">50+</div>
-                  <div className="text-slate-300/85 text-sm">Projects</div>
+                  <div className="text-sm font-medium text-[#94A3B8]">Projects</div>
                 </div>
                 <div className="text-center p-4 rounded-xl bg-white/8 border border-white/12">
                   <div className="text-2xl font-display font-bold text-cosmic-accent">3+</div>
-                  <div className="text-slate-300/85 text-sm">Years</div>
+                  <div className="text-sm font-medium text-[#94A3B8]">Years</div>
                 </div>
                 <div className="text-center p-4 rounded-xl bg-white/8 border border-white/12">
                   <div className="text-2xl font-display font-bold text-cosmic-accent">100%</div>
-                  <div className="text-slate-300/85 text-sm">Dedication</div>
+                  <div className="text-sm font-medium text-[#94A3B8]">Dedication</div>
                 </div>
               </div>
               </div>
@@ -267,7 +267,7 @@ export default function AboutPage() {
             <GlassCard>
               <Code className="w-10 h-10 text-cosmic-accent mb-4" />
               <h3 className="text-xl font-display font-semibold text-white mb-3">Web Development</h3>
-              <p className="text-slate-300/85 text-sm">
+              <p className="text-sm font-medium leading-[1.8] text-[#CBD5E1]">
                 Full-stack development with React, Next.js, and modern technologies
               </p>
             </GlassCard>
@@ -275,7 +275,7 @@ export default function AboutPage() {
             <GlassCard>
               <TrendingUp className="w-10 h-10 text-cosmic-accent mb-4" />
               <h3 className="text-xl font-display font-semibold text-white mb-3">Trading</h3>
-              <p className="text-slate-300/85 text-sm">
+              <p className="text-sm font-medium leading-[1.8] text-[#CBD5E1]">
                 Crypto, Forex, and Indian stock market trading and automation
               </p>
             </GlassCard>
@@ -283,7 +283,7 @@ export default function AboutPage() {
             <GlassCard>
               <Bot className="w-10 h-10 text-cosmic-accent mb-4" />
               <h3 className="text-xl font-display font-semibold text-white mb-3">AI Integration</h3>
-              <p className="text-slate-300/85 text-sm">
+              <p className="text-sm font-medium leading-[1.8] text-[#CBD5E1]">
                 Building intelligent systems with ChatGPT, Claude, and ML APIs
               </p>
             </GlassCard>
@@ -291,7 +291,7 @@ export default function AboutPage() {
             <GlassCard>
               <Globe className="w-10 h-10 text-cosmic-accent mb-4" />
               <h3 className="text-xl font-display font-semibold text-white mb-3">Digital Strategy</h3>
-              <p className="text-slate-300/85 text-sm">
+              <p className="text-sm font-medium leading-[1.8] text-[#CBD5E1]">
                 SEO, performance optimization, and scalable architecture
               </p>
             </GlassCard>
@@ -385,22 +385,22 @@ export default function AboutPage() {
             <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-6">
               Looking <span className="text-gradient">Ahead</span>
             </h2>
-            <p className="text-slate-200/92 text-lg mb-8 max-w-2xl mx-auto leading-8">
+            <p className="mx-auto mb-8 max-w-2xl text-lg font-medium leading-8 text-[#CBD5E1]">
               My vision is to continue pushing the boundaries of web development,
               building AI-powered solutions, and helping businesses transform
               their digital presence. Every project is an opportunity to create
               something meaningful.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <div className="px-6 py-3 rounded-full bg-white/5 border border-white/10 text-slate-200/90">
+              <div className="rounded-full border border-white/15 bg-white/[0.07] px-6 py-3 text-[#E5E7EB]">
                 <Users className="w-4 h-4 inline mr-2" />
                 Grow the team
               </div>
-              <div className="px-6 py-3 rounded-full bg-white/5 border border-white/10 text-slate-200/90">
+              <div className="rounded-full border border-white/15 bg-white/[0.07] px-6 py-3 text-[#E5E7EB]">
                 <Globe className="w-4 h-4 inline mr-2" />
                 Global reach
               </div>
-              <div className="px-6 py-3 rounded-full bg-white/5 border border-white/10 text-slate-200/90">
+              <div className="rounded-full border border-white/15 bg-white/[0.07] px-6 py-3 text-[#E5E7EB]">
                 <Bot className="w-4 h-4 inline mr-2" />
                 AI innovations
               </div>

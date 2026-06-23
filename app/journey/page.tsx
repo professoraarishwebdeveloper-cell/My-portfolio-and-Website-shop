@@ -129,7 +129,7 @@ function TimelineCard({ data, index, isLeft }: { data: typeof journeyData[0]; in
 
           <div className="flex-1">
             <h3 className="text-2xl font-display font-semibold text-white mb-2">{data.title}</h3>
-            <p className="text-white/60 mb-4">{data.description}</p>
+            <p className="mb-4 font-medium leading-[1.8] text-[#DCE7F7]">{data.description}</p>
 
             {/* Expandable milestones */}
             <button
@@ -152,7 +152,7 @@ function TimelineCard({ data, index, isLeft }: { data: typeof journeyData[0]; in
                     initial={{ opacity: 0, x: -20 }}
                     animate={isExpanded ? { opacity: 1, x: 0 } : { opacity: 0, x: -20 }}
                     transition={{ delay: i * 0.05 }}
-                    className="flex items-center gap-2 text-white/70 text-sm"
+                    className="flex items-center gap-2 text-sm text-[#DCE7F7]"
                   >
                     <div
                       className="w-1.5 h-1.5 rounded-full"
@@ -264,7 +264,7 @@ export default function JourneyPage() {
               <br />
               <span className="text-gradient-animated">Journey</span>
             </h1>
-            <p className="text-white/60 text-lg md:text-xl max-w-2xl mx-auto">
+            <p className="mx-auto max-w-2xl text-lg font-medium leading-[1.8] text-[#DCE7F7] md:text-xl">
               Every step has been a learning experience. Here's how it all unfolded.
             </p>
           </motion.div>
@@ -306,7 +306,7 @@ export default function JourneyPage() {
                 <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">
                   Current <span className="text-gradient">Location</span>
                 </h2>
-                <p className="text-white/60 text-lg mb-8">
+                <p className="mb-8 text-lg font-medium leading-[1.8] text-[#DCE7F7]">
                   Building premium digital experiences for clients worldwide.
                   Always learning, always growing, always creating.
                 </p>
@@ -319,7 +319,7 @@ export default function JourneyPage() {
                       whileInView={{ opacity: 1, y: 0 }}
                       transition={{ delay: i * 0.1 }}
                       whileHover={{ scale: 1.05, translateY: -2 }}
-                      className="px-4 py-2 rounded-full bg-white/5 border border-white/10 text-white/70 text-sm hover:border-cosmic-accent/50 transition-colors"
+                      className="rounded-full border border-white/15 bg-white/[0.07] px-4 py-2 text-sm text-[#DCE7F7] transition-colors hover:border-cosmic-accent/50"
                     >
                       {tag}
                     </motion.span>
@@ -339,7 +339,7 @@ export default function JourneyPage() {
             <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-6">
               The <span className="text-gradient">Future</span> Awaits
             </h2>
-            <p className="text-white/60 text-lg mb-8">
+            <p className="mb-8 text-lg font-medium leading-[1.8] text-[#DCE7F7]">
               This journey is just the beginning. With every project, every line of code,
               and every challenge overcome, the path forward becomes clearer.
               The best is yet to come.

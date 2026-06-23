@@ -18,7 +18,7 @@ type WishlistItem = { id: string; name: string };
 
 const StatCard = ({ label, value, isLoading }: { label: string; value: number; isLoading: boolean }) => (
   <div className="glass-card p-6">
-    <p className="text-slate-200/82 text-sm mb-1">{label}</p>
+    <p className="mb-1 text-sm font-medium text-[#B8C6DC]">{label}</p>
     {isLoading ? <Loader2 className="w-6 h-6 animate-spin" /> : <p className="text-2xl font-bold text-white">{value}</p>}
   </div>
 );
@@ -36,7 +36,7 @@ const DataCard = ({ title, data, isLoading, emptyMessage, renderItem }:
         {data.map(renderItem)}
       </ul>
     ) : (
-      <p className="text-slate-200/75">{emptyMessage}</p>
+      <p className="font-medium text-[#B8C6DC]">{emptyMessage}</p>
     )}
   </div>
 );
@@ -119,7 +119,7 @@ export default function DashboardPage() {
         <div className="text-center p-8 glass-card">
           <AlertCircle className="w-12 h-12 text-red-500 mx-auto mb-4" />
           <h2 className="text-2xl font-bold text-white">Something went wrong</h2>
-          <p className="text-slate-200/80 mt-2">{error}</p>
+          <p className="mt-2 font-medium text-[#DCE7F7]">{error}</p>
           <button onClick={() => window.location.reload()} className="mt-6 magnetic-btn">Try again</button>
         </div>
       </div>
@@ -135,7 +135,7 @@ export default function DashboardPage() {
       <div className="container mx-auto px-4">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
           <h1 className="text-4xl font-bold text-white">Welcome, {profile.full_name}!</h1>
-          <p className="text-slate-200/88">Here is your dashboard overview.</p>
+          <p className="font-medium text-[#DCE7F7]">Here is your dashboard overview.</p>
         </motion.div>
 
         {isAdmin && (
@@ -157,28 +157,28 @@ export default function DashboardPage() {
             data={orders} 
             isLoading={loading}
             emptyMessage="No orders placed yet."
-            renderItem={item => <li key={item.id} className="flex justify-between items-center p-2 rounded-lg hover:bg-white/5"><span className="text-slate-100">{item.project_name}</span><span className="text-cosmic-accent">{formatPrice(item.total_amount)}</span></li>}
+            renderItem={item => <li key={item.id} className="flex items-center justify-between rounded-lg p-2 hover:bg-white/[0.07]"><span className="text-slate-100">{item.project_name}</span><span className="text-cosmic-accent">{formatPrice(item.total_amount)}</span></li>}
           />
           <DataCard 
             title="Recent Quotations" 
             data={quotations} 
             isLoading={loading}
             emptyMessage="No quotations saved."
-            renderItem={item => <li key={item.id} className="flex justify-between items-center p-2 rounded-lg hover:bg-white/5"><span className="text-slate-100">{item.website_type}</span><span className="text-slate-200/82">{item.status}</span></li>}
+            renderItem={item => <li key={item.id} className="flex items-center justify-between rounded-lg p-2 hover:bg-white/[0.07]"><span className="text-slate-100">{item.website_type}</span><span className="text-[#DCE7F7]">{item.status}</span></li>}
           />
           <DataCard 
             title="Notifications" 
             data={notifications} 
             isLoading={loading}
             emptyMessage="No new notifications."
-            renderItem={item => <li key={item.id} className="p-2 rounded-lg hover:bg-white/5 text-slate-100">{item.message}</li>}
+            renderItem={item => <li key={item.id} className="rounded-lg p-2 text-slate-100 hover:bg-white/[0.07]">{item.message}</li>}
           />
           <DataCard 
             title="Wishlist" 
             data={wishlists} 
             isLoading={loading}
             emptyMessage="Your wishlist is empty."
-            renderItem={item => <li key={item.id} className="p-2 rounded-lg hover:bg-white/5 text-slate-100">{item.name}</li>}
+            renderItem={item => <li key={item.id} className="rounded-lg p-2 text-slate-100 hover:bg-white/[0.07]">{item.name}</li>}
           />
         </div>
       </div>

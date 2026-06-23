@@ -60,7 +60,7 @@ export function Particles3DVisualization() {
           <h1 className="text-5xl md:text-7xl font-display font-bold text-white mb-4 drop-shadow-lg">
             AARISH KHATIB
           </h1>
-          <p className="text-white/60 text-lg drop-shadow-md">
+          <p className="text-lg font-medium text-[#DCE7F7] drop-shadow-md">
             Digital Universe in Motion
           </p>
         </div>

@@ -5,24 +5,40 @@
 @tailwind utilities;
 
 :root {
-  /* Cosmic color system */
-  --cosmic-void: #0B1020;
-  --cosmic-deep: #101B3D;
-  --cosmic-nebula: #172554;
-  --cosmic-aurora-start: #22D3EE;
-  --cosmic-aurora-mid: #3B82F6;
+  --cosmic-void: #050816;
+  --cosmic-deep: #0B1220;
+  --cosmic-nebula: #111A2F;
+  --cosmic-aurora-start: #4CC9F0;
+  --cosmic-aurora-mid: #60A5FA;
   --cosmic-aurora-end: #8B5CF6;
-  --cosmic-star: #F8FAFC;
-  --cosmic-accent: #22D3EE;
-  --cosmic-glow: #8B5CF6;
-  --background: 224 49% 8%;
-  --foreground: 210 40% 96%;
-  --border: 217 33% 22%;
+  --cosmic-star: #FFFFFF;
+  --cosmic-accent: #4CC9F0;
+  --cosmic-glow: #C4B5FD;
+  --background: 229 63% 5%;
+  --foreground: 210 20% 98%;
+  --card: 222 48% 8%;
+  --card-foreground: 210 20% 98%;
+  --popover: 222 48% 8%;
+  --popover-foreground: 210 20% 98%;
+  --primary: 195 86% 62%;
+  --primary-foreground: 214 48% 8%;
+  --secondary: 222 43% 13%;
+  --secondary-foreground: 210 20% 98%;
+  --muted: 222 43% 13%;
+  --muted-foreground: 216 36% 79%;
+  --accent: 213 94% 68%;
+  --accent-foreground: 214 48% 8%;
+  --destructive: 349 89% 60%;
+  --destructive-foreground: 210 20% 98%;
+  --border: 214 35% 24%;
+  --input: 214 35% 24%;
+  --ring: 255 92% 86%;
+  --radius: 0.75rem;
 
   /* Glass effects */
-  --glass-bg: rgba(12, 18, 30, 0.64);
-  --glass-border: rgba(255, 255, 255, 0.14);
-  --glass-blur: 22px;
+  --glass-bg: rgba(8, 12, 24, 0.78);
+  --glass-border: rgba(255, 255, 255, 0.16);
+  --glass-blur: 16px;
 
   /* Animation timing */
   --ease-smooth: cubic-bezier(0.4, 0, 0.2, 1);
@@ -45,10 +61,23 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: var(--cosmic-void);
-    color: #F8FAFC;
+    background:
+      radial-gradient(72rem 38rem at 10% -5%, rgba(76, 201, 240, 0.14), transparent 60%),
+      radial-gradient(64rem 32rem at 100% 0%, rgba(139, 92, 246, 0.12), transparent 60%),
+      linear-gradient(180deg, #050816 0%, #0B1220 48%, #111A2F 100%);
+    color: #DCE7F7;
     min-height: 100vh;
     overflow-x: hidden;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    color: #F8FBFF;
+    font-weight: 800;
+    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.45), 0 0 24px rgba(0, 0, 0, 0.18);
+  }
+
+  p, li, label, input, textarea, select {
+    color: #DCE7F7;
   }
 
   html.lenis, html.lenis body {
@@ -95,17 +124,19 @@
   /* Glass Card */
   .glass-card {
     background:
-      linear-gradient(145deg, rgba(12, 18, 30, 0.9), rgba(17, 24, 39, 0.4)),
+      linear-gradient(145deg, rgba(10, 14, 28, 0.84), rgba(8, 12, 24, 0.72)),
       var(--glass-bg);
-    backdrop-filter: blur(var(--glass-blur));
-    -webkit-backdrop-filter: blur(var(--glass-blur));
+    backdrop-filter: blur(var(--glass-blur)) saturate(140%);
+    -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
     border: 1px solid var(--glass-border);
-    border-radius: 16px;
+    border-radius: 20px;
     position: relative;
     overflow: hidden;
     box-shadow:
-      0 18px 55px rgba(2, 6, 23, 0.36),
-      inset 0 1px 0 rgba(248, 250, 252, 0.12);
+      0 24px 80px rgba(7, 17, 31, 0.55),
+      0 12px 40px rgba(0, 0, 0, 0.35),
+      0 0 0 1px rgba(255, 255, 255, 0.04) inset,
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
     transform-style: preserve-3d;
   }
 
@@ -124,25 +155,25 @@
   }
 
   .glass-card-hover:hover {
-    background: rgba(17, 24, 39, 0.72);
-    border-color: rgba(255, 255, 255, 0.18);
+    background: rgba(10, 14, 28, 0.84);
+    border-color: rgba(255, 255, 255, 0.2);
     transform: translateY(-4px);
     box-shadow:
-      0 24px 60px rgba(2, 6, 23, 0.45),
-      0 0 55px rgba(34, 211, 238, 0.12),
-      0 0 90px rgba(139, 92, 246, 0.14);
+      0 28px 70px rgba(7, 17, 31, 0.6),
+      0 0 55px rgba(76, 201, 240, 0.14),
+      0 0 90px rgba(139, 92, 246, 0.16);
   }
 
   /* Text Gradient */
   .text-gradient {
-    background: linear-gradient(135deg, var(--cosmic-accent), var(--cosmic-glow), var(--cosmic-aurora-end));
+    background: linear-gradient(135deg, var(--cosmic-star), #E2E8F0, var(--cosmic-aurora-mid), var(--cosmic-glow));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
 
   .text-gradient-animated {
-    background: linear-gradient(135deg, var(--cosmic-accent), var(--cosmic-glow), var(--cosmic-aurora-end), var(--cosmic-accent));
+    background: linear-gradient(135deg, var(--cosmic-star), var(--cosmic-aurora-mid), var(--cosmic-glow), var(--cosmic-accent));
     background-size: 300% 300%;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
@@ -180,13 +211,13 @@
     align-items: center;
     justify-content: center;
     padding: 1rem 2.5rem;
-    background: linear-gradient(135deg, var(--cosmic-accent), var(--cosmic-glow));
+    background: linear-gradient(135deg, var(--cosmic-aurora-mid), var(--cosmic-accent), var(--cosmic-glow));
     border: none;
     border-radius: 100px;
     font-weight: 600;
     font-size: 1rem;
-    color: #F8FAFC;
-    box-shadow: 0 12px 35px rgba(59, 130, 246, 0.24);
+    color: #07111F;
+    box-shadow: 0 16px 45px rgba(76, 201, 240, 0.28);
     cursor: pointer;
     overflow: hidden;
     transition: all 0.4s var(--spring);
@@ -211,7 +242,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: linear-gradient(135deg, rgba(255,255,255,0.2), transparent);
+    background: linear-gradient(135deg, rgba(255,255,255,0.25), transparent);
     border-radius: inherit;
     opacity: 0;
     transition: opacity 0.3s;
@@ -242,19 +273,19 @@
     justify-content: center;
     padding: 1rem 2.5rem;
     background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.16);
+    border: 1px solid rgba(255, 255, 255, 0.15);
     border-radius: 100px;
     font-weight: 500;
-    color: #F8FAFC;
+    color: #FFFFFF;
     cursor: pointer;
     transition: all 0.3s var(--ease-smooth);
     backdrop-filter: blur(10px);
   }
 
   .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: var(--cosmic-accent);
-    color: var(--cosmic-accent);
+    background: rgba(255, 255, 255, 0.09);
+    border-color: rgba(76, 201, 240, 0.35);
+    color: #FFFFFF;
   }
 
   /* 3D Card Effect */
@@ -335,23 +366,23 @@
   .cosmic-input {
     width: 100%;
     padding: 1rem 1.5rem;
-    background: var(--glass-bg);
+    background: rgba(10, 14, 28, 0.78);
     backdrop-filter: blur(10px);
     border: 1px solid var(--glass-border);
     border-radius: 12px;
-    color: #F8FAFC;
+    color: #FFFFFF;
     font-size: 1rem;
     transition: all 0.3s var(--ease-smooth);
   }
 
   .cosmic-input::placeholder {
-    color: rgba(255, 255, 255, 0.4);
+    color: #94A3B8;
   }
 
   .cosmic-input:focus {
     outline: none;
-    border-color: var(--cosmic-accent);
-    box-shadow: 0 0 20px rgba(57, 208, 255, 0.18);
+    border-color: rgba(76, 201, 240, 0.4);
+    box-shadow: 0 0 20px rgba(76, 201, 240, 0.2);
   }
 
   /* Aurora Background */
@@ -361,10 +392,10 @@
     pointer-events: none;
     z-index: 0;
     background:
-      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(34, 211, 238, 0.16), transparent),
-      radial-gradient(ellipse 60% 42% at 100% 45%, rgba(49, 46, 129, 0.32), transparent),
-      radial-gradient(ellipse 65% 44% at 0% 55%, rgba(30, 58, 138, 0.24), transparent),
-      linear-gradient(135deg, rgba(11, 16, 32, 0.92), rgba(16, 27, 61, 0.9));
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(76, 201, 240, 0.14), transparent),
+      radial-gradient(ellipse 60% 42% at 100% 45%, rgba(139, 92, 246, 0.2), transparent),
+      radial-gradient(ellipse 65% 44% at 0% 55%, rgba(96, 165, 250, 0.18), transparent),
+      linear-gradient(135deg, rgba(7, 17, 31, 0.94), rgba(11, 23, 48, 0.92));
   }
 
   /* Star Field */

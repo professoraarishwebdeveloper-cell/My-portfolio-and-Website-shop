@@ -128,7 +128,7 @@ export default function AuthPage() {
               {mode === 'login' && 'Welcome Back'}
               {mode === 'signup' && 'Create Account'}
             </h1>
-            <p className="text-white/60 text-center mb-8">
+            <p className="mb-8 text-center font-medium text-[#DCE7F7]">
               {mode === 'login' && 'Sign in to your account'}
               {mode === 'signup' && 'Join to start building'}
             </p>
@@ -169,26 +169,26 @@ export default function AuthPage() {
 
             <div className="relative my-6">
               <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-white/10" />
+                <div className="w-full border-t border-white/20" />
               </div>
               <div className="relative flex justify-center">
-                <span className="px-4 bg-cosmic-deep text-white/40 text-sm">or</span>
+                <span className="bg-cosmic-deep px-4 text-sm text-[#B8C6DC]">or</span>
               </div>
             </div>
 
             <form onSubmit={handleEmailAuth} className="space-y-4">
               {mode === 'signup' && (
                 <div className="relative">
-                  <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                  <User className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#B8C6DC]" />
                   <input type="text" name="full_name" value={formData.full_name} onChange={handleChange} required className="cosmic-input pl-12" placeholder="Full Name" />
                 </div>
               )}
               <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                <Mail className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#B8C6DC]" />
                 <input type="email" name="email" value={formData.email} onChange={handleChange} required className="cosmic-input pl-12" placeholder="you@example.com" />
               </div>
               <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/40" />
+                <Lock className="absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#B8C6DC]" />
                 <input type="password" name="password" value={formData.password} onChange={handleChange} required minLength={6} className="cosmic-input pl-12" placeholder="••••••••" />
               </div>
               <motion.button type="submit" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} disabled={isLoading} className="w-full magnetic-btn justify-center">
@@ -196,8 +196,8 @@ export default function AuthPage() {
               </motion.button>
             </form>
 
-            <div className="mt-6 pt-6 border-t border-white/10 text-center">
-              <p className="text-white/50 text-sm">
+            <div className="mt-6 border-t border-white/20 pt-6 text-center">
+              <p className="text-sm text-[#B8C6DC]">
                 {mode === 'login' ? "Don't have an account?" : "Already have an account?"}{' '}
                 <button onClick={() => setMode(mode === 'login' ? 'signup' : 'login')} className="text-cosmic-accent hover:underline">
                   {mode === 'login' ? 'Sign up' : 'Sign in'}

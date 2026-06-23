@@ -71,8 +71,12 @@ const config: Config = {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-        'gradient-cosmic': 'linear-gradient(135deg, #3B82F6, #22D3EE, #8B5CF6)',
-        'gradient-cosmic-reverse': 'linear-gradient(135deg, #8B5CF6, #3B82F6, #22D3EE)',
+        'gradient-cosmic': 'linear-gradient(135deg, #60A5FA, #4CC9F0, #C4B5FD)',
+        'gradient-cosmic-reverse': 'linear-gradient(135deg, #C4B5FD, #60A5FA, #4CC9F0)',
+        'brand-page':
+          'radial-gradient(72rem 38rem at 10% -5%, rgba(76,201,240,0.14), transparent 60%), radial-gradient(64rem 32rem at 100% 0%, rgba(139,92,246,0.12), transparent 60%), linear-gradient(180deg, #07111F 0%, #0B1730 42%, #112347 100%)',
+        'brand-text':
+          'linear-gradient(90deg, #FFFFFF 0%, #E2E8F0 30%, #60A5FA 72%, #C4B5FD 100%)',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -159,10 +163,29 @@ const config: Config = {
         'bounce': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
       },
       boxShadow: {
-        'cosmic': '0 0 40px rgba(0, 212, 255, 0.3), 0 0 80px rgba(124, 58, 237, 0.2)',
-        'cosmic-lg': '0 0 60px rgba(0, 212, 255, 0.4), 0 0 100px rgba(124, 58, 237, 0.3)',
-        'glow': '0 0 20px rgba(0, 212, 255, 0.5)',
-        'glow-lg': '0 0 40px rgba(0, 212, 255, 0.6)',
+        'cosmic': '0 0 40px rgba(76, 201, 240, 0.22), 0 0 80px rgba(139, 92, 246, 0.16)',
+        'cosmic-lg': '0 0 60px rgba(76, 201, 240, 0.3), 0 0 100px rgba(139, 92, 246, 0.22)',
+        'glow': '0 0 20px rgba(76, 201, 240, 0.42)',
+        'glow-lg': '0 0 40px rgba(76, 201, 240, 0.5)',
+      },
+      opacity: {
+        6: '0.06',
+        7: '0.07',
+        8: '0.08',
+        9: '0.09',
+        12: '0.12',
+        14: '0.14',
+        15: '0.15',
+        16: '0.16',
+        18: '0.18',
+        82: '0.82',
+        84: '0.84',
+        86: '0.86',
+        88: '0.88',
+        85: '0.85',
+        90: '0.9',
+        92: '0.92',
+        95: '0.95',
       },
       backdropBlur: {
         xs: '2px',

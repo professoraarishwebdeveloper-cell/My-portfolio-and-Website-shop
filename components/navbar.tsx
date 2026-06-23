@@ -74,11 +74,11 @@ export function Navbar() {
           <motion.nav
             className={`relative flex items-center justify-between px-6 py-4 rounded-2xl transition-all duration-500 ${
               isScrolled
-                ? 'bg-cosmic-deep/60 backdrop-blur-2xl border border-cosmic-accent/20 shadow-2xl shadow-cosmic-accent/10'
+                ? 'bg-[#0B1730]/90 backdrop-blur-2xl border border-white/15 shadow-2xl shadow-black/30'
                 : 'bg-transparent border border-transparent'
             }`}
             style={{
-              boxShadow: isScrolled ? '0 0 40px rgba(0, 255, 255, 0.1)' : 'none',
+              boxShadow: isScrolled ? '0 24px 80px rgba(7, 17, 31, 0.45)' : 'none',
             }}
           >
             {/* Logo */}
@@ -110,7 +110,7 @@ export function Navbar() {
                   >
                     <span
                       className={`relative z-10 transition-all ${
-                        isActive ? 'text-cosmic-accent' : 'text-slate-100/90 group-hover:text-white'
+                        isActive ? 'text-white' : 'text-[#CBD5E1] group-hover:text-white'
                       }`}
                     >
                       {item.label}
@@ -118,7 +118,7 @@ export function Navbar() {
                     {isActive && (
                       <motion.div
                         layoutId="nav-indicator"
-                        className="absolute inset-0 rounded-lg bg-cosmic-accent/15 border border-cosmic-accent/30"
+                        className="absolute inset-0 rounded-lg bg-white/[0.08] border border-white/15"
                         transition={{ type: 'spring', damping: 25, stiffness: 400 }}
                       />
                     )}
@@ -139,21 +139,21 @@ export function Navbar() {
                 <>
                   <Link
                     href="/dashboard"
-                    className="flex items-center gap-2 px-4 py-2 text-sm text-slate-100/80 hover:text-white transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 text-sm text-[#CBD5E1] hover:text-white transition-colors"
                   >
                     <User className="w-4 h-4" />
                     Profile
                   </Link>
                   <Link
                     href="/dashboard"
-                    className="flex items-center gap-2 px-4 py-2 text-sm text-slate-100/80 hover:text-white transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 text-sm text-[#CBD5E1] hover:text-white transition-colors"
                   >
                     Dashboard
                   </Link>
                   {isAdmin && (
                     <Link
                       href="/admin"
-                      className="flex items-center gap-2 px-4 py-2 text-sm text-slate-100/80 hover:text-white transition-colors"
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-[#CBD5E1] hover:text-white transition-colors"
                     >
                       <Shield className="w-4 h-4" />
                       Admin Panel
@@ -161,7 +161,7 @@ export function Navbar() {
                   )}
                   <button
                     onClick={handleLogout}
-                    className="flex items-center gap-2 px-4 py-2 text-sm text-slate-100/80 hover:text-white transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 text-sm text-[#CBD5E1] hover:text-white transition-colors"
                   >
                     <LogOut className="w-4 h-4" />
                     Logout
@@ -199,7 +199,7 @@ export function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 z-[9999] bg-[#0B1020]/80 backdrop-blur-md lg:hidden"
+              className="fixed inset-0 z-[9999] bg-[#07111F]/85 backdrop-blur-md lg:hidden"
             />
 
             {/* Menu Content */}
@@ -208,11 +208,11 @@ export function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ duration: 0.24, ease: 'easeOut' }}
-              className="fixed top-0 right-0 z-[10000] flex h-full w-[min(86vw,380px)] flex-col overflow-y-auto border-l border-cyan-300/15 bg-[#101B3D]/95 p-6 pt-24 shadow-2xl shadow-blue-950/50 backdrop-blur-2xl lg:hidden"
+              className="fixed top-0 right-0 z-[10000] flex h-full w-[min(86vw,380px)] flex-col overflow-y-auto border-l border-white/15 bg-[#0B1730]/95 p-6 pt-24 shadow-2xl shadow-black/50 backdrop-blur-2xl lg:hidden"
             >
               <button
                 onClick={() => setIsOpen(false)}
-                className="absolute right-5 top-5 rounded-full border border-white/10 bg-white/5 p-2 text-white"
+                className="absolute right-5 top-5 rounded-full border border-white/15 bg-white/[0.07] p-2 text-white"
                 aria-label="Close menu"
               >
                 <X className="h-5 w-5" />
@@ -229,7 +229,7 @@ export function Navbar() {
                       href={item.href}
                       onClick={() => setIsOpen(false)}
                       className={`block rounded-xl px-4 py-3 text-xl font-display font-semibold transition-colors ${
-                        isActive ? 'text-cosmic-accent' : 'text-slate-100/90 hover:text-white'
+                        isActive ? 'text-white' : 'text-[#CBD5E1] hover:text-white'
                       }`}
                     >
                       {item.label}
@@ -239,21 +239,21 @@ export function Navbar() {
               })}
               </div>
 
-              <div className="mt-8 border-t border-white/10 pt-6">
+              <div className="mt-8 border-t border-white/15 pt-6">
                 {user ? (
                   <div className="flex flex-col gap-3">
-                    <Link href="/dashboard" onClick={() => setIsOpen(false)} className="text-lg text-slate-100/85 hover:text-white">
+                    <Link href="/dashboard" onClick={() => setIsOpen(false)} className="text-lg text-[#CBD5E1] hover:text-white">
                       Profile
                     </Link>
-                    <Link href="/dashboard" onClick={() => setIsOpen(false)} className="text-lg text-slate-100/85 hover:text-white">
+                    <Link href="/dashboard" onClick={() => setIsOpen(false)} className="text-lg text-[#CBD5E1] hover:text-white">
                       Dashboard
                     </Link>
                     {isAdmin && (
-                      <Link href="/admin" onClick={() => setIsOpen(false)} className="text-lg text-slate-100/85 hover:text-white">
+                      <Link href="/admin" onClick={() => setIsOpen(false)} className="text-lg text-[#CBD5E1] hover:text-white">
                         Admin Panel
                       </Link>
                     )}
-                    <button onClick={handleLogout} className="text-left text-lg text-slate-100/85 hover:text-white">
+                    <button onClick={handleLogout} className="text-left text-lg text-[#CBD5E1] hover:text-white">
                       Logout
                     </button>
                   </div>
@@ -266,16 +266,16 @@ export function Navbar() {
 
               {/* Social Links */}
               <div className="flex items-center gap-6 mt-8">
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-slate-200/70 hover:text-white transition-colors">
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-[#CBD5E1] hover:text-white transition-colors">
                   <Github className="w-6 h-6" />
                 </a>
-                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-slate-200/70 hover:text-white transition-colors">
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-[#CBD5E1] hover:text-white transition-colors">
                   <Twitter className="w-6 h-6" />
                 </a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-slate-200/70 hover:text-white transition-colors">
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-[#CBD5E1] hover:text-white transition-colors">
                   <Linkedin className="w-6 h-6" />
                 </a>
-                <a href="mailto:mr.shadow4704@gmail.com" className="text-slate-200/70 hover:text-white transition-colors">
+                <a href="mailto:mr.shadow4704@gmail.com" className="text-[#CBD5E1] hover:text-white transition-colors">
                   <Mail className="w-6 h-6" />
                 </a>
               </div>

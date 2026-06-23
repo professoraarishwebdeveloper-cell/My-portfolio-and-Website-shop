@@ -97,7 +97,7 @@ export function SkillNode3D({
           </h3>
 
           {/* Description */}
-          <p className="text-white/60 text-sm mb-6 leading-relaxed">{description}</p>
+          <p className="mb-6 text-sm font-medium leading-[1.8] text-[#DCE7F7]">{description}</p>
 
           {/* Skills tags */}
           <div className="flex flex-wrap gap-2">
@@ -110,8 +110,8 @@ export function SkillNode3D({
                 whileHover={{ scale: 1.05, y: -2 }}
                 className={`
                   px-3 py-1 text-xs rounded-full
-                  bg-white/5 border ${colors.border}
-                  text-white/70 hover:text-white hover:border-opacity-100
+                  bg-white/[0.07] border ${colors.border}
+                  text-[#DCE7F7] hover:text-white hover:border-opacity-100
                   transition-all cursor-default
                 `}
               >

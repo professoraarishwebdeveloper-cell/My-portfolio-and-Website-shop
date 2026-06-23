@@ -92,7 +92,7 @@ export default function ContactPage() {
       <div className="container mx-auto">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="text-center max-w-3xl mx-auto">
           <h1 className="text-5xl md:text-7xl font-display font-bold mb-4 text-gradient-animated">Contact Me</h1>
-          <p className="text-lg md:text-xl text-slate-100/90">
+          <p className="text-lg font-medium leading-[1.8] text-[#CBD5E1] md:text-xl">
             Have a project in mind or just want to say hi? Fill out the form below and I'll get back to you as soon as possible.
           </p>
         </motion.div>
@@ -121,7 +121,7 @@ export default function ContactPage() {
                   <input type="text" name="timeline" value={formData.timeline} onChange={handleChange} className="cosmic-input" placeholder="Project Timeline" />
                 </div>
                 <div>
-                  <label className="block text-slate-100/82 text-sm mb-2">Preferred Contact Method</label>
+                  <label className="mb-2 block text-sm font-medium text-[#E5E7EB]">Preferred Contact Method</label>
                   <select name="preferred_contact" value={formData.preferred_contact} onChange={handleChange} className="cosmic-input bg-cosmic-deep">
                     <option value="email">Email</option>
                     <option value="phone">Phone</option>
