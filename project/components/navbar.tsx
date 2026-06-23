@@ -45,13 +45,28 @@ export function Navbar() {
     setIsOpen(false)
   }, [pathname])
 
+  useEffect(() => {
+    if (isOpen) {
+      document.documentElement.style.overflow = 'hidden'
+      document.body.style.overflow = 'hidden'
+    } else {
+      document.documentElement.style.overflow = ''
+      document.body.style.overflow = ''
+    }
+
+    return () => {
+      document.documentElement.style.overflow = ''
+      document.body.style.overflow = ''
+    }
+  }, [isOpen])
+
   return (
     <>
       <motion.header
         initial={{ y: -100 }}
         animate={{ y: scrollDirection === 'down' && isScrolled ? -100 : 0 }}
         transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-[999] transition-all duration-500 ${
           isScrolled
             ? 'py-3'
             : 'py-6'
@@ -167,7 +182,7 @@ export function Navbar() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed inset-0 z-40 lg:hidden"
+            className="fixed inset-0 z-[998] lg:hidden"
           >
             {/* Backdrop */}
             <motion.div

@@ -11,17 +11,18 @@ const config: Config = {
     extend: {
       colors: {
         cosmic: {
-          void: '#030014',
-          deep: '#0a0520',
-          nebula: '#1a0a3e',
+          void: '#0B1020',
+          deep: '#151B3B',
+          nebula: '#1a2557',
           aurora: {
-            start: '#00d4ff',
-            mid: '#7c3aed',
-            end: '#ec4899',
+            start: '#3B82F6',
+            mid: '#8B5CF6',
+            end: '#22D3EE',
           },
-          star: '#ffffff',
-          accent: '#00d4ff',
-          glow: '#7c3aed',
+          star: '#E5E7EB',
+          accent: '#3B82F6',
+          glow: '#8B5CF6',
+          secondary: '#A5B4FC',
         },
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',
@@ -71,8 +72,8 @@ const config: Config = {
       backgroundImage: {
         'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
         'gradient-conic': 'conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))',
-        'gradient-cosmic': 'linear-gradient(135deg, #00d4ff, #7c3aed, #ec4899)',
-        'gradient-cosmic-reverse': 'linear-gradient(135deg, #ec4899, #7c3aed, #00d4ff)',
+        'gradient-cosmic': 'linear-gradient(135deg, #3B82F6, #8B5CF6, #22D3EE)',
+        'gradient-cosmic-reverse': 'linear-gradient(135deg, #22D3EE, #8B5CF6, #3B82F6)',
       },
       borderRadius: {
         lg: 'var(--radius)',
@@ -159,10 +160,10 @@ const config: Config = {
         'bounce': 'cubic-bezier(0.68, -0.55, 0.265, 1.55)',
       },
       boxShadow: {
-        'cosmic': '0 0 40px rgba(0, 212, 255, 0.3), 0 0 80px rgba(124, 58, 237, 0.2)',
-        'cosmic-lg': '0 0 60px rgba(0, 212, 255, 0.4), 0 0 100px rgba(124, 58, 237, 0.3)',
-        'glow': '0 0 20px rgba(0, 212, 255, 0.5)',
-        'glow-lg': '0 0 40px rgba(0, 212, 255, 0.6)',
+        'cosmic': '0 0 40px rgba(59, 130, 246, 0.3), 0 0 80px rgba(139, 92, 246, 0.2)',
+        'cosmic-lg': '0 0 60px rgba(59, 130, 246, 0.4), 0 0 100px rgba(139, 92, 246, 0.3)',
+        'glow': '0 0 20px rgba(34, 211, 238, 0.5)',
+        'glow-lg': '0 0 40px rgba(34, 211, 238, 0.6)',
       },
       backdropBlur: {
         xs: '2px',

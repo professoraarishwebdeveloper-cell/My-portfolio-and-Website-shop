@@ -5,16 +5,17 @@
 @tailwind utilities;
 
 :root {
-  /* Cosmic color system */
-  --cosmic-void: #030014;
-  --cosmic-deep: #0a0520;
-  --cosmic-nebula: #1a0a3e;
-  --cosmic-aurora-start: #00d4ff;
-  --cosmic-aurora-mid: #7c3aed;
-  --cosmic-aurora-end: #ec4899;
-  --cosmic-star: #ffffff;
-  --cosmic-accent: #00d4ff;
-  --cosmic-glow: #7c3aed;
+  /* Deep-space glassmorphism theme */
+  --cosmic-void: #0B1020;
+  --cosmic-deep: #151B3B;
+  --cosmic-nebula: #1a2557;
+  --cosmic-aurora-start: #3B82F6;
+  --cosmic-aurora-mid: #8B5CF6;
+  --cosmic-aurora-end: #22D3EE;
+  --cosmic-star: #E5E7EB;
+  --cosmic-accent: #3B82F6;
+  --cosmic-glow: #8B5CF6;
+  --cosmic-secondary: #A5B4FC;
 
   /* Glass effects */
   --glass-bg: rgba(255, 255, 255, 0.03);
@@ -79,12 +80,12 @@
   }
 
   ::-webkit-scrollbar-thumb {
-    background: linear-gradient(180deg, var(--cosmic-accent), var(--cosmic-glow));
+    background: linear-gradient(180deg, #3B82F6, #8B5CF6);
     border-radius: 4px;
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(180deg, var(--cosmic-aurora-mid), var(--cosmic-aurora-end));
+    background: linear-gradient(180deg, #8B5CF6, #22D3EE);
   }
 }
 
@@ -119,8 +120,8 @@
     border-color: rgba(255, 255, 255, 0.15);
     transform: translateY(-4px);
     box-shadow:
-      0 20px 40px rgba(0, 212, 255, 0.1),
-      0 0 80px rgba(124, 58, 237, 0.1);
+      0 20px 40px rgba(59, 130, 246, 0.1),
+      0 0 80px rgba(139, 92, 246, 0.1);
   }
 
   /* Text Gradient */
@@ -159,8 +160,8 @@
 
   .glow-box {
     box-shadow:
-      0 0 20px rgba(0, 212, 255, 0.3),
-      0 0 60px rgba(124, 58, 237, 0.2);
+      0 0 20px rgba(34, 211, 238, 0.3),
+      0 0 60px rgba(139, 92, 246, 0.2);
   }
 
   /* Magnetic Button */
@@ -170,7 +171,7 @@
     align-items: center;
     justify-content: center;
     padding: 1rem 2.5rem;
-    background: linear-gradient(135deg, var(--cosmic-accent), var(--cosmic-glow));
+    background: linear-gradient(135deg, #3B82F6, #8B5CF6);
     border: none;
     border-radius: 100px;
     font-weight: 600;
@@ -185,7 +186,7 @@
     content: '';
     position: absolute;
     inset: -2px;
-    background: linear-gradient(135deg, var(--cosmic-accent), var(--cosmic-glow), var(--cosmic-aurora-end));
+    background: linear-gradient(135deg, #3B82F6, #8B5CF6, #22D3EE);
     border-radius: inherit;
     z-index: -1;
     opacity: 0;
@@ -214,7 +215,7 @@
     position: absolute;
     inset: 0;
     border-radius: inherit;
-    background: radial-gradient(circle at center, var(--cosmic-accent) 0%, transparent 70%);
+    background: radial-gradient(circle at center, #3B82F6 0%, transparent 70%);
     opacity: 0;
     animation: pulse-glow 2s ease-in-out infinite;
   }
@@ -312,7 +313,7 @@
     inset: 0;
     border-radius: inherit;
     padding: 1px;
-    background: linear-gradient(135deg, var(--cosmic-accent), var(--cosmic-glow), var(--cosmic-aurora-end));
+    background: linear-gradient(135deg, #3B82F6, #8B5CF6, #22D3EE);
     -webkit-mask:
       linear-gradient(#fff 0 0) content-box,
       linear-gradient(#fff 0 0);
@@ -340,7 +341,7 @@
   .cosmic-input:focus {
     outline: none;
     border-color: var(--cosmic-accent);
-    box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.2);
   }
 
   /* Aurora Background */
@@ -350,9 +351,9 @@
     pointer-events: none;
     z-index: -1;
     background:
-      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(0, 212, 255, 0.15), transparent),
-      radial-gradient(ellipse 60% 40% at 100% 50%, rgba(124, 58, 237, 0.1), transparent),
-      radial-gradient(ellipse 60% 40% at 0% 50%, rgba(236, 72, 153, 0.08), transparent);
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(59, 130, 246, 0.15), transparent),
+      radial-gradient(ellipse 60% 40% at 100% 50%, rgba(139, 92, 246, 0.1), transparent),
+      radial-gradient(ellipse 60% 40% at 0% 50%, rgba(34, 211, 238, 0.08), transparent);
   }
 
   /* Star Field */

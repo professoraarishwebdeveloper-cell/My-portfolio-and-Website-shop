@@ -6,7 +6,7 @@ import { supabase } from '@/lib/supabase'
 import { useAuthStore } from '@/lib/store'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { Mail, Lock, User, ArrowRight, Loader2, AlertCircle, Chrome } from 'lucide-react'
+import { Mail, Lock, User, ArrowRight, Loader2, AlertCircle, Chrome, MessageSquare } from 'lucide-react'
 import { Card3DParallax } from '@/components/3d-parallax-card'
 
 interface Particle {
@@ -148,6 +148,26 @@ export default function AuthPage() {
     }
   }
 
+  const handleDiscordAuth = async () => {
+    setIsLoading(true)
+    setError(null)
+
+    try {
+      const origin = typeof window !== 'undefined' ? window.location.origin : ''
+      const { error } = await supabase.auth.signInWithOAuth({
+        provider: 'discord',
+        options: {
+          redirectTo: `${origin}/auth/callback`,
+        },
+      })
+
+      if (error) throw error
+    } catch (err: any) {
+      setError(err.message || 'An error occurred')
+      setIsLoading(false)
+    }
+  }
+
   const handleForgotPassword = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
@@ -242,17 +262,30 @@ export default function AuthPage() {
             </motion.div>
           )}
 
-          {/* Google Auth */}
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={handleGoogleAuth}
-            disabled={isLoading}
-            className="w-full btn-secondary justify-center mb-6"
-          >
-            <Chrome className="w-5 h-5 mr-2" />
-            Continue with Google
-          </motion.button>
+          {/* OAuth Buttons */}
+          <div className="grid grid-cols-2 gap-4 mb-6">
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleGoogleAuth}
+              disabled={isLoading}
+              className="btn-secondary justify-center"
+            >
+              <Chrome className="w-5 h-5 mr-2" />
+              Google
+            </motion.button>
+
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={handleDiscordAuth}
+              disabled={isLoading}
+              className="btn-secondary justify-center"
+            >
+              <MessageSquare className="w-5 h-5 mr-2" />
+              Discord
+            </motion.button>
+          </div>
 
           <div className="relative mb-6">
             <div className="absolute inset-0 flex items-center">
