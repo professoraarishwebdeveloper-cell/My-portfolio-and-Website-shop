@@ -1,0 +1,15 @@
+{
+  "/_not-found": "/_not-found",
+  "/page": "/",
+  "/about/page": "/about",
+  "/auth/page": "/auth",
+  "/admin/page": "/admin",
+  "/certificates/page": "/certificates",
+  "/contact/page": "/contact",
+  "/journey/page": "/journey",
+  "/dashboard/page": "/dashboard",
+  "/skills/page": "/skills",
+  "/projects/page": "/projects",
+  "/store/page": "/store",
+  "/auth/callback/route": "/auth/callback"
+}
