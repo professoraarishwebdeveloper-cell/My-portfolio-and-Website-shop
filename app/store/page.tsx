@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { useAuth } from '@/components/auth-provider'
 import { TiltCard } from '@/components/tilt-card'
+import { SectionReveal } from '@/components/section-reveal'
 import {
   ChevronRight,
   ChevronLeft,
@@ -117,8 +118,8 @@ function StepPill({
       onClick={onClick}
       className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition-all ${
         active
-          ? 'border-cyan-300/30 bg-cyan-300/10 text-white shadow-[0_0_24px_rgba(34,211,238,0.14)]'
-          : 'border-white/10 bg-[#0d1528] text-slate-200 hover:border-white/20 hover:text-white'
+          ? 'brand-pill-active'
+          : 'border-white/10 bg-brand-surface text-slate-200 hover:border-white/20 hover:text-white'
       }`}
     >
       <Icon className="h-4 w-4" />
@@ -155,17 +156,17 @@ function OptionCard({
           compact ? 'min-h-[128px]' : 'min-h-[170px]'
         } ${
           active
-            ? 'border-cyan-300/30 bg-[#111a2f] shadow-2xl'
-            : 'border-white/10 bg-[#0d1528] hover:border-white/20 hover:bg-[#111a2f]'
+            ? 'border-brand-accent/30 bg-brand-surface-hover shadow-2xl'
+            : 'border-white/10 bg-brand-surface hover:border-white/20 hover:bg-brand-surface-hover'
         }`}
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-300/0 via-transparent to-violet-500/0 opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-br from-brand-accent/0 via-transparent to-brand-violet/0 opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none" />
         <div className="relative flex h-full flex-col">
           <div className="mb-4 flex items-start justify-between gap-4">
-            <div className="rounded-2xl border border-white/10 bg-[#0d1528] p-3 text-cyan-200">
+            <div className="rounded-2xl border border-white/10 bg-brand-surface p-3 text-brand-accent">
               <Icon className="h-5 w-5" />
             </div>
-            <div className={`rounded-full border px-3 py-1 text-xs ${active ? 'border-cyan-300/25 bg-cyan-300/10 text-cyan-100' : 'border-white/10 bg-[#0d1528] text-slate-200'}`}>
+            <div className={`rounded-full border px-3 py-1 text-xs ${active ? 'border-brand-accent/25 bg-brand-violet/15 text-white' : 'border-white/10 bg-brand-surface text-slate-200'}`}>
               {price}
             </div>
           </div>
@@ -188,7 +189,7 @@ function SectionTitle({
 }) {
   return (
     <div className="mb-6">
-      <p className="text-xs uppercase tracking-[0.28em] text-cyan-300">{eyebrow}</p>
+      <p className="text-xs uppercase tracking-[0.28em] text-brand-accent">{eyebrow}</p>
       <h2 className="mt-3 text-2xl font-bold text-white drop-shadow-lg md:text-3xl">{title}</h2>
       <p className="mt-3 max-w-2xl text-sm font-medium leading-6 text-slate-200">{description}</p>
     </div>
@@ -306,44 +307,44 @@ function PriceSummary() {
   return (
     <TiltCard className="h-full">
       <div className="glass-card relative h-full overflow-hidden p-6 md:p-7">
-        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-cyan-300/50 to-transparent" />
+        <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-brand-accent/50 to-transparent" />
 
         <div className="flex items-start justify-between gap-4">
           <div>
-            <p className="text-xs uppercase tracking-[0.28em] text-cyan-200/70">Live Estimate</p>
+            <p className="text-xs uppercase tracking-[0.28em] text-brand-accent/80">Live Estimate</p>
             <h3 className="mt-2 text-2xl font-semibold text-white">{formatPrice(totalPrice)}</h3>
           </div>
-          <div className="rounded-2xl border border-white/10 bg-[#0d1528] p-3 text-cyan-200">
+          <div className="rounded-2xl border border-white/10 bg-brand-surface p-3 text-brand-accent">
             <CircleDollarSign className="h-5 w-5" />
           </div>
         </div>
 
         <div className="mt-6 space-y-3 text-sm">
-          <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-[#0d1528] px-4 py-3">
+          <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-brand-surface px-4 py-3">
             <span className="text-slate-200">Website Type</span>
             <span className="text-white">{selectedWebsite?.name ?? 'Select one'}</span>
           </div>
-          <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-[#0d1528] px-4 py-3">
+          <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-brand-surface px-4 py-3">
             <span className="text-slate-200">Pages</span>
             <span className="text-white">{String(pagesCount)}</span>
           </div>
-          <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-[#0d1528] px-4 py-3">
+          <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-brand-surface px-4 py-3">
             <span className="text-slate-200">Design</span>
             <span className="text-white">{selectedDesign?.name ?? 'Premium'}</span>
           </div>
-          <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-[#0d1528] px-4 py-3">
+          <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-brand-surface px-4 py-3">
             <span className="text-slate-200">Maintenance</span>
             <span className="text-white">{selectedMaintenance?.name ?? '-'}</span>
           </div>
-          <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-[#0d1528] px-4 py-3">
+          <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-brand-surface px-4 py-3">
             <span className="text-slate-200">Timeline</span>
             <span className="text-white">{selectedTimeline?.name ?? '-'}</span>
           </div>
-          <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-[#0d1528] px-4 py-3">
+          <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-brand-surface px-4 py-3">
             <span className="text-slate-200">Features</span>
             <span className="text-white">{selectedFeatures.length}</span>
           </div>
-          <div className="flex items-center justify-between rounded-2xl border border-cyan-300/15 bg-cyan-300/10 px-4 py-3">
+          <div className="flex items-center justify-between rounded-2xl border border-brand-accent/20 bg-brand-violet/15 px-4 py-3">
             <span className="text-slate-200">Features Total</span>
             <span className="text-white">{formatPrice(featuresPrice)}</span>
           </div>
@@ -367,13 +368,13 @@ function PriceSummary() {
               disabled={isLoading || !websiteType}
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="btn-secondary justify-center gap-2 rounded-2xl border-white/10 bg-[#0d1528] px-5 py-4"
+              className="btn-secondary justify-center gap-2 rounded-2xl border-white/10 bg-brand-surface px-5 py-4"
             >
               {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Save className="h-5 w-5" />}
               Save Quote
             </motion.button>
           ) : (
-            <Link href="/auth" className="btn-secondary justify-center gap-2 rounded-2xl border-white/10 bg-[#0d1528] px-5 py-4 text-center">
+            <Link href="/auth" className="btn-secondary justify-center gap-2 rounded-2xl border-white/10 bg-brand-surface px-5 py-4 text-center">
               <Shield className="h-5 w-5" />
               Log in to save
             </Link>
@@ -490,17 +491,17 @@ function FeaturesStep() {
                       whileTap={{ scale: 0.98 }}
                       className={`group relative flex h-full w-full items-center justify-between gap-4 overflow-hidden rounded-2xl border p-5 text-left transition-all ${
                         active
-                          ? 'border-cyan-300/30 bg-cyan-300/10'
-                          : 'border-white/10 bg-[#0d1528] hover:border-white/20 hover:bg-[#111a2f]'
+                          ? 'border-brand-accent/30 bg-brand-violet/15'
+                          : 'border-white/10 bg-brand-surface hover:border-white/20 hover:bg-brand-surface-hover'
                       }`}
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-cyan-300/0 via-transparent to-violet-500/0 opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-brand-accent/0 via-transparent to-brand-violet/0 opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none" />
                       <div className="relative">
                         <h4 className="font-medium text-white">{feature.name}</h4>
                         <p className="mt-1 text-sm text-slate-200">{formatPrice(feature.price)}</p>
                       </div>
                       <div className={`relative flex h-10 w-10 items-center justify-center rounded-full border transition-all ${
-                        active ? 'border-cyan-300/30 bg-cyan-300 text-black' : 'border-white/10 bg-[#0d1528] text-slate-200'
+                        active ? 'border-brand-accent/30 bg-brand-accent text-[#0a0814]' : 'border-white/10 bg-brand-surface text-slate-200'
                       }`}>
                         {active && <Check className="h-4 w-4" />}
                       </div>
@@ -572,10 +573,10 @@ export default function StorePage() {
     <div className="relative z-20 min-h-screen overflow-hidden pt-24 pb-20">
 
       <div className="container relative z-20 mx-auto px-4">
-        <section className="mb-10 grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
+        <SectionReveal className="mb-10 grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
           <div>
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#0d1528] px-4 py-2 text-xs uppercase tracking-[0.28em] text-slate-100 backdrop-blur">
-              <CircleDollarSign className="h-4 w-4 text-cyan-200" />
+            <div className="brand-pill mb-4 text-xs uppercase tracking-[0.28em]">
+              <CircleDollarSign className="h-4 w-4 text-brand-accent" />
               Live Website Configurator
             </div>
             <h1 className="max-w-3xl text-5xl font-bold leading-none text-white drop-shadow-lg md:text-7xl">
@@ -586,7 +587,7 @@ export default function StorePage() {
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               {['Live pricing', 'Fast checkout', 'Soft 3D depth', 'Mobile-safe motion'].map((item) => (
-                <span key={item} className="rounded-full border border-white/10 bg-[#0d1528] px-4 py-2 text-sm text-slate-100">
+                <span key={item} className="rounded-full border border-white/10 bg-brand-surface px-4 py-2 text-sm text-slate-100">
                   {item}
                 </span>
               ))}
@@ -594,11 +595,11 @@ export default function StorePage() {
           </div>
 
           <TiltCard className="h-full">
-            <div className="glass-card relative overflow-hidden border border-white/10 bg-[#0d1528] p-6 shadow-2xl md:p-7">
+            <div className="glass-card relative overflow-hidden border border-white/10 bg-brand-surface p-6 shadow-2xl md:p-7">
               <div className="relative z-20">
                 <div className="flex items-center justify-between">
-                  <p className="text-xs uppercase tracking-[0.28em] text-cyan-200/70">Current Build</p>
-                    <span className="rounded-full border border-white/10 bg-[#0d1528] px-3 py-1 text-xs text-slate-100">
+                  <p className="text-xs uppercase tracking-[0.28em] text-brand-accent/80">Current Build</p>
+                    <span className="rounded-full border border-white/10 bg-brand-surface px-3 py-1 text-xs text-slate-100">
                     Step {currentStep}/6
                   </span>
                 </div>
@@ -609,16 +610,16 @@ export default function StorePage() {
                       {formatPrice(totalPrice)}
                     </p>
                   </div>
-                  <div className="rounded-2xl border border-white/10 bg-[#0d1528] p-3 text-cyan-200">
+                  <div className="rounded-2xl border border-white/10 bg-brand-surface p-3 text-brand-accent">
                     <Shield className="h-5 w-5" />
                   </div>
                 </div>
                 <div className="mt-6 grid grid-cols-2 gap-3 text-sm text-slate-200">
-                  <div className="rounded-2xl border border-white/10 bg-[#0d1528] p-4">
+                  <div className="rounded-2xl border border-white/10 bg-brand-surface p-4">
                     <p className="text-slate-300">Selected type</p>
                     <p className="mt-1 text-white">{websiteType || 'None yet'}</p>
                   </div>
-                  <div className="rounded-2xl border border-white/10 bg-[#0d1528] p-4">
+                  <div className="rounded-2xl border border-white/10 bg-brand-surface p-4">
                     <p className="text-slate-300">Features</p>
                     <p className="mt-1 text-white">{selectedFeatures.length}</p>
                   </div>
@@ -626,7 +627,7 @@ export default function StorePage() {
               </div>
             </div>
           </TiltCard>
-        </section>
+        </SectionReveal>
 
         <div className="mb-6 flex flex-wrap items-center gap-3">
           {steps.map((step) => (
@@ -637,11 +638,8 @@ export default function StorePage() {
               onClick={() => setCurrentStep(step.id)}
             />
           ))}
-          <div className="ml-auto hidden h-1 w-64 overflow-hidden rounded-full bg-[#111a2f] lg:block">
-            <div
-              className="h-full rounded-full bg-gradient-to-r from-cyan-300 via-blue-500 to-violet-500 transition-all duration-300"
-              style={{ width: `${progress}%` }}
-            />
+          <div className="ml-auto hidden h-1 w-64 overflow-hidden rounded-full bg-brand-surface-hover lg:block">
+            <div className="brand-progress" style={{ width: `${progress}%` }} />
           </div>
         </div>
 
@@ -704,11 +702,11 @@ export default function StorePage() {
             </div>
 
             {!user && (
-              <div className="glass-card border border-cyan-300/15 p-5">
+              <div className="glass-card border border-brand-accent/20 p-5">
                 <p className="text-sm font-medium leading-6 text-slate-200">
                   Sign in to save a quotation or place the order. The configurator still works without signing in, so you can explore freely.
                 </p>
-                <Link href="/auth" className="mt-4 inline-flex items-center gap-2 text-sm text-cyan-200 hover:text-cyan-100">
+                <Link href="/auth" className="mt-4 inline-flex items-center gap-2 text-sm text-brand-accent hover:text-white">
                   Log in to continue
                   <ArrowRight className="h-4 w-4" />
                 </Link>

@@ -61,7 +61,7 @@ function ParticleSphere({ count = 5000 }) {
     <Points ref={pointsRef} positions={positions} stride={3} frustumCulled={false}>
       <PointMaterial
         transparent
-        color="#00d4ff"
+        color="#5EAEF9"
         size={0.02}
         sizeAttenuation={true}
         depthWrite={false}

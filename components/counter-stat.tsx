@@ -58,10 +58,10 @@ export function CounterStat({ value, suffix = '', prefix = '', label, descriptio
       initial={{ opacity: 0, scale: 0.5 }}
       animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.5 }}
       transition={{ duration: 0.6 }}
-      className="relative z-20 rounded-2xl border border-white/10 bg-[#0d1528] p-6 text-center shadow-2xl"
+      className="relative z-20 rounded-2xl border border-white/10 bg-[#16132b] p-6 text-center shadow-2xl"
     >
       <div className="mb-2 text-5xl font-bold text-white drop-shadow-lg md:text-7xl">
-        {prefix}{displayCount}{suffix}
+        <span className="text-gradient">{prefix}{displayCount}{suffix}</span>
       </div>
       <div className="text-sm font-semibold text-slate-200 md:text-base">{label}</div>
       {description && <p className="mt-1 text-xs font-medium text-slate-300">{description}</p>}

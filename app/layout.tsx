@@ -5,6 +5,8 @@ import { CustomCursor } from '@/components/cursor'
 import { SmoothScroll } from '@/components/smooth-scroll'
 import { Toaster } from '@/components/ui/sonner'
 import { AuthProvider } from '@/components/auth-provider'
+import { AmbientBackground } from '@/components/ambient-background'
+import { SiteFooter } from '@/components/site-footer'
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://aarishkhatib.com'),
@@ -57,16 +59,15 @@ export default function RootLayout({
           <CustomCursor />
           <SmoothScroll>
             <Navbar />
-            <main className="relative z-20">
+            <main className="relative z-20 flex min-h-screen flex-col">
               {children}
+              <SiteFooter />
             </main>
             <Toaster />
           </SmoothScroll>
         </AuthProvider>
-        {/* Noise overlay */}
+        <AmbientBackground />
         <div className="noise" aria-hidden="true" />
-        {/* Aurora background */}
-        <div className="aurora-bg" aria-hidden="true" />
       </body>
     </html>
   )

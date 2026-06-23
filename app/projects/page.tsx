@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { supabase } from '@/lib/supabase'
 import { ArrowRight, Code, Layers, Star, Zap, Loader2, AlertCircle } from 'lucide-react'
+import { PageHeader } from '@/components/page-header'
+import { SectionReveal } from '@/components/section-reveal'
 import { Card3DParallax } from '@/components/3d-parallax-card'
 import Link from 'next/link'
 
@@ -77,12 +79,13 @@ export default function ProjectsPage() {
   );
 
   return (
-    <div className="relative min-h-screen pt-32 pb-20">
+    <div className="relative z-20 min-h-screen pb-20 pt-32">
       <div className="container mx-auto px-4">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-16">
-          <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-white drop-shadow-lg">Projects</h1>
-          <p className="mx-auto max-w-2xl text-lg font-medium leading-[1.8] text-slate-200">A showcase of projects that demonstrate my skills in development.</p>
-        </motion.div>
+        <PageHeader
+          eyebrow="Portfolio"
+          title="Projects"
+          description="A showcase of projects that demonstrate my skills in development, design, and product thinking."
+        />
 
         {error && (
           <div className="mb-8 p-4 glass-card text-center text-yellow-400 flex items-center justify-center gap-2">
@@ -96,7 +99,7 @@ export default function ProjectsPage() {
           <>
             <div className="flex flex-wrap justify-center gap-3 mb-12">
               {categories.map(cat => (
-                <button key={cat} onClick={() => setActiveCategory(cat)} className={`rounded-full border px-6 py-2 text-sm font-medium transition-all ${activeCategory === cat ? 'border-cyan-300/30 bg-cyan-300 text-[#07111F]' : 'border-white/10 bg-[#0d1528] text-slate-200 hover:text-white'}`}>
+                <button key={cat} onClick={() => setActiveCategory(cat)} className={`rounded-full border px-6 py-2 text-sm font-medium transition-all ${activeCategory === cat ? 'brand-pill-active' : 'border-white/10 bg-brand-surface text-slate-200 hover:text-white'}`}>
                   {cat}
                 </button>
               ))}

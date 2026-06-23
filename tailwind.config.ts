@@ -10,17 +10,24 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
+        brand: {
+          accent: '#5EAEF9',
+          violet: '#4B45F4',
+          magenta: '#A53FB0',
+          surface: '#16132b',
+          'surface-hover': '#1e1a38',
+        },
         cosmic: {
-          void: '#050816',
-          deep: '#0B1220',
-          nebula: '#0d1528',
+          void: '#0a0814',
+          deep: '#12101f',
+          nebula: '#16132b',
           aurora: {
-            start: '#22D3EE',
-            mid: '#3B82F6',
-            end: '#8B5CF6',
+            start: '#5EAEF9',
+            mid: '#4B45F4',
+            end: '#A53FB0',
           },
           star: '#ffffff',
-          accent: '#4CC9F0',
+          accent: '#5EAEF9',
           glow: '#C4B5FD',
         },
         background: 'hsl(var(--background))',
@@ -74,9 +81,11 @@ const config: Config = {
         'gradient-cosmic': 'linear-gradient(135deg, #60A5FA, #4CC9F0, #C4B5FD)',
         'gradient-cosmic-reverse': 'linear-gradient(135deg, #C4B5FD, #60A5FA, #4CC9F0)',
         'brand-page':
-          'radial-gradient(72rem 38rem at 10% -5%, rgba(76,201,240,0.14), transparent 60%), radial-gradient(64rem 32rem at 100% 0%, rgba(139,92,246,0.12), transparent 60%), linear-gradient(180deg, #07111F 0%, #0B1730 42%, #112347 100%)',
+          'radial-gradient(72rem 38rem at 10% -5%, rgba(75,69,244,0.16), transparent 60%), radial-gradient(64rem 32rem at 100% 0%, rgba(94,174,249,0.14), transparent 60%), linear-gradient(165deg, #0a0814 0%, #12101f 42%, #1a1730 100%)',
+        'brand-mesh':
+          'radial-gradient(ellipse 90% 60% at 15% 10%, rgba(75,69,244,0.18), transparent 55%), radial-gradient(ellipse 70% 50% at 85% 20%, rgba(94,174,249,0.14), transparent 50%), radial-gradient(ellipse 80% 55% at 50% 100%, rgba(165,63,176,0.12), transparent 55%), linear-gradient(165deg, #0a0814 0%, #12101f 45%, #1a1730 100%)',
         'brand-text':
-          'linear-gradient(90deg, #FFFFFF 0%, #E2E8F0 30%, #60A5FA 72%, #C4B5FD 100%)',
+          'linear-gradient(90deg, #FFFFFF 0%, #C4B5FD 35%, #5EAEF9 70%, #4B45F4 100%)',
       },
       borderRadius: {
         lg: 'var(--radius)',

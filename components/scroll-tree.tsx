@@ -29,9 +29,9 @@ export function ScrollTree() {
       <svg viewBox="0 0 320 420" className="absolute inset-0 h-full w-full overflow-visible">
         <defs>
           <linearGradient id="treeStroke" x1="0%" y1="100%" x2="100%" y2="0%">
-            <stop offset="0%" stopColor="#22D3EE" stopOpacity="0.9" />
-            <stop offset="55%" stopColor="#3B82F6" stopOpacity="0.85" />
-            <stop offset="100%" stopColor="#8B5CF6" stopOpacity="0.9" />
+            <stop offset="0%" stopColor="#5EAEF9" stopOpacity="0.9" />
+            <stop offset="55%" stopColor="#4B45F4" stopOpacity="0.85" />
+            <stop offset="100%" stopColor="#A53FB0" stopOpacity="0.9" />
           </linearGradient>
         </defs>
 

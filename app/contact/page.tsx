@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react'
 import { motion, useInView } from 'framer-motion'
 import { supabase } from '@/lib/supabase'
 import { Send, Loader2, CheckCircle, AlertCircle } from 'lucide-react'
+import { PageHeader } from '@/components/page-header'
 import { Card3DParallax } from '@/components/3d-parallax-card'
 
 interface User {
@@ -88,14 +89,13 @@ export default function ContactPage() {
 
 
   return (
-    <div className="relative min-h-screen pt-32 pb-20 px-4">
+    <div className="relative z-20 min-h-screen px-4 pb-20 pt-32">
       <div className="container mx-auto">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5 }} className="text-center max-w-3xl mx-auto">
-          <h1 className="text-5xl md:text-7xl font-display font-bold mb-4 text-white drop-shadow-lg">Contact Me</h1>
-          <p className="text-lg font-medium leading-[1.8] text-slate-200 md:text-xl">
-            Have a project in mind or just want to say hi? Fill out the form below and I'll get back to you as soon as possible.
-          </p>
-        </motion.div>
+        <PageHeader
+          eyebrow="Get in touch"
+          title="Contact Me"
+          description="Have a project in mind or just want to say hi? Fill out the form below and I'll get back to you as soon as possible."
+        />
 
         <motion.div ref={formRef} initial={{ opacity: 0, y: 50 }} animate={isInView ? { opacity: 1, y: 0 } : {}} transition={{ duration: 0.8, delay: 0.2 }} className="mt-16 max-w-4xl mx-auto">
           <Card3DParallax>
