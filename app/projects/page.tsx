@@ -28,15 +28,14 @@ const ProjectCard = ({ project, index }: { project: any, index: number }) => {
       <motion.div className="group h-full">
         <div className="relative glass-card overflow-hidden h-full flex flex-col">
           <div className="relative aspect-[16/10] overflow-hidden bg-cover bg-center" style={{ backgroundImage: `url(${project.image_url})`}}>
-            <div className="absolute inset-0 bg-gradient-to-t from-cosmic-void via-transparent to-transparent" />
-            <div className="absolute top-4 right-4 px-2 py-1 rounded-full text-xs bg-black/50 text-white">{project.category}</div>
+            <div className="absolute right-4 top-4 rounded-full border border-white/10 bg-[#0d1528] px-2 py-1 text-xs text-white shadow-lg">{project.category}</div>
           </div>
           <div className="p-6 flex-grow flex flex-col">
             <h3 className="text-lg font-bold text-white">{project.title}</h3>
-            <p className="mb-4 flex-grow text-sm font-medium leading-[1.8] text-[#CBD5E1]">{project.description}</p>
+            <p className="mb-4 flex-grow text-sm font-medium leading-[1.8] text-slate-200">{project.description}</p>
             <div className="flex flex-wrap gap-2 mb-4">
               {project.technologies?.map((tech: string) => (
-                <span key={tech} className="rounded-md border border-white/15 bg-white/[0.07] px-2 py-1 text-xs text-[#CBD5E1]">{tech}</span>
+                <span key={tech} className="rounded-md border border-white/10 bg-[#0d1528] px-2 py-1 text-xs text-slate-200">{tech}</span>
               ))}
             </div>
             <Link href={`/projects/${project.id}`} className="flex items-center gap-1 text-sm text-cosmic-accent hover:gap-2 transition-all">
@@ -81,8 +80,8 @@ export default function ProjectsPage() {
     <div className="relative min-h-screen pt-32 pb-20">
       <div className="container mx-auto px-4">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-16">
-          <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-gradient-animated">Projects</h1>
-          <p className="mx-auto max-w-2xl text-lg font-medium leading-[1.8] text-[#CBD5E1]">A showcase of projects that demonstrate my skills in development.</p>
+          <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-white drop-shadow-lg">Projects</h1>
+          <p className="mx-auto max-w-2xl text-lg font-medium leading-[1.8] text-slate-200">A showcase of projects that demonstrate my skills in development.</p>
         </motion.div>
 
         {error && (
@@ -97,7 +96,7 @@ export default function ProjectsPage() {
           <>
             <div className="flex flex-wrap justify-center gap-3 mb-12">
               {categories.map(cat => (
-                <button key={cat} onClick={() => setActiveCategory(cat)} className={`rounded-full border px-6 py-2 text-sm font-medium transition-all ${activeCategory === cat ? 'border-cyan-300/30 bg-cyan-300 text-[#07111F]' : 'border-white/15 bg-white/[0.07] text-[#CBD5E1] hover:text-white'}`}>
+                <button key={cat} onClick={() => setActiveCategory(cat)} className={`rounded-full border px-6 py-2 text-sm font-medium transition-all ${activeCategory === cat ? 'border-cyan-300/30 bg-cyan-300 text-[#07111F]' : 'border-white/10 bg-[#0d1528] text-slate-200 hover:text-white'}`}>
                   {cat}
                 </button>
               ))}

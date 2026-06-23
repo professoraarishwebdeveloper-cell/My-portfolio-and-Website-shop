@@ -16,6 +16,13 @@ const ICONS: { [key: string]: React.ElementType } = {
   Sparkles, Code, Palette, Cpu, Rocket, Lightbulb, Star
 };
 
+const HOME_STATS = [
+  { value: 50, suffix: '+', label: 'Projects' },
+  { value: 12, suffix: '', label: 'Technologies' },
+  { value: 8, suffix: '', label: 'Certificates' },
+  { value: 6, suffix: '', label: 'Clients' },
+]
+
 const MagneticButton = ({ children, href }: { children: ReactNode, href: string }) => (
     <Link href={href} passHref>
         <motion.div
@@ -33,17 +40,16 @@ const ShowcaseCard = ({ title, description, technologies, icon }: { title: strin
     const Icon = ICONS[icon] || Code;
     return (
         <TiltCard className="h-full">
-            <div className="glass-card group relative flex h-full flex-col overflow-hidden p-7">
-                <div className="absolute inset-0 bg-gradient-to-br from-cyan-300/0 via-transparent to-violet-500/0 opacity-0 transition-opacity group-hover:opacity-100" />
-                <div className="relative">
-                    <div className="mb-5 inline-flex rounded-2xl border border-white/15 bg-white/[0.07] p-3 text-cyan-200">
+            <div className="glass-card group relative flex h-full flex-col overflow-hidden border border-white/10 bg-[#0d1528] p-7 shadow-2xl">
+                <div className="relative z-20">
+                    <div className="mb-5 inline-flex rounded-2xl border border-white/10 bg-[#111a2f] p-3 text-cyan-300">
                         <Icon className="w-6 h-6" />
                     </div>
-                    <h3 className="text-xl font-semibold text-white mb-2">{title}</h3>
-                    <p className="mb-5 flex-grow text-sm font-medium leading-6 text-[#CBD5E1]">{description}</p>
+                    <h3 className="mb-2 text-xl font-bold text-white drop-shadow-lg">{title}</h3>
+                    <p className="mb-5 flex-grow text-sm font-medium leading-6 text-slate-200">{description}</p>
                     {technologies.length > 0 && (
                         <div className="flex flex-wrap gap-2">
-                            {technologies.map(tech => <span key={tech} className="rounded-full border border-white/15 bg-white/[0.07] px-3 py-1 text-xs text-[#CBD5E1]">{tech}</span>)}
+                            {technologies.map(tech => <span key={tech} className="rounded-full border border-white/10 bg-[#111a2f] px-3 py-1 text-xs text-slate-300">{tech}</span>)}
                         </div>
                     )}
                 </div>
@@ -57,7 +63,6 @@ export default function HomePage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const [heroData, setHeroData] = useState<any>(null);
-    const [stats, setStats] = useState<any[]>([]);
     const [services, setServices] = useState<any[]>([]);
     const [projects, setProjects] = useState<any[]>([]);
 
@@ -89,7 +94,6 @@ export default function HomePage() {
                     description: config.hero_description || ''
                 });
 
-                setStats(JSON.parse(config.stats || '[]'));
                 setServices(servicesData || []);
                 setProjects(projectsData || []);
 
@@ -112,43 +116,42 @@ export default function HomePage() {
             <div className="glass-card p-8">
                 <AlertCircle className="w-12 h-12 mx-auto mb-4 text-red-500"/>
                 <p className="text-xl text-white">Something went wrong</p>
-                <p className="text-[#CBD5E1]">{error}</p>
+                <p className="text-slate-200">{error}</p>
             </div>
         </div>;
     }
 
     return (
-        <div className="relative overflow-hidden">
+        <div className="relative z-20 overflow-hidden">
             <StarField />
             
-            <section className="relative min-h-screen overflow-hidden pt-24">
-                <div className="relative z-10 mx-auto grid min-h-[calc(100vh-6rem)] w-full max-w-7xl items-center gap-12 px-4 lg:grid-cols-[1.05fr_0.95fr] lg:px-8">
+            <section className="relative z-20 min-h-screen overflow-hidden pt-24">
+                <div className="relative z-20 mx-auto grid min-h-[calc(100vh-6rem)] w-full max-w-7xl items-center gap-12 px-4 lg:grid-cols-[1.05fr_0.95fr] lg:px-8">
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8 }}
-                        className="relative z-10 max-w-2xl"
+                        className="relative z-20 max-w-2xl"
                     >
-            <div className="mb-4 inline-flex rounded-full border border-white/15 bg-white/[0.07] px-4 py-2 text-sm text-[#E5E7EB] backdrop-blur">
+            <div className="mb-4 inline-flex rounded-full border border-white/10 bg-[#0d1528] px-4 py-2 text-sm text-slate-100 shadow-2xl">
                             Minimal motion. Quiet depth. Clean interaction.
                         </div>
-                        <h1 className="text-5xl font-bold leading-none md:text-7xl lg:text-8xl">
-                            <span className="block text-white">{heroData?.title}</span>
-                            <span className="block text-gradient-animated">{heroData?.subtitle}</span>
+                        <h1 className="text-5xl font-bold leading-none text-white drop-shadow-lg md:text-7xl lg:text-8xl">
+                            <span className="block text-white drop-shadow-lg">{heroData?.title}</span>
+                            <span className="block text-white drop-shadow-lg">{heroData?.subtitle}</span>
                         </h1>
                         <div className="flex flex-wrap gap-3 my-6">
-                            {heroData?.roles.map((role: string) => <span key={role} className="rounded-full border border-white/15 bg-white/[0.09] px-4 py-2 text-sm text-white">{role}</span>)}
+                            {heroData?.roles.map((role: string) => <span key={role} className="rounded-full border border-white/10 bg-[#111a2f] px-4 py-2 text-sm text-white">{role}</span>)}
                         </div>
-                        <p className="my-8 max-w-2xl text-lg font-medium leading-[1.8] text-[#CBD5E1]">{heroData?.description}</p>
+                        <p className="my-8 max-w-2xl text-lg font-medium leading-[1.8] text-slate-200">{heroData?.description}</p>
                         <div className="flex flex-wrap gap-4">
                             <MagneticButton href="/store">Explore Services <ArrowRight className="w-4 h-4 ml-2"/></MagneticButton>
                             <MagneticButton href="/contact">Start a Project</MagneticButton>
                         </div>
                     </motion.div>
 
-                    <div className="relative flex min-h-[420px] items-center justify-center lg:min-h-[680px]">
-                        <div className="absolute inset-0 rounded-[2rem] bg-gradient-to-br from-cosmic-accent/10 via-transparent to-cosmic-glow/10 blur-3xl" />
-                        <div className="relative h-full w-full">
+                    <div className="relative z-10 flex min-h-[420px] items-center justify-center lg:min-h-[680px]">
+                        <div className="relative z-10 h-full w-full">
                             <HeroSphere />
                             <div className="absolute inset-x-0 bottom-0 flex justify-center">
                                 <div className="hidden lg:block">
@@ -160,19 +163,19 @@ export default function HomePage() {
                 </div>
             </section>
 
-            <section className="section-padding">
+            <section className="section-padding relative z-20">
                 <div className="container mx-auto px-4">
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-                        {stats.map(stat => <CounterStat key={stat.label} value={stat.value} suffix={stat.suffix} label={stat.label} />)}
+                        {HOME_STATS.map(stat => <CounterStat key={stat.label} value={stat.value} suffix={stat.suffix} label={stat.label} />)}
                     </div>
                 </div>
             </section>
 
-            <section className="section-padding">
+            <section className="section-padding relative z-20">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gradient">Featured Expertise</h2>
-                        <p className="mx-auto max-w-2xl font-medium leading-[1.8] text-[#CBD5E1]">Specialized capabilities for modern digital challenges, presented with a quieter, more premium hand.</p>
+                        <h2 className="mb-4 text-4xl font-bold text-white drop-shadow-lg md:text-5xl">Featured Expertise</h2>
+                        <p className="mx-auto max-w-2xl font-medium leading-[1.8] text-slate-200">Specialized capabilities for modern digital challenges, presented with a quieter, more premium hand.</p>
                     </div>
                     <div className="grid md:grid-cols-3 gap-6">
                         {services.map(service => (
@@ -182,11 +185,11 @@ export default function HomePage() {
                 </div>
             </section>
 
-            <section className="section-padding">
+            <section className="section-padding relative z-20">
                 <div className="container mx-auto px-4">
                     <div className="text-center mb-16">
-                        <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gradient">Featured Projects</h2>
-                        <p className="mx-auto max-w-2xl font-medium leading-[1.8] text-[#CBD5E1]">A compact gallery of the work that sets the tone for the rest of the site.</p>
+                        <h2 className="mb-4 text-4xl font-bold text-white drop-shadow-lg md:text-5xl">Featured Projects</h2>
+                        <p className="mx-auto max-w-2xl font-medium leading-[1.8] text-slate-200">A compact gallery of the work that sets the tone for the rest of the site.</p>
                     </div>
                     <div className="grid md:grid-cols-3 gap-6">
                         {projects.map(project => (

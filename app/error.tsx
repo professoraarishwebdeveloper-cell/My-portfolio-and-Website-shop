@@ -32,7 +32,7 @@ export default function Error({
         <h1 className="text-4xl md:text-5xl font-display font-bold text-white mb-4">
           Oops! Something went wrong
         </h1>
-        <p className="mx-auto mb-8 max-w-xl font-medium leading-[1.8] text-[#DCE7F7]">
+        <p className="mx-auto mb-8 max-w-xl font-medium leading-[1.8] text-slate-200">
           We encountered an unexpected error. Please try refreshing the page or go back home.
         </p>
         <div className="flex gap-4 justify-center flex-wrap">
@@ -49,7 +49,7 @@ export default function Error({
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
             href="/"
-            className="flex items-center gap-2 rounded-lg border border-white/20 px-6 py-3 font-semibold text-white transition-colors hover:bg-white/[0.07]"
+            className="flex items-center gap-2 rounded-lg border border-white/20 px-6 py-3 font-semibold text-white transition-colors hover:bg-[#0d1528]"
           >
             Go Home
           </motion.a>

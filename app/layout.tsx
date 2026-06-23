@@ -57,7 +57,7 @@ export default function RootLayout({
           <CustomCursor />
           <SmoothScroll>
             <Navbar />
-            <main className="relative">
+            <main className="relative z-20">
               {children}
             </main>
             <Toaster />

@@ -64,7 +64,7 @@ export function Navbar() {
         initial={{ y: -100 }}
         animate={{ y: scrollDirection === 'down' && isScrolled ? -100 : 0 }}
         transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-        className={`fixed top-0 left-0 right-0 z-[9999] transition-all duration-500 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled
             ? 'py-3'
             : 'py-6'
@@ -72,10 +72,8 @@ export function Navbar() {
       >
         <div className="container mx-auto px-4">
           <motion.nav
-            className={`relative flex items-center justify-between px-6 py-4 rounded-2xl transition-all duration-500 ${
-              isScrolled
-                ? 'bg-[#0B1730]/90 backdrop-blur-2xl border border-white/15 shadow-2xl shadow-black/30'
-                : 'bg-transparent border border-transparent'
+            className={`relative flex items-center justify-between px-6 py-4 rounded-2xl transition-all duration-500 border border-white/10 bg-[#0d1528] shadow-2xl ${
+              isScrolled ? 'py-3' : ''
             }`}
             style={{
               boxShadow: isScrolled ? '0 24px 80px rgba(7, 17, 31, 0.45)' : 'none',
@@ -86,7 +84,7 @@ export function Navbar() {
               <motion.span
                 animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 3, repeat: Infinity }}
-                className="text-xl font-display font-bold text-gradient-animated"
+                className="text-xl font-display font-bold text-white drop-shadow-lg"
               >
                 AK
               </motion.span>
@@ -110,7 +108,7 @@ export function Navbar() {
                   >
                     <span
                       className={`relative z-10 transition-all ${
-                        isActive ? 'text-white' : 'text-[#CBD5E1] group-hover:text-white'
+                        isActive ? 'text-white drop-shadow-lg' : 'text-white group-hover:text-slate-200'
                       }`}
                     >
                       {item.label}
@@ -118,7 +116,7 @@ export function Navbar() {
                     {isActive && (
                       <motion.div
                         layoutId="nav-indicator"
-                        className="absolute inset-0 rounded-lg bg-white/[0.08] border border-white/15"
+                        className="absolute inset-0 rounded-lg bg-[#0d1528] border border-white/15"
                         transition={{ type: 'spring', damping: 25, stiffness: 400 }}
                       />
                     )}
@@ -139,21 +137,21 @@ export function Navbar() {
                 <>
                   <Link
                     href="/dashboard"
-                    className="flex items-center gap-2 px-4 py-2 text-sm text-[#CBD5E1] hover:text-white transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 text-sm text-white transition-colors hover:text-slate-200"
                   >
                     <User className="w-4 h-4" />
                     Profile
                   </Link>
                   <Link
                     href="/dashboard"
-                    className="flex items-center gap-2 px-4 py-2 text-sm text-[#CBD5E1] hover:text-white transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 text-sm text-white transition-colors hover:text-slate-200"
                   >
                     Dashboard
                   </Link>
                   {isAdmin && (
                     <Link
                       href="/admin"
-                      className="flex items-center gap-2 px-4 py-2 text-sm text-[#CBD5E1] hover:text-white transition-colors"
+                      className="flex items-center gap-2 px-4 py-2 text-sm text-white transition-colors hover:text-slate-200"
                     >
                       <Shield className="w-4 h-4" />
                       Admin Panel
@@ -161,7 +159,7 @@ export function Navbar() {
                   )}
                   <button
                     onClick={handleLogout}
-                    className="flex items-center gap-2 px-4 py-2 text-sm text-[#CBD5E1] hover:text-white transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 text-sm text-white transition-colors hover:text-slate-200"
                   >
                     <LogOut className="w-4 h-4" />
                     Logout
@@ -180,7 +178,7 @@ export function Navbar() {
             {/* Mobile Menu Button */}
             <button
               onClick={() => setIsOpen(!isOpen)}
-              className="lg:hidden relative z-[10001] p-2 text-white"
+              className="lg:hidden relative z-[60] p-2 text-white"
               aria-label={isOpen ? 'Close menu' : 'Open menu'}
             >
               {isOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
@@ -199,7 +197,7 @@ export function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 z-[9999] bg-[#07111F]/85 backdrop-blur-md lg:hidden"
+              className="fixed inset-0 z-50 bg-[#050816]/80 backdrop-blur-sm lg:hidden"
             />
 
             {/* Menu Content */}
@@ -208,11 +206,11 @@ export function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ duration: 0.24, ease: 'easeOut' }}
-              className="fixed top-0 right-0 z-[10000] flex h-full w-[min(86vw,380px)] flex-col overflow-y-auto border-l border-white/15 bg-[#0B1730]/95 p-6 pt-24 shadow-2xl shadow-black/50 backdrop-blur-2xl lg:hidden"
+              className="fixed right-0 top-0 z-[60] flex h-full w-[min(86vw,380px)] flex-col overflow-y-auto border-l border-white/10 bg-[#0d1528] p-6 pt-24 shadow-2xl lg:hidden"
             >
               <button
                 onClick={() => setIsOpen(false)}
-                className="absolute right-5 top-5 rounded-full border border-white/15 bg-white/[0.07] p-2 text-white"
+                className="absolute right-5 top-5 rounded-full border border-white/15 bg-[#0d1528] p-2 text-white"
                 aria-label="Close menu"
               >
                 <X className="h-5 w-5" />
@@ -229,7 +227,7 @@ export function Navbar() {
                       href={item.href}
                       onClick={() => setIsOpen(false)}
                       className={`block rounded-xl px-4 py-3 text-xl font-display font-semibold transition-colors ${
-                        isActive ? 'text-white' : 'text-[#CBD5E1] hover:text-white'
+                        isActive ? 'text-white drop-shadow-lg' : 'text-white hover:text-slate-200'
                       }`}
                     >
                       {item.label}
@@ -242,18 +240,18 @@ export function Navbar() {
               <div className="mt-8 border-t border-white/15 pt-6">
                 {user ? (
                   <div className="flex flex-col gap-3">
-                    <Link href="/dashboard" onClick={() => setIsOpen(false)} className="text-lg text-[#CBD5E1] hover:text-white">
+                    <Link href="/dashboard" onClick={() => setIsOpen(false)} className="text-lg text-white hover:text-slate-200">
                       Profile
                     </Link>
-                    <Link href="/dashboard" onClick={() => setIsOpen(false)} className="text-lg text-[#CBD5E1] hover:text-white">
+                    <Link href="/dashboard" onClick={() => setIsOpen(false)} className="text-lg text-white hover:text-slate-200">
                       Dashboard
                     </Link>
                     {isAdmin && (
-                      <Link href="/admin" onClick={() => setIsOpen(false)} className="text-lg text-[#CBD5E1] hover:text-white">
+                      <Link href="/admin" onClick={() => setIsOpen(false)} className="text-lg text-white hover:text-slate-200">
                         Admin Panel
                       </Link>
                     )}
-                    <button onClick={handleLogout} className="text-left text-lg text-[#CBD5E1] hover:text-white">
+                    <button onClick={handleLogout} className="text-left text-lg text-white hover:text-slate-200">
                       Logout
                     </button>
                   </div>
@@ -266,16 +264,16 @@ export function Navbar() {
 
               {/* Social Links */}
               <div className="flex items-center gap-6 mt-8">
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-[#CBD5E1] hover:text-white transition-colors">
+                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-slate-200 transition-colors">
                   <Github className="w-6 h-6" />
                 </a>
-                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-[#CBD5E1] hover:text-white transition-colors">
+                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-slate-200 transition-colors">
                   <Twitter className="w-6 h-6" />
                 </a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-[#CBD5E1] hover:text-white transition-colors">
+                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-slate-200 transition-colors">
                   <Linkedin className="w-6 h-6" />
                 </a>
-                <a href="mailto:mr.shadow4704@gmail.com" className="text-[#CBD5E1] hover:text-white transition-colors">
+                <a href="mailto:mr.shadow4704@gmail.com" className="text-white hover:text-slate-200 transition-colors">
                   <Mail className="w-6 h-6" />
                 </a>
               </div>

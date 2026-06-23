@@ -31,7 +31,7 @@ const CertificateCard = ({ certificate, onClick, index }: { certificate: any, on
           <h3 className="text-lg font-bold text-white group-hover:text-white transition-colors line-clamp-2">
             {certificate.title}
           </h3>
-          <div className="mt-auto flex flex-wrap gap-3 pt-4 text-xs text-[#CBD5E1]">
+          <div className="mt-auto flex flex-wrap gap-3 pt-4 text-xs text-slate-200">
             <span className="flex items-center gap-1"><Building2 className="w-3 h-3" /> {certificate.organization}</span>
             <span className="flex items-center gap-1"><Calendar className="w-3 h-3" /> {new Date(certificate.date).toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}</span>
           </div>
@@ -52,13 +52,13 @@ const CertificateModal = ({ certificate, onClose }: { certificate: any, onClose:
       className="relative max-w-4xl w-full glass-card overflow-hidden"
       onClick={(e) => e.stopPropagation()}
     >
-      <button onClick={onClose} className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/15 bg-white/[0.09] text-white hover:bg-white/[0.12]">
+      <button onClick={onClose} className="absolute right-4 top-4 z-10 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-[#111a2f] text-white hover:bg-white/[0.12]">
         <X className="w-5 h-5" />
       </button>
       <div className="aspect-[16/9] w-full bg-cover bg-center" style={{ backgroundImage: `url(${certificate.image_url})` }}/>
       <div className="p-8">
         <h2 className="text-3xl font-bold text-white mt-2">{certificate.title}</h2>
-        <p className="mt-4 font-medium leading-[1.8] text-[#CBD5E1]">{certificate.description}</p>
+        <p className="mt-4 font-medium leading-[1.8] text-slate-200">{certificate.description}</p>
         {certificate.credential_url && (
           <a href={certificate.credential_url} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 mt-6 text-cosmic-accent hover:underline">
             View Credential <ExternalLink className="w-4 h-4" />
@@ -95,8 +95,8 @@ export default function CertificatesPage() {
     <div className="relative min-h-screen pt-32 pb-20">
       <div className="container mx-auto px-4">
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="text-center mb-16">
-            <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-gradient-animated">Certificates</h1>
-            <p className="mx-auto max-w-2xl text-lg font-medium leading-[1.8] text-[#CBD5E1]">A showcase of my professional certifications and achievements.</p>
+            <h1 className="text-5xl md:text-7xl font-display font-bold mb-6 text-white drop-shadow-lg">Certificates</h1>
+            <p className="mx-auto max-w-2xl text-lg font-medium leading-[1.8] text-slate-200">A showcase of my professional certifications and achievements.</p>
         </motion.div>
 
         {error && (
@@ -116,9 +116,9 @@ export default function CertificatesPage() {
         )}
         
         <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto text-center mt-20">
-            <div className="glass-card p-8"><div className="mb-2 text-4xl font-bold text-cosmic-accent">{loading ? '-' : certificates.length}+</div><div className="text-[#CBD5E1]">Certifications</div></div>
-            <div className="glass-card p-8"><div className="mb-2 text-4xl font-bold text-cosmic-accent">100+</div><div className="text-[#CBD5E1]">Hours of Training</div></div>
-            <div className="glass-card p-8"><div className="mb-2 text-4xl font-bold text-cosmic-accent">∞</div><div className="text-[#CBD5E1]">Commitment to Growth</div></div>
+            <div className="glass-card p-8"><div className="mb-2 text-4xl font-bold text-white">8</div><div className="text-slate-200">Certifications</div></div>
+            <div className="glass-card p-8"><div className="mb-2 text-4xl font-bold text-white">100+</div><div className="text-slate-200">Hours of Training</div></div>
+            <div className="glass-card p-8"><div className="mb-2 text-4xl font-bold text-white">∞</div><div className="text-slate-200">Commitment to Growth</div></div>
         </div>
       </div>
 

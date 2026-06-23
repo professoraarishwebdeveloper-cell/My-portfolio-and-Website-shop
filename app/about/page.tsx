@@ -82,7 +82,7 @@ function TimelineMilestone({ year, title, description, icon: Icon, isLeft = true
       <div className={`flex-1 ${isLeft ? 'text-right' : 'text-left'}`}>
         <span className="text-cosmic-accent font-display font-bold text-lg">{year}</span>
         <h3 className="text-2xl font-display font-semibold text-white mt-2">{title}</h3>
-        <p className="mt-2 font-medium leading-[1.8] text-[#CBD5E1]">{description}</p>
+        <p className="mt-2 font-medium leading-[1.8] text-slate-200">{description}</p>
       </div>
 
       <div className="w-16 h-16 rounded-full bg-gradient-to-br from-cosmic-accent to-cosmic-glow flex items-center justify-center z-10 shrink-0">
@@ -102,7 +102,7 @@ function ValueCard({ icon: Icon, title, description }: { icon: React.ElementType
         <Icon className="w-8 h-8 text-cosmic-accent" />
       </div>
       <h3 className="text-xl font-display font-semibold text-white mb-3">{title}</h3>
-      <p className="text-sm font-medium leading-[1.8] text-[#CBD5E1]">{description}</p>
+      <p className="text-sm font-medium leading-[1.8] text-slate-200">{description}</p>
     </GlassCard>
   )
 }
@@ -115,17 +115,16 @@ export default function AboutPage() {
   })
 
   const heroY = useTransform(scrollYProgress, [0, 1], [0, 200])
-  const opacity = useTransform(scrollYProgress, [0, 0.5], [1, 0])
 
   return (
     <div className="relative">
       {/* Hero Section */}
-      <section ref={heroRef} className="relative min-h-[80vh] flex items-center justify-center overflow-hidden pt-32 pb-20">
+      <section ref={heroRef} className="relative z-20 min-h-[80vh] flex items-center justify-center overflow-hidden pt-32 pb-20">
         {/* Background gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-cosmic-accent/5 via-transparent to-transparent" />
 
         <motion.div
-          style={{ y: heroY, opacity }}
+          style={{ y: heroY }}
           className="relative z-10 text-center px-4 max-w-4xl mx-auto"
         >
           <motion.div
@@ -134,12 +133,12 @@ export default function AboutPage() {
             transition={{ duration: 0.8 }}
           >
             <span className="text-cosmic-accent font-semibold tracking-[0.28em] uppercase text-sm">About Me</span>
-            <h1 className="text-5xl md:text-7xl font-display font-bold mt-4 mb-6 tracking-tight drop-shadow-[0_12px_30px_rgba(2,6,23,0.45)]">
-              <span className="text-white">The Story Behind</span>
+            <h1 className="mt-4 mb-6 text-5xl font-bold tracking-tight text-white drop-shadow-lg md:text-7xl">
+              <span className="text-white drop-shadow-lg">The Story Behind</span>
               <br />
-              <span className="text-gradient">The Code</span>
+              <span className="text-white drop-shadow-lg">The Code</span>
             </h1>
-            <p className="mx-auto max-w-2xl text-lg font-medium leading-8 text-[#CBD5E1] md:text-xl">
+            <p className="mx-auto max-w-2xl text-lg font-medium leading-8 text-slate-200 md:text-xl">
               A passionate developer, trader, and AI enthusiast on a mission to create
               digital experiences that inspire and transform.
             </p>
@@ -161,7 +160,7 @@ export default function AboutPage() {
               <Card3DParallax intensity={0.6} delay={0.1}>
                 <div className="relative">
                   <div className="absolute inset-0 bg-gradient-to-br from-cosmic-accent/20 to-cosmic-glow/20 rounded-3xl transform -rotate-3" />
-                  <div className="absolute inset-0 bg-cosmic-deep rounded-3xl overflow-hidden">
+                    <div className="absolute inset-0 bg-cosmic-deep rounded-3xl overflow-hidden border border-white/10 bg-[#0d1528] shadow-2xl">
                     {/* Abstract geometric visualization */}
                     <div className="w-full h-full flex items-center justify-center p-8">
                       <div className="relative w-full h-64">
@@ -199,7 +198,6 @@ export default function AboutPage() {
                         ))}
                       </div>
                     </div>
-                    <div className="absolute inset-0 bg-gradient-to-t from-cosmic-void via-transparent to-transparent" />
                   </div>
                   {/* Decorative elements */}
                   <div className="absolute -bottom-6 -right-6 w-24 h-24 border-2 border-cosmic-accent/30 rounded-full" />
@@ -212,9 +210,9 @@ export default function AboutPage() {
             <RevealSection delay={0.2}>
               <div className="glass-card p-7 md:p-8">
               <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-6 tracking-tight">
-                Hello, I'm <span className="text-gradient">Aarish Khatib</span>
+                Hello, I'm <span className="text-white drop-shadow-lg">Aarish Khatib</span>
               </h2>
-              <div className="space-y-5 font-medium leading-8 text-[#CBD5E1]">
+              <div className="space-y-5 font-medium leading-8 text-slate-200">
                 <p>
                   I'm a creative developer and digital architect passionate about building
                   experiences that push the boundaries of what's possible on the web.
@@ -234,17 +232,17 @@ export default function AboutPage() {
 
               {/* Quick stats */}
               <div className="grid grid-cols-3 gap-4 mt-8">
-                <div className="text-center p-4 rounded-xl bg-white/8 border border-white/12">
-                  <div className="text-2xl font-display font-bold text-cosmic-accent">50+</div>
-                  <div className="text-sm font-medium text-[#94A3B8]">Projects</div>
+                <div className="text-center rounded-xl border border-white/10 bg-[#0d1528] p-4 shadow-2xl">
+                  <div className="text-2xl font-bold text-white drop-shadow-lg">50+</div>
+                  <div className="text-sm font-medium text-slate-300">Projects</div>
                 </div>
-                <div className="text-center p-4 rounded-xl bg-white/8 border border-white/12">
-                  <div className="text-2xl font-display font-bold text-cosmic-accent">3+</div>
-                  <div className="text-sm font-medium text-[#94A3B8]">Years</div>
+                <div className="text-center rounded-xl border border-white/10 bg-[#0d1528] p-4 shadow-2xl">
+                  <div className="text-2xl font-bold text-white drop-shadow-lg">3+</div>
+                  <div className="text-sm font-medium text-slate-300">Years</div>
                 </div>
-                <div className="text-center p-4 rounded-xl bg-white/8 border border-white/12">
-                  <div className="text-2xl font-display font-bold text-cosmic-accent">100%</div>
-                  <div className="text-sm font-medium text-[#94A3B8]">Dedication</div>
+                <div className="text-center rounded-xl border border-white/10 bg-[#0d1528] p-4 shadow-2xl">
+                  <div className="text-2xl font-bold text-white drop-shadow-lg">100%</div>
+                  <div className="text-sm font-medium text-slate-300">Dedication</div>
                 </div>
               </div>
               </div>
@@ -259,7 +257,7 @@ export default function AboutPage() {
           <RevealSection className="text-center mb-16">
             <span className="text-cosmic-accent font-medium tracking-widest uppercase text-sm">What I Do</span>
             <h2 className="text-4xl md:text-5xl font-display font-bold mt-4 text-white">
-              Areas of <span className="text-gradient">Expertise</span>
+              Areas of <span className="text-white drop-shadow-lg">Expertise</span>
             </h2>
           </RevealSection>
 
@@ -267,7 +265,7 @@ export default function AboutPage() {
             <GlassCard>
               <Code className="w-10 h-10 text-cosmic-accent mb-4" />
               <h3 className="text-xl font-display font-semibold text-white mb-3">Web Development</h3>
-              <p className="text-sm font-medium leading-[1.8] text-[#CBD5E1]">
+              <p className="text-sm font-medium leading-[1.8] text-slate-200">
                 Full-stack development with React, Next.js, and modern technologies
               </p>
             </GlassCard>
@@ -275,7 +273,7 @@ export default function AboutPage() {
             <GlassCard>
               <TrendingUp className="w-10 h-10 text-cosmic-accent mb-4" />
               <h3 className="text-xl font-display font-semibold text-white mb-3">Trading</h3>
-              <p className="text-sm font-medium leading-[1.8] text-[#CBD5E1]">
+              <p className="text-sm font-medium leading-[1.8] text-slate-200">
                 Crypto, Forex, and Indian stock market trading and automation
               </p>
             </GlassCard>
@@ -283,7 +281,7 @@ export default function AboutPage() {
             <GlassCard>
               <Bot className="w-10 h-10 text-cosmic-accent mb-4" />
               <h3 className="text-xl font-display font-semibold text-white mb-3">AI Integration</h3>
-              <p className="text-sm font-medium leading-[1.8] text-[#CBD5E1]">
+              <p className="text-sm font-medium leading-[1.8] text-slate-200">
                 Building intelligent systems with ChatGPT, Claude, and ML APIs
               </p>
             </GlassCard>
@@ -291,7 +289,7 @@ export default function AboutPage() {
             <GlassCard>
               <Globe className="w-10 h-10 text-cosmic-accent mb-4" />
               <h3 className="text-xl font-display font-semibold text-white mb-3">Digital Strategy</h3>
-              <p className="text-sm font-medium leading-[1.8] text-[#CBD5E1]">
+              <p className="text-sm font-medium leading-[1.8] text-slate-200">
                 SEO, performance optimization, and scalable architecture
               </p>
             </GlassCard>
@@ -305,7 +303,7 @@ export default function AboutPage() {
           <RevealSection className="text-center mb-16">
             <span className="text-cosmic-accent font-medium tracking-widest uppercase text-sm">My Philosophy</span>
             <h2 className="text-4xl md:text-5xl font-display font-bold mt-4 text-white">
-              Core <span className="text-gradient">Values</span>
+              Core <span className="text-white drop-shadow-lg">Values</span>
             </h2>
           </RevealSection>
 
@@ -335,7 +333,7 @@ export default function AboutPage() {
           <RevealSection className="text-center mb-16">
             <span className="text-cosmic-accent font-medium tracking-widest uppercase text-sm">The Journey</span>
             <h2 className="text-4xl md:text-5xl font-display font-bold mt-4 text-white">
-              Key <span className="text-gradient">Milestones</span>
+              Key <span className="text-white drop-shadow-lg">Milestones</span>
             </h2>
           </RevealSection>
 
@@ -383,24 +381,24 @@ export default function AboutPage() {
           <div className="glass-card p-12 md:p-20 text-center max-w-4xl mx-auto">
             <Rocket className="w-16 h-16 text-cosmic-accent mx-auto mb-6" />
             <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-6">
-              Looking <span className="text-gradient">Ahead</span>
+              Looking <span className="text-white drop-shadow-lg">Ahead</span>
             </h2>
-            <p className="mx-auto mb-8 max-w-2xl text-lg font-medium leading-8 text-[#CBD5E1]">
+            <p className="mx-auto mb-8 max-w-2xl text-lg font-medium leading-8 text-slate-200">
               My vision is to continue pushing the boundaries of web development,
               building AI-powered solutions, and helping businesses transform
               their digital presence. Every project is an opportunity to create
               something meaningful.
             </p>
             <div className="flex flex-wrap justify-center gap-4">
-              <div className="rounded-full border border-white/15 bg-white/[0.07] px-6 py-3 text-[#E5E7EB]">
+              <div className="rounded-full border border-white/15 bg-[#0d1528] px-6 py-3 text-slate-100">
                 <Users className="w-4 h-4 inline mr-2" />
                 Grow the team
               </div>
-              <div className="rounded-full border border-white/15 bg-white/[0.07] px-6 py-3 text-[#E5E7EB]">
+              <div className="rounded-full border border-white/15 bg-[#0d1528] px-6 py-3 text-slate-100">
                 <Globe className="w-4 h-4 inline mr-2" />
                 Global reach
               </div>
-              <div className="rounded-full border border-white/15 bg-white/[0.07] px-6 py-3 text-[#E5E7EB]">
+              <div className="rounded-full border border-white/15 bg-[#0d1528] px-6 py-3 text-slate-100">
                 <Bot className="w-4 h-4 inline mr-2" />
                 AI innovations
               </div>

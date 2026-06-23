@@ -25,7 +25,7 @@
   --secondary: 222 43% 13%;
   --secondary-foreground: 210 20% 98%;
   --muted: 222 43% 13%;
-  --muted-foreground: 216 36% 79%;
+  --muted-foreground: 214 32% 88%;
   --accent: 213 94% 68%;
   --accent-foreground: 214 48% 8%;
   --destructive: 349 89% 60%;
@@ -36,7 +36,7 @@
   --radius: 0.75rem;
 
   /* Glass effects */
-  --glass-bg: rgba(8, 12, 24, 0.78);
+  --glass-bg: #0d1528;
   --glass-border: rgba(255, 255, 255, 0.16);
   --glass-blur: 16px;
 
@@ -61,23 +61,23 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background:
-      radial-gradient(72rem 38rem at 10% -5%, rgba(76, 201, 240, 0.14), transparent 60%),
-      radial-gradient(64rem 32rem at 100% 0%, rgba(139, 92, 246, 0.12), transparent 60%),
-      linear-gradient(180deg, #050816 0%, #0B1220 48%, #111A2F 100%);
-    color: #DCE7F7;
+    background: #050816;
+    color: #dbeafe;
     min-height: 100vh;
     overflow-x: hidden;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    color: #F8FBFF;
-    font-weight: 800;
-    text-shadow: 0 1px 1px rgba(0, 0, 0, 0.45), 0 0 24px rgba(0, 0, 0, 0.18);
+    @apply font-bold text-white drop-shadow-lg;
+    font-weight: 700;
   }
 
   p, li, label, input, textarea, select {
-    color: #DCE7F7;
+    @apply text-slate-200;
+  }
+
+  small, .text-muted {
+    @apply text-slate-300;
   }
 
   html.lenis, html.lenis body {
@@ -123,20 +123,14 @@
 @layer components {
   /* Glass Card */
   .glass-card {
-    background:
-      linear-gradient(145deg, rgba(10, 14, 28, 0.84), rgba(8, 12, 24, 0.72)),
-      var(--glass-bg);
+    background: #0d1528;
     backdrop-filter: blur(var(--glass-blur)) saturate(140%);
     -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(140%);
-    border: 1px solid var(--glass-border);
+    border: 1px solid rgba(255, 255, 255, 0.1);
     border-radius: 20px;
     position: relative;
     overflow: hidden;
-    box-shadow:
-      0 24px 80px rgba(7, 17, 31, 0.55),
-      0 12px 40px rgba(0, 0, 0, 0.35),
-      0 0 0 1px rgba(255, 255, 255, 0.04) inset,
-      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.55);
     transform-style: preserve-3d;
   }
 
@@ -155,7 +149,7 @@
   }
 
   .glass-card-hover:hover {
-    background: rgba(10, 14, 28, 0.84);
+    background: #111a2f;
     border-color: rgba(255, 255, 255, 0.2);
     transform: translateY(-4px);
     box-shadow:
@@ -164,21 +158,35 @@
       0 0 90px rgba(139, 92, 246, 0.16);
   }
 
-  /* Text Gradient */
+  /* Text Gradient — solid fallback so text stays readable */
   .text-gradient {
-    background: linear-gradient(135deg, var(--cosmic-star), #E2E8F0, var(--cosmic-aurora-mid), var(--cosmic-glow));
+    color: #ffffff;
+    background-image: linear-gradient(135deg, #ffffff 0%, #e2e8f0 35%, #60a5fa 72%, #c4b5fd 100%);
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     background-clip: text;
+    -webkit-text-fill-color: #ffffff;
+  }
+
+  @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    .text-gradient {
+      -webkit-text-fill-color: transparent;
+    }
   }
 
   .text-gradient-animated {
-    background: linear-gradient(135deg, var(--cosmic-star), var(--cosmic-aurora-mid), var(--cosmic-glow), var(--cosmic-accent));
+    color: #ffffff;
+    background-image: linear-gradient(135deg, #ffffff, #60a5fa, #c4b5fd, #4cc9f0);
     background-size: 300% 300%;
     -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
     background-clip: text;
+    -webkit-text-fill-color: #ffffff;
     animation: gradient-shift 8s ease infinite;
+  }
+
+  @supports ((-webkit-background-clip: text) or (background-clip: text)) {
+    .text-gradient-animated {
+      -webkit-text-fill-color: transparent;
+    }
   }
 
   @keyframes gradient-shift {
@@ -272,8 +280,8 @@
     align-items: center;
     justify-content: center;
     padding: 1rem 2.5rem;
-    background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.15);
+    background: #0d1528;
+    border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 100px;
     font-weight: 500;
     color: #FFFFFF;
@@ -283,7 +291,7 @@
   }
 
   .btn-secondary:hover {
-    background: rgba(255, 255, 255, 0.09);
+    background: #111a2f;
     border-color: rgba(76, 201, 240, 0.35);
     color: #FFFFFF;
   }
@@ -366,7 +374,7 @@
   .cosmic-input {
     width: 100%;
     padding: 1rem 1.5rem;
-    background: rgba(10, 14, 28, 0.78);
+    background: #0d1528;
     backdrop-filter: blur(10px);
     border: 1px solid var(--glass-border);
     border-radius: 12px;
@@ -376,7 +384,7 @@
   }
 
   .cosmic-input::placeholder {
-    color: #94A3B8;
+    color: #cbd5e1;
   }
 
   .cosmic-input:focus {
@@ -392,10 +400,9 @@
     pointer-events: none;
     z-index: 0;
     background:
-      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(76, 201, 240, 0.14), transparent),
-      radial-gradient(ellipse 60% 42% at 100% 45%, rgba(139, 92, 246, 0.2), transparent),
-      radial-gradient(ellipse 65% 44% at 0% 55%, rgba(96, 165, 250, 0.18), transparent),
-      linear-gradient(135deg, rgba(7, 17, 31, 0.94), rgba(11, 23, 48, 0.92));
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(76, 201, 240, 0.05), transparent),
+      radial-gradient(ellipse 60% 42% at 100% 45%, rgba(139, 92, 246, 0.05), transparent),
+      radial-gradient(ellipse 65% 44% at 0% 55%, rgba(96, 165, 250, 0.04), transparent);
   }
 
   /* Star Field */

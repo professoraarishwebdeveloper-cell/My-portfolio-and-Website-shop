@@ -90,7 +90,7 @@ export function TimelineNode3D({
             className="
               glass-card p-8 group
               bg-gradient-to-br from-cosmic-deep/50 to-cosmic-void/50
-              border border-white/15 hover:border-cosmic-accent/30
+              border border-white/10 hover:border-cosmic-accent/30
               transition-all duration-300
               relative overflow-hidden
             "
@@ -115,7 +115,7 @@ export function TimelineNode3D({
               </h3>
 
               {/* Description */}
-              <p className="mb-4 text-sm font-medium leading-[1.8] text-[#DCE7F7]">{description}</p>
+              <p className="mb-4 text-sm font-medium leading-[1.8] text-slate-200">{description}</p>
 
               {/* Details list */}
               <ul className="space-y-2">
@@ -126,7 +126,7 @@ export function TimelineNode3D({
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ delay: (index || 0) * 0.1 + i * 0.05 }}
                     viewport={{ once: true }}
-                    className="flex gap-2 text-sm text-[#B8C6DC]"
+                    className="flex gap-2 text-sm text-slate-300"
                   >
                     <span className="text-cosmic-accent mt-0.5">•</span>
                     <span>{detail}</span>

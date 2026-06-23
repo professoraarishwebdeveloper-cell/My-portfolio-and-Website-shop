@@ -118,7 +118,7 @@ function StepPill({
       className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition-all ${
         active
           ? 'border-cyan-300/30 bg-cyan-300/10 text-white shadow-[0_0_24px_rgba(34,211,238,0.14)]'
-          : 'border-white/15 bg-white/[0.07] text-[#CBD5E1] hover:border-white/20 hover:text-white'
+          : 'border-white/10 bg-[#0d1528] text-slate-200 hover:border-white/20 hover:text-white'
       }`}
     >
       <Icon className="h-4 w-4" />
@@ -151,26 +151,26 @@ function OptionCard({
         onClick={onClick}
         whileHover={{ y: -4 }}
         whileTap={{ scale: 0.98 }}
-        className={`group relative h-full w-full overflow-hidden rounded-2xl border p-5 text-left transition-all ${
+        className={`group relative h-full w-full overflow-hidden rounded-2xl border p-5 text-left shadow-2xl transition-all ${
           compact ? 'min-h-[128px]' : 'min-h-[170px]'
         } ${
           active
-            ? 'border-cyan-300/30 bg-cyan-300/10 shadow-[0_16px_40px_rgba(2,6,23,0.3)]'
-            : 'border-white/15 bg-white/[0.07] hover:border-white/20 hover:bg-white/[0.09]'
+            ? 'border-cyan-300/30 bg-[#111a2f] shadow-2xl'
+            : 'border-white/10 bg-[#0d1528] hover:border-white/20 hover:bg-[#111a2f]'
         }`}
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-cyan-300/0 via-transparent to-violet-500/0 opacity-0 transition-opacity group-hover:opacity-100" />
+        <div className="absolute inset-0 bg-gradient-to-br from-cyan-300/0 via-transparent to-violet-500/0 opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none" />
         <div className="relative flex h-full flex-col">
           <div className="mb-4 flex items-start justify-between gap-4">
-            <div className="rounded-2xl border border-white/15 bg-white/[0.07] p-3 text-cyan-200">
+            <div className="rounded-2xl border border-white/10 bg-[#0d1528] p-3 text-cyan-200">
               <Icon className="h-5 w-5" />
             </div>
-            <div className={`rounded-full border px-3 py-1 text-xs ${active ? 'border-cyan-300/25 bg-cyan-300/10 text-cyan-100' : 'border-white/15 bg-white/[0.07] text-[#CBD5E1]'}`}>
+            <div className={`rounded-full border px-3 py-1 text-xs ${active ? 'border-cyan-300/25 bg-cyan-300/10 text-cyan-100' : 'border-white/10 bg-[#0d1528] text-slate-200'}`}>
               {price}
             </div>
           </div>
-          <h3 className="text-lg font-semibold text-white">{title}</h3>
-          <p className="mt-2 text-sm font-medium leading-6 text-[#CBD5E1]">{subtitle}</p>
+          <h3 className="text-lg font-bold text-white drop-shadow-lg">{title}</h3>
+          <p className="mt-2 text-sm font-medium leading-6 text-slate-200">{subtitle}</p>
         </div>
       </motion.button>
     </TiltCard>
@@ -188,9 +188,9 @@ function SectionTitle({
 }) {
   return (
     <div className="mb-6">
-      <p className="text-xs uppercase tracking-[0.28em] text-cyan-200/70">{eyebrow}</p>
-      <h2 className="mt-3 text-2xl font-semibold text-white md:text-3xl">{title}</h2>
-      <p className="mt-3 max-w-2xl text-sm font-medium leading-6 text-[#CBD5E1]">{description}</p>
+      <p className="text-xs uppercase tracking-[0.28em] text-cyan-300">{eyebrow}</p>
+      <h2 className="mt-3 text-2xl font-bold text-white drop-shadow-lg md:text-3xl">{title}</h2>
+      <p className="mt-3 max-w-2xl text-sm font-medium leading-6 text-slate-200">{description}</p>
     </div>
   )
 }
@@ -313,38 +313,38 @@ function PriceSummary() {
             <p className="text-xs uppercase tracking-[0.28em] text-cyan-200/70">Live Estimate</p>
             <h3 className="mt-2 text-2xl font-semibold text-white">{formatPrice(totalPrice)}</h3>
           </div>
-          <div className="rounded-2xl border border-white/15 bg-white/[0.07] p-3 text-cyan-200">
+          <div className="rounded-2xl border border-white/10 bg-[#0d1528] p-3 text-cyan-200">
             <CircleDollarSign className="h-5 w-5" />
           </div>
         </div>
 
         <div className="mt-6 space-y-3 text-sm">
-          <div className="flex items-center justify-between rounded-2xl border border-white/15 bg-white/[0.07] px-4 py-3">
-            <span className="text-[#CBD5E1]">Website Type</span>
+          <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-[#0d1528] px-4 py-3">
+            <span className="text-slate-200">Website Type</span>
             <span className="text-white">{selectedWebsite?.name ?? 'Select one'}</span>
           </div>
-          <div className="flex items-center justify-between rounded-2xl border border-white/15 bg-white/[0.07] px-4 py-3">
-            <span className="text-[#CBD5E1]">Pages</span>
+          <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-[#0d1528] px-4 py-3">
+            <span className="text-slate-200">Pages</span>
             <span className="text-white">{String(pagesCount)}</span>
           </div>
-          <div className="flex items-center justify-between rounded-2xl border border-white/15 bg-white/[0.07] px-4 py-3">
-            <span className="text-[#CBD5E1]">Design</span>
+          <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-[#0d1528] px-4 py-3">
+            <span className="text-slate-200">Design</span>
             <span className="text-white">{selectedDesign?.name ?? 'Premium'}</span>
           </div>
-          <div className="flex items-center justify-between rounded-2xl border border-white/15 bg-white/[0.07] px-4 py-3">
-            <span className="text-[#CBD5E1]">Maintenance</span>
+          <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-[#0d1528] px-4 py-3">
+            <span className="text-slate-200">Maintenance</span>
             <span className="text-white">{selectedMaintenance?.name ?? '-'}</span>
           </div>
-          <div className="flex items-center justify-between rounded-2xl border border-white/15 bg-white/[0.07] px-4 py-3">
-            <span className="text-[#CBD5E1]">Timeline</span>
+          <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-[#0d1528] px-4 py-3">
+            <span className="text-slate-200">Timeline</span>
             <span className="text-white">{selectedTimeline?.name ?? '-'}</span>
           </div>
-          <div className="flex items-center justify-between rounded-2xl border border-white/15 bg-white/[0.07] px-4 py-3">
-            <span className="text-[#CBD5E1]">Features</span>
+          <div className="flex items-center justify-between rounded-2xl border border-white/10 bg-[#0d1528] px-4 py-3">
+            <span className="text-slate-200">Features</span>
             <span className="text-white">{selectedFeatures.length}</span>
           </div>
           <div className="flex items-center justify-between rounded-2xl border border-cyan-300/15 bg-cyan-300/10 px-4 py-3">
-            <span className="text-[#CBD5E1]">Features Total</span>
+            <span className="text-slate-200">Features Total</span>
             <span className="text-white">{formatPrice(featuresPrice)}</span>
           </div>
         </div>
@@ -367,13 +367,13 @@ function PriceSummary() {
               disabled={isLoading || !websiteType}
               whileHover={{ y: -2 }}
               whileTap={{ scale: 0.98 }}
-              className="btn-secondary justify-center gap-2 rounded-2xl border-white/15 bg-white/[0.07] px-5 py-4"
+              className="btn-secondary justify-center gap-2 rounded-2xl border-white/10 bg-[#0d1528] px-5 py-4"
             >
               {isLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Save className="h-5 w-5" />}
               Save Quote
             </motion.button>
           ) : (
-            <Link href="/auth" className="btn-secondary justify-center gap-2 rounded-2xl border-white/15 bg-white/[0.07] px-5 py-4 text-center">
+            <Link href="/auth" className="btn-secondary justify-center gap-2 rounded-2xl border-white/10 bg-[#0d1528] px-5 py-4 text-center">
               <Shield className="h-5 w-5" />
               Log in to save
             </Link>
@@ -392,7 +392,7 @@ function PriceSummary() {
         </div>
 
         {!user && (
-          <p className="mt-4 text-center text-sm font-medium text-[#CBD5E1]">
+          <p className="mt-4 text-center text-sm font-medium text-slate-200">
             You can browse the configurator freely, then sign in when you want to save or order.
           </p>
         )}
@@ -491,16 +491,16 @@ function FeaturesStep() {
                       className={`group relative flex h-full w-full items-center justify-between gap-4 overflow-hidden rounded-2xl border p-5 text-left transition-all ${
                         active
                           ? 'border-cyan-300/30 bg-cyan-300/10'
-                          : 'border-white/15 bg-white/[0.07] hover:border-white/20 hover:bg-white/[0.09]'
+                          : 'border-white/10 bg-[#0d1528] hover:border-white/20 hover:bg-[#111a2f]'
                       }`}
                     >
-                      <div className="absolute inset-0 bg-gradient-to-br from-cyan-300/0 via-transparent to-violet-500/0 opacity-0 transition-opacity group-hover:opacity-100" />
+                      <div className="absolute inset-0 bg-gradient-to-br from-cyan-300/0 via-transparent to-violet-500/0 opacity-0 transition-opacity group-hover:opacity-100 pointer-events-none" />
                       <div className="relative">
                         <h4 className="font-medium text-white">{feature.name}</h4>
-                        <p className="mt-1 text-sm text-[#CBD5E1]">{formatPrice(feature.price)}</p>
+                        <p className="mt-1 text-sm text-slate-200">{formatPrice(feature.price)}</p>
                       </div>
                       <div className={`relative flex h-10 w-10 items-center justify-center rounded-full border transition-all ${
-                        active ? 'border-cyan-300/30 bg-cyan-300 text-black' : 'border-white/15 bg-white/[0.07] text-[#CBD5E1]'
+                        active ? 'border-cyan-300/30 bg-cyan-300 text-black' : 'border-white/10 bg-[#0d1528] text-slate-200'
                       }`}>
                         {active && <Check className="h-4 w-4" />}
                       </div>
@@ -569,26 +569,24 @@ export default function StorePage() {
   const progress = ((currentStep - 1) / (steps.length - 1)) * 100
 
   return (
-    <div className="relative min-h-screen overflow-hidden pt-24 pb-20">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(34,211,238,0.14),transparent_35%),radial-gradient(circle_at_top_right,rgba(139,92,246,0.14),transparent_30%),linear-gradient(180deg,rgba(11,16,32,0),rgba(11,16,32,0.25))]" />
-      <div className="pointer-events-none absolute inset-x-0 top-24 h-64 bg-[linear-gradient(90deg,transparent,rgba(255,255,255,0.04),transparent)] opacity-40 blur-3xl" />
+    <div className="relative z-20 min-h-screen overflow-hidden pt-24 pb-20">
 
-      <div className="container mx-auto px-4">
+      <div className="container relative z-20 mx-auto px-4">
         <section className="mb-10 grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">
           <div>
-            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/15 bg-white/[0.07] px-4 py-2 text-xs uppercase tracking-[0.28em] text-[#E5E7EB] backdrop-blur">
+            <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#0d1528] px-4 py-2 text-xs uppercase tracking-[0.28em] text-slate-100 backdrop-blur">
               <CircleDollarSign className="h-4 w-4 text-cyan-200" />
               Live Website Configurator
             </div>
-            <h1 className="max-w-3xl text-5xl font-semibold leading-none text-white md:text-7xl">
+            <h1 className="max-w-3xl text-5xl font-bold leading-none text-white drop-shadow-lg md:text-7xl">
               Build a premium site with a visual rhythm that feels expensive.
             </h1>
-            <p className="mt-5 max-w-2xl text-base font-medium leading-[1.8] text-[#CBD5E1] md:text-lg">
+            <p className="mt-5 max-w-2xl text-base font-medium leading-[1.8] text-slate-200 md:text-lg">
               Everything stays live while you design: price, structure, and order flow. The interface stays clean, but the depth and motion keep it feeling alive.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               {['Live pricing', 'Fast checkout', 'Soft 3D depth', 'Mobile-safe motion'].map((item) => (
-                <span key={item} className="rounded-full border border-white/15 bg-white/[0.07] px-4 py-2 text-sm text-[#E5E7EB]">
+                <span key={item} className="rounded-full border border-white/10 bg-[#0d1528] px-4 py-2 text-sm text-slate-100">
                   {item}
                 </span>
               ))}
@@ -596,33 +594,32 @@ export default function StorePage() {
           </div>
 
           <TiltCard className="h-full">
-            <div className="glass-card relative overflow-hidden p-6 md:p-7">
-              <div className="absolute inset-0 bg-gradient-to-br from-cyan-300/10 via-transparent to-violet-500/10" />
-              <div className="relative">
+            <div className="glass-card relative overflow-hidden border border-white/10 bg-[#0d1528] p-6 shadow-2xl md:p-7">
+              <div className="relative z-20">
                 <div className="flex items-center justify-between">
                   <p className="text-xs uppercase tracking-[0.28em] text-cyan-200/70">Current Build</p>
-                    <span className="rounded-full border border-white/15 bg-white/[0.07] px-3 py-1 text-xs text-[#E5E7EB]">
+                    <span className="rounded-full border border-white/10 bg-[#0d1528] px-3 py-1 text-xs text-slate-100">
                     Step {currentStep}/6
                   </span>
                 </div>
                 <div className="mt-6 flex items-end justify-between gap-4">
                   <div>
-                    <p className="text-sm text-[#CBD5E1]">Estimated total</p>
+                    <p className="text-sm text-slate-200">Estimated total</p>
                     <p className="mt-2 text-4xl font-semibold text-white">
                       {formatPrice(totalPrice)}
                     </p>
                   </div>
-                  <div className="rounded-2xl border border-white/15 bg-white/[0.07] p-3 text-cyan-200">
+                  <div className="rounded-2xl border border-white/10 bg-[#0d1528] p-3 text-cyan-200">
                     <Shield className="h-5 w-5" />
                   </div>
                 </div>
-                <div className="mt-6 grid grid-cols-2 gap-3 text-sm text-[#CBD5E1]">
-                  <div className="rounded-2xl border border-white/15 bg-white/[0.07] p-4">
-                    <p className="text-[#94A3B8]">Selected type</p>
+                <div className="mt-6 grid grid-cols-2 gap-3 text-sm text-slate-200">
+                  <div className="rounded-2xl border border-white/10 bg-[#0d1528] p-4">
+                    <p className="text-slate-300">Selected type</p>
                     <p className="mt-1 text-white">{websiteType || 'None yet'}</p>
                   </div>
-                  <div className="rounded-2xl border border-white/15 bg-white/[0.07] p-4">
-                    <p className="text-[#94A3B8]">Features</p>
+                  <div className="rounded-2xl border border-white/10 bg-[#0d1528] p-4">
+                    <p className="text-slate-300">Features</p>
                     <p className="mt-1 text-white">{selectedFeatures.length}</p>
                   </div>
                 </div>
@@ -640,7 +637,7 @@ export default function StorePage() {
               onClick={() => setCurrentStep(step.id)}
             />
           ))}
-          <div className="ml-auto hidden h-1 w-64 overflow-hidden rounded-full bg-white/[0.09] lg:block">
+          <div className="ml-auto hidden h-1 w-64 overflow-hidden rounded-full bg-[#111a2f] lg:block">
             <div
               className="h-full rounded-full bg-gradient-to-r from-cyan-300 via-blue-500 to-violet-500 transition-all duration-300"
               style={{ width: `${progress}%` }}
@@ -681,7 +678,7 @@ export default function StorePage() {
                 whileHover={{ y: -1 }}
                 whileTap={{ scale: 0.98 }}
                 className={`btn-secondary rounded-2xl px-5 py-4 ${
-                  currentStep === 1 ? 'cursor-not-allowed opacity-40' : ''
+                  currentStep === 1 ? 'cursor-not-allowed brightness-75' : ''
                 }`}
               >
                 <ChevronLeft className="h-4 w-4" />
@@ -695,7 +692,7 @@ export default function StorePage() {
                   whileHover={{ y: -1 }}
                   whileTap={{ scale: 0.98 }}
                   className={`magnetic-btn rounded-2xl px-5 py-4 ${
-                    !canProceed() ? 'cursor-not-allowed opacity-40' : ''
+                    !canProceed() ? 'cursor-not-allowed brightness-75' : ''
                   }`}
                 >
                   Next
@@ -708,7 +705,7 @@ export default function StorePage() {
 
             {!user && (
               <div className="glass-card border border-cyan-300/15 p-5">
-                <p className="text-sm font-medium leading-6 text-[#CBD5E1]">
+                <p className="text-sm font-medium leading-6 text-slate-200">
                   Sign in to save a quotation or place the order. The configurator still works without signing in, so you can explore freely.
                 </p>
                 <Link href="/auth" className="mt-4 inline-flex items-center gap-2 text-sm text-cyan-200 hover:text-cyan-100">

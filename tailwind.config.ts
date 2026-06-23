@@ -11,17 +11,17 @@ const config: Config = {
     extend: {
       colors: {
         cosmic: {
-          void: '#0B1020',
-          deep: '#101B3D',
-          nebula: '#172554',
+          void: '#050816',
+          deep: '#0B1220',
+          nebula: '#0d1528',
           aurora: {
             start: '#22D3EE',
             mid: '#3B82F6',
             end: '#8B5CF6',
           },
-          star: '#F8FAFC',
-          accent: '#22D3EE',
-          glow: '#8B5CF6',
+          star: '#ffffff',
+          accent: '#4CC9F0',
+          glow: '#C4B5FD',
         },
         background: 'hsl(var(--background))',
         foreground: 'hsl(var(--foreground))',

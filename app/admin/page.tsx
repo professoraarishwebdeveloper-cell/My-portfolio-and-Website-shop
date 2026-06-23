@@ -23,19 +23,19 @@ const DataTable = ({ title, data, columns, isLoading, emptyMessage }: { title: s
     {isLoading ? (
       <div className="flex justify-center items-center h-40"><Loader2 className="w-8 h-8 animate-spin" /></div>
     ) : !data || data.length === 0 ? (
-      <p className="font-medium text-[#B8C6DC]">{emptyMessage}</p>
+      <p className="font-medium text-slate-300">{emptyMessage}</p>
     ) : (
       <div className="overflow-x-auto">
         <table className="w-full text-left">
           <thead>
             <tr className="border-b border-white/20">
-              {columns.map(col => <th key={col} className="p-3 text-sm font-semibold text-[#DCE7F7]">{col}</th>)}
+              {columns.map(col => <th key={col} className="p-3 text-sm font-semibold text-slate-300">{col}</th>)}
             </tr>
           </thead>
           <tbody>
             {data.map((row, i) => (
-              <tr key={i} className="border-b border-white/10 hover:bg-white/[0.07]">
-                {columns.map(col => <td key={col} className="p-3 text-sm text-[#DCE7F7]">{JSON.stringify(row[col.toLowerCase().replace(' ','_')])}</td>)}
+              <tr key={i} className="border-b border-white/10 hover:bg-[#0d1528]">
+                {columns.map(col => <td key={col} className="p-3 text-sm text-slate-200">{JSON.stringify(row[col.toLowerCase().replace(' ','_')])}</td>)}
               </tr>
             ))}
           </tbody>
@@ -49,7 +49,7 @@ const StatCard = ({ label, value, icon: Icon }: { label: string; value: string |
   <div className="glass-card p-5">
       <div className="flex items-center justify-between gap-4">
       <div>
-        <p className="text-sm font-medium text-[#B8C6DC]">{label}</p>
+        <p className="text-sm font-medium text-slate-300">{label}</p>
         <p className="mt-2 text-2xl font-bold text-white">{value}</p>
       </div>
       <div className="rounded-2xl border border-cyan-300/15 bg-cyan-300/10 p-3 text-cosmic-accent">
@@ -127,7 +127,7 @@ export default function AdminPage() {
       <div className="min-h-screen flex flex-col justify-center items-center text-center">
         <ShieldOff className="w-24 h-24 text-red-500 mb-4" />
         <h1 className="text-4xl font-bold text-white">Access Denied</h1>
-        <p className="mt-2 font-medium text-[#DCE7F7]">You do not have permission to view this page.</p>
+        <p className="mt-2 font-medium text-slate-200">You do not have permission to view this page.</p>
         <Link href="/dashboard" className="mt-6 magnetic-btn">Go to Dashboard</Link>
       </div>
     );
@@ -138,7 +138,7 @@ export default function AdminPage() {
       <div className="min-h-screen flex flex-col justify-center items-center text-center">
         <AlertCircle className="w-24 h-24 text-yellow-500 mb-4" />
         <h1 className="text-4xl font-bold text-white">An Error Occurred</h1>
-        <p className="mt-2 font-medium text-[#DCE7F7]">{error}</p>
+        <p className="mt-2 font-medium text-slate-200">{error}</p>
         <button onClick={() => window.location.reload()} className="mt-6 magnetic-btn">Try Again</button>
       </div>
     );
@@ -161,8 +161,8 @@ export default function AdminPage() {
     <div className="min-h-screen pt-24 pb-20 px-4">
       <div className="container mx-auto">
         <motion.div initial={{ opacity: 0, y: -20 }} animate={{ opacity: 1, y: 0 }}>
-          <h1 className="text-5xl font-display font-bold text-gradient-animated mb-3">Admin Panel</h1>
-          <p className="mb-8 max-w-2xl font-medium leading-[1.8] text-[#DCE7F7]">Operational overview for leads, quotes, orders, customers, invoices, and recent activity.</p>
+          <h1 className="text-5xl font-display font-bold text-white drop-shadow-lg mb-3">Admin Panel</h1>
+          <p className="mb-8 max-w-2xl font-medium leading-[1.8] text-slate-200">Operational overview for leads, quotes, orders, customers, invoices, and recent activity.</p>
         </motion.div>
 
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2 xl:grid-cols-6">

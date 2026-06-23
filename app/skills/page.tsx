@@ -108,7 +108,7 @@ function FloatingParticles({ count = 150 }) {
 // 3D Skill Galaxy Scene
 function SkillGalaxyScene() {
   return (
-    <div className="absolute inset-0 opacity-60">
+    <div className="absolute inset-0 opacity-20">
       <Canvas camera={{ position: [0, 0, 15], fov: 60 }}>
         <FloatingParticles />
       </Canvas>
@@ -214,11 +214,11 @@ function SkillCard({ skill, index }: { skill: { name: string; level: number; col
       >
         <div className="flex items-center justify-between mb-2">
           <span className="text-white font-medium">{skill.name}</span>
-          <span className="text-sm text-[#B8C6DC]">{skill.level}%</span>
+          <span className="text-sm text-slate-300">{skill.level}%</span>
         </div>
 
         {/* Skill level bar with glow */}
-        <div className="relative h-2 w-full overflow-hidden rounded-full bg-white/[0.09]">
+        <div className="relative h-2 w-full overflow-hidden rounded-full bg-[#111a2f]">
           <motion.div
             initial={{ width: 0 }}
             animate={{ width: `${skill.level}%` }}
@@ -297,7 +297,7 @@ export default function SkillsPage() {
               <br />
               <span className="text-gradient-animated">Galaxy</span>
             </h1>
-            <p className="mx-auto max-w-2xl text-lg font-medium leading-[1.8] text-[#DCE7F7]">
+            <p className="mx-auto max-w-2xl text-lg font-medium leading-[1.8] text-slate-200">
               Each skill is a star in my universe. Explore the constellations
               of technologies and expertise I've developed over the years.
             </p>
@@ -322,7 +322,7 @@ export default function SkillsPage() {
             <h2 className="text-3xl md:text-4xl font-display font-bold text-white mb-4">
               Skill <span className="text-gradient">Orbits</span>
             </h2>
-            <p className="mx-auto max-w-xl font-medium leading-[1.8] text-[#DCE7F7]">
+            <p className="mx-auto max-w-xl font-medium leading-[1.8] text-slate-200">
               Distance from center represents proficiency level. Hover to see details.
             </p>
           </div>
@@ -355,7 +355,7 @@ export default function SkillsPage() {
             <h2 className="text-3xl font-display font-bold text-white mb-4">
               Ready to Put These Skills to <span className="text-gradient">Work</span>?
             </h2>
-            <p className="mb-8 font-medium leading-[1.8] text-[#DCE7F7]">
+            <p className="mb-8 font-medium leading-[1.8] text-slate-200">
               Let's collaborate on your next project.
             </p>
             <motion.a
