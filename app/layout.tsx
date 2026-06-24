@@ -18,6 +18,13 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className="min-h-screen bg-cosmic-void font-sans antialiased">
+        {/* Global ambient background - fixed, behind all content */}
+        <AmbientBackground />
+        
+        {/* Noise texture layer - fixed, behind all content */}
+        <div className="noise" aria-hidden="true" />
+        
+        {/* Main content structure */}
         <AuthProvider>
           <CustomCursor />
           <SmoothScroll>
@@ -29,8 +36,6 @@ export default function RootLayout({
             <Toaster />
           </SmoothScroll>
         </AuthProvider>
-        <AmbientBackground />
-        <div className="noise" aria-hidden="true" />
       </body>
     </html>
   )

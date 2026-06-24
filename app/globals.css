@@ -63,14 +63,11 @@
   body {
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
-    background:
-      radial-gradient(circle at 10% 15%, rgba(245, 234, 216, 0.32), transparent 24%),
-      radial-gradient(circle at 88% 18%, rgba(216, 195, 162, 0.18), transparent 22%),
-      radial-gradient(circle at 50% 95%, rgba(204, 179, 145, 0.18), transparent 28%),
-      linear-gradient(155deg, #101523 0%, #131923 38%, #161b2b 100%);
+    background-color: #0c111d;
     color: #e2e8f0;
     min-height: 100vh;
     overflow-x: hidden;
+    position: relative;
   }
 
   h1, h2, h3, h4, h5, h6 {
@@ -433,14 +430,17 @@
     }
   }
 
-  /* Noise Texture */
+  /* Noise Texture - Global subtle grain overlay */
   .noise {
     position: fixed;
     inset: 0;
+    width: 100vw;
+    height: 100vh;
     pointer-events: none;
     z-index: 0;
     opacity: 0.03;
     background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    background-attachment: fixed;
   }
 
   /* Reveal Animations */
