@@ -23,12 +23,17 @@ export default function AuthPage() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const { user, isAdmin, isLoading: authLoading, refreshProfile } = useAuth()
-  const nextPath = useMemo(() => sanitizeInternalPath(searchParams?.get('next'), '/dashboard'), [searchParams])
 
-  const [mode, setMode] = useState<'login' | 'signup' | 'forgot'>('login')
+  const redirectedRef = useRef(false)
+  const lastAttemptRef = useRef(0)
+
+  const nextPath = useMemo(() => {
+    return sanitizeInternalPath(searchParams?.get('next'), '/dashboard')
+  }, [searchParams])
+
+  const [mode, setMode] = useState<'login' | 'signup'>('login')
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const lastAttemptRef = useRef(0)
 
   const [formData, setFormData] = useState({
     email: '',
@@ -38,39 +43,53 @@ export default function AuthPage() {
   })
 
   useEffect(() => {
-    if (!authLoading && user) {
-      router.replace(isAdmin ? '/admin' : nextPath)
-    }
-  }, [authLoading, isAdmin, nextPath, router, user])
+    if (authLoading || !user || redirectedRef.current) return
+
+    redirectedRef.current = true
+    router.replace(isAdmin ? '/admin' : nextPath)
+  }, [authLoading, isAdmin, nextPath, router, user?.id])
 
   useEffect(() => {
     const authError = searchParams?.get('error')
+
     if (authError === 'callback_failed') {
       setError('We could not complete the sign-in callback. Please try again.')
+      return
     }
+
     if (authError === 'missing-supabase-config') {
       setError('Authentication is not configured correctly right now.')
+      return
     }
+
+    setError(null)
   }, [searchParams])
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+    setFormData((prev) => ({
+      ...prev,
+      [e.target.name]: e.target.value,
+    }))
     setError(null)
   }
 
   const getURL = () => {
     let url =
-      process?.env?.NEXT_PUBLIC_SITE_URL ??
-      process?.env?.NEXT_PUBLIC_VERCEL_URL ??
+      process.env.NEXT_PUBLIC_SITE_URL ??
+      process.env.NEXT_PUBLIC_VERCEL_URL ??
       window.location.origin
-    url = url.includes('http') ? url : `https://${url}`
+
+    url = url.startsWith('http') ? url : `https://${url}`
     url = url.endsWith('/') ? url : `${url}/`
+
     return `${url}auth/callback?next=${encodeURIComponent(nextPath)}`
   }
 
-  const canAttempt = () => Date.now() - lastAttemptRef.current >= AUTH_COOLDOWN_MS
+  const canAttempt = () => {
+    return Date.now() - lastAttemptRef.current >= AUTH_COOLDOWN_MS
+  }
 
-  const handleEmailAuth = async (e: React.FormEvent) => {
+  const handleEmailAuth = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setError(null)
 
@@ -90,9 +109,11 @@ export default function AuthPage() {
     if (parsed.data.website) {
       setIsLoading(true)
       lastAttemptRef.current = Date.now()
-      setTimeout(() => {
-        router.replace(nextPath)
+
+      window.setTimeout(() => {
+        router.replace('/')
       }, 400)
+
       return
     }
 
@@ -124,8 +145,13 @@ export default function AuthPage() {
       }
 
       await refreshProfile()
-      router.push(nextPath)
+
+      if (!redirectedRef.current) {
+        redirectedRef.current = true
+        router.replace(nextPath)
+      }
     } catch (err) {
+      redirectedRef.current = false
       logDevelopmentError('auth-email', err)
       setError(getFriendlyErrorMessage('auth'))
     } finally {
@@ -147,14 +173,16 @@ export default function AuthPage() {
 
     setIsLoading(true)
     lastAttemptRef.current = Date.now()
+
     try {
-      const { error } = await supabase.auth.signInWithOAuth({
+      const { error: oauthError } = await supabase.auth.signInWithOAuth({
         provider,
         options: {
           redirectTo: getURL(),
         },
       })
-      if (error) throw error
+
+      if (oauthError) throw oauthError
     } catch (err) {
       logDevelopmentError('auth-oauth', err)
       setError(getFriendlyErrorMessage('auth'))
@@ -162,16 +190,16 @@ export default function AuthPage() {
     }
   }
 
-  if (authLoading || user) {
+  if (authLoading || user || isLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
-        <Loader2 className="h-10 w-10 animate-spin" />
+      <div className="flex min-h-screen items-center justify-center">
+        <Loader2 className="h-10 w-10 animate-spin text-cosmic-accent" />
       </div>
     )
   }
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden px-4 py-20">
+    <div className="relative flex min-h-screen items-center justify-center overflow-hidden px-4 py-20">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -190,12 +218,11 @@ export default function AuthPage() {
         <Card3DParallax intensity={0.6} delay={0}>
           <div className="glass-card p-8">
             <h1 className="mb-2 text-center text-2xl font-display font-bold text-white">
-              {mode === 'login' && 'Welcome Back'}
-              {mode === 'signup' && 'Create Account'}
+              {mode === 'login' ? 'Welcome Back' : 'Create Account'}
             </h1>
+
             <p className="mb-8 text-center font-medium text-slate-200">
-              {mode === 'login' && 'Sign in to your account'}
-              {mode === 'signup' && 'Join to start building'}
+              {mode === 'login' ? 'Sign in to your account' : 'Join to start building'}
             </p>
 
             {error && (
@@ -205,12 +232,13 @@ export default function AuthPage() {
                 className="mb-6 flex items-center gap-2 rounded-lg bg-red-400/10 p-4 text-red-300"
               >
                 <AlertCircle className="h-5 w-5 shrink-0" />
-                {error}
+                <span>{error}</span>
               </motion.div>
             )}
 
             <div className="space-y-4">
               <motion.button
+                type="button"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleSocialAuth('google')}
@@ -220,7 +248,9 @@ export default function AuthPage() {
                 <Chrome className="mr-2 h-5 w-5" />
                 Continue with Google
               </motion.button>
+
               <motion.button
+                type="button"
                 whileHover={{ scale: 1.02 }}
                 whileTap={{ scale: 0.98 }}
                 onClick={() => handleSocialAuth('discord')}
@@ -305,21 +335,22 @@ export default function AuthPage() {
                 disabled={isLoading}
                 className="magnetic-btn w-full justify-center"
               >
-                {isLoading ? (
-                  <Loader2 className="h-5 w-5 animate-spin" />
-                ) : (
-                  <>
-                    {mode === 'login' ? 'Sign In' : 'Sign Up'}
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </>
-                )}
+                {mode === 'login' ? 'Sign In' : 'Sign Up'}
+                <ArrowRight className="ml-2 h-5 w-5" />
               </motion.button>
             </form>
 
             <div className="mt-6 border-t border-white/20 pt-6 text-center">
               <p className="text-sm text-slate-300">
                 {mode === 'login' ? "Don't have an account?" : 'Already have an account?'}{' '}
-                <button onClick={() => setMode(mode === 'login' ? 'signup' : 'login')} className="text-cosmic-accent hover:underline">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setMode((prev) => (prev === 'login' ? 'signup' : 'login'))
+                    setError(null)
+                  }}
+                  className="text-cosmic-accent hover:underline"
+                >
                   {mode === 'login' ? 'Sign up' : 'Sign in'}
                 </button>
               </p>
