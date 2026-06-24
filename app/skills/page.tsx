@@ -6,6 +6,8 @@ import { motion, useInView } from 'framer-motion'
 import * as THREE from 'three'
 import { Card3DParallax } from '@/components/3d-parallax-card'
 import { use3DDepth } from '@/hooks/use3DDepth'
+import { LineWaves } from '@/components/line-waves'
+import { ParticleWaves } from '@/components/particle-waves'
 
 // Skill data
 const skillCategories = [
@@ -280,11 +282,22 @@ export default function SkillsPage() {
 
   return (
     <div className="relative min-h-screen">
+      {/* LineWaves background */}
+      <div className="absolute inset-0 z-0">
+        <LineWaves
+          preset="vibrant"
+          speed={0.3}
+          enableMouseInteraction={false}
+          brightness={0.14}
+          className="h-full w-full"
+        />
+      </div>
+      
       {/* 3D Background */}
       <SkillGalaxyScene />
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 px-4">
+      <section className="relative pt-32 pb-20 px-4 z-10">
         <div className="container mx-auto text-center">
           <motion.div
             initial={{ opacity: 0, y: 40 }}

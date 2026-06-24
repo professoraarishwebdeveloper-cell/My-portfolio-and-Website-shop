@@ -147,6 +147,17 @@ interface LineWavesProps {
   color3?: string
   enableMouseInteraction?: boolean
   mouseInfluence?: number
+  className?: string
+  preset?: 'warm' | 'cool' | 'purple' | 'neutral' | 'vibrant'
+}
+
+// Preset configurations for quick styling
+const PRESETS = {
+  warm: { color1: '#f5eadb', color2: '#d8c6ae', color3: '#8d7d6b', brightness: 0.25 },
+  cool: { color1: '#e0f7fa', color2: '#80deea', color3: '#4dd0e1', brightness: 0.3 },
+  purple: { color1: '#e1bee7', color2: '#ce93d8', color3: '#ba68c8', brightness: 0.28 },
+  neutral: { color1: '#9e9e9e', color2: '#757575', color3: '#616161', brightness: 0.2 },
+  vibrant: { color1: '#ff6b6b', color2: '#4ecdc4', color3: '#45b7d1', brightness: 0.32 },
 }
 
 export function LineWaves({
@@ -163,7 +174,13 @@ export function LineWaves({
   color3 = '#ffffff',
   enableMouseInteraction = true,
   mouseInfluence = 2.0,
+  className = '',
+  preset,
 }: LineWavesProps) {
+  // Apply preset if provided
+  const finalConfig = preset
+    ? { ...PRESETS[preset], speed, innerLineCount, outerLineCount, warpIntensity, rotation, edgeFadeWidth, colorCycleSpeed, enableMouseInteraction, mouseInfluence }
+    : { speed, innerLineCount, outerLineCount, warpIntensity, rotation, edgeFadeWidth, colorCycleSpeed, brightness, color1, color2, color3, enableMouseInteraction, mouseInfluence }
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -200,7 +217,7 @@ export function LineWaves({
     resize()
 
     const geometry = new Triangle(gl)
-    const rotationRad = (rotation * Math.PI) / 180
+    const rotationRad = (finalConfig.rotation * Math.PI) / 180
     program = new Program(gl, {
       vertex: vertexShader,
       fragment: fragmentShader,
@@ -209,38 +226,44 @@ export function LineWaves({
         uResolution: {
           value: [gl.canvas.width, gl.canvas.height, gl.canvas.width / gl.canvas.height],
         },
-        uSpeed: { value: speed },
-        uInnerLines: { value: innerLineCount },
-        uOuterLines: { value: outerLineCount },
-        uWarpIntensity: { value: warpIntensity },
+        uSpeed: { value: finalConfig.speed },
+        uInnerLines: { value: finalConfig.innerLineCount },
+        uOuterLines: { value: finalConfig.outerLineCount },
+        uWarpIntensity: { value: finalConfig.warpIntensity },
         uRotation: { value: rotationRad },
-        uEdgeFadeWidth: { value: edgeFadeWidth },
-        uColorCycleSpeed: { value: colorCycleSpeed },
-        uBrightness: { value: brightness },
-        uColor1: { value: hexToVec3(color1) },
-        uColor2: { value: hexToVec3(color2) },
-        uColor3: { value: hexToVec3(color3) },
+        uEdgeFadeWidth: { value: finalConfig.edgeFadeWidth },
+        uColorCycleSpeed: { value: finalConfig.colorCycleSpeed },
+        uBrightness: { value: finalConfig.brightness || brightness },
+        uColor1: { value: hexToVec3(finalConfig.color1 || color1) },
+        uColor2: { value: hexToVec3(finalConfig.color2 || color2) },
+        uColor3: { value: hexToVec3(finalConfig.color3 || color3) },
         uMouse: { value: new Float32Array([0.5, 0.5]) },
-        uMouseInfluence: { value: mouseInfluence },
-        uEnableMouse: { value: enableMouseInteraction },
+        uMouseInfluence: { value: finalConfig.mouseInfluence },
+        uEnableMouse: { value: finalConfig.enableMouseInteraction },
       },
     })
 
     const mesh = new Mesh(gl, { geometry, program })
     container.appendChild(gl.canvas)
 
-    if (enableMouseInteraction) {
+    if (finalConfig.enableMouseInteraction) {
       gl.canvas.addEventListener('mousemove', handleMouseMove)
       gl.canvas.addEventListener('mouseleave', handleMouseLeave)
     }
 
     let animationFrameId: number
+    let lastFrameTime = 0
 
     function update(time: number) {
       animationFrameId = requestAnimationFrame(update)
+      
+      // Throttle updates for performance on slower devices
+      if (time - lastFrameTime < 16) return // ~60fps cap
+      lastFrameTime = time
+
       program.uniforms.uTime.value = time * 0.001
 
-      if (enableMouseInteraction) {
+      if (finalConfig.enableMouseInteraction) {
         currentMouse[0] += 0.05 * (targetMouse[0] - currentMouse[0])
         currentMouse[1] += 0.05 * (targetMouse[1] - currentMouse[1])
         program.uniforms.uMouse.value[0] = currentMouse[0]
@@ -258,28 +281,16 @@ export function LineWaves({
     return () => {
       cancelAnimationFrame(animationFrameId)
       window.removeEventListener('resize', resize)
-      if (enableMouseInteraction) {
+      if (finalConfig.enableMouseInteraction) {
         gl.canvas.removeEventListener('mousemove', handleMouseMove)
         gl.canvas.removeEventListener('mouseleave', handleMouseLeave)
       }
-      container.removeChild(gl.canvas)
+      if (container.contains(gl.canvas)) {
+        container.removeChild(gl.canvas)
+      }
       gl.getExtension('WEBGL_lose_context')?.loseContext()
     }
-  }, [
-    speed,
-    innerLineCount,
-    outerLineCount,
-    warpIntensity,
-    rotation,
-    edgeFadeWidth,
-    colorCycleSpeed,
-    brightness,
-    color1,
-    color2,
-    color3,
-    enableMouseInteraction,
-    mouseInfluence,
-  ])
+  }, [preset, speed, innerLineCount, outerLineCount, warpIntensity, rotation, edgeFadeWidth, colorCycleSpeed, brightness, color1, color2, color3, enableMouseInteraction, mouseInfluence])
 
-  return <div ref={containerRef} className="line-waves-container" />
+  return <div ref={containerRef} className={`line-waves-container ${className}`} />
 }

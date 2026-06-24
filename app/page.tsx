@@ -23,6 +23,9 @@ import { ScrollTree } from '@/components/scroll-tree'
 import { TiltCard } from '@/components/tilt-card'
 import { SectionReveal } from '@/components/section-reveal'
 import { CtaBanner } from '@/components/cta-banner'
+import { LineWaves } from '@/components/line-waves'
+import { GradientOrb } from '@/components/gradient-orb'
+import { ParticleWaves } from '@/components/particle-waves'
 import {
   BRAND,
   CONTACT_DETAILS,
@@ -234,6 +237,18 @@ export default function HomePage() {
   return (
     <div className="relative z-20 overflow-hidden">
       <section className="relative z-20 min-h-screen overflow-hidden pt-24">
+        {/* LineWaves background animation */}
+        <div className="absolute inset-0 z-0">
+          <LineWaves
+            preset="warm"
+            speed={0.2}
+            enableMouseInteraction={true}
+            brightness={0.15}
+            className="h-full w-full"
+          />
+        </div>
+        
+        {/* Ambient orbs */}
         <div className="absolute left-[6%] top-24 h-40 w-40 rounded-full bg-[#efe3d1]/24 blur-3xl" />
         <div className="absolute right-[8%] top-36 h-44 w-44 rounded-full bg-[#d8c6ae]/18 blur-3xl" />
         <div className="absolute bottom-16 left-[40%] h-52 w-52 rounded-full bg-[#f5eadb]/24 blur-3xl" />

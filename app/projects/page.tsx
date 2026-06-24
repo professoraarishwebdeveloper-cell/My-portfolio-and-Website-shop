@@ -8,6 +8,8 @@ import { supabase } from '@/lib/supabase'
 import { PageHeader } from '@/components/page-header'
 import { SectionReveal } from '@/components/section-reveal'
 import { TiltCard } from '@/components/tilt-card'
+import { LineWaves } from '@/components/line-waves'
+import { GlowText } from '@/components/glow-text'
 import {
   SHOWCASE_PROJECTS,
   normalizeProject,
@@ -147,6 +149,17 @@ export default function ProjectsPage() {
 
   return (
     <div className="relative z-20 min-h-screen overflow-hidden pb-20 pt-32">
+      {/* LineWaves background for projects */}
+      <div className="absolute inset-0 z-0">
+        <LineWaves
+          preset="cool"
+          speed={0.25}
+          enableMouseInteraction={false}
+          brightness={0.12}
+          className="h-full w-full"
+        />
+      </div>
+      
       <div className="absolute left-[8%] top-32 h-52 w-52 rounded-full bg-[#e0cfb5]/18 blur-3xl" />
       <div className="absolute right-[8%] top-40 h-56 w-56 rounded-full bg-[#cbbba9]/18 blur-3xl" />
       <motion.div
