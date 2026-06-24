@@ -8,10 +8,10 @@ import { Card3DParallax } from '@/components/3d-parallax-card'
 import { CERTIFICATE_FALLBACKS } from '@/lib/site-content'
 
 const certificateAccents = [
-  'from-sky-400/25 via-cyan-300/20 to-blue-500/20',
-  'from-amber-300/25 via-orange-300/20 to-rose-400/20',
-  'from-emerald-300/25 via-teal-300/20 to-sky-400/20',
-  'from-violet-400/20 via-fuchsia-300/20 to-sky-400/20',
+  'from-[#f5eee4]/70 via-[#dccab1]/42 to-[#bba999]/34',
+  'from-[#eee1cf]/68 via-[#d4bea1]/40 to-[#a99787]/34',
+  'from-[#f2e8db]/70 via-[#cfbaa3]/40 to-[#c2b4a7]/34',
+  'from-[#ece1d5]/68 via-[#dbc7b2]/42 to-[#b4a69a]/34',
 ]
 
 type Certificate = {
@@ -78,7 +78,7 @@ const CertificateModal = ({ certificate, onClose }: { certificate: Certificate; 
         <X className="h-5 w-5" />
       </button>
 
-      <div className="bg-gradient-to-br from-[#79e0ff]/20 via-[#5e8bff]/10 to-[#ff8b5b]/12 p-8 md:p-10">
+      <div className="bg-gradient-to-br from-[#f5eee4]/40 via-[#dccab1]/24 to-[#bba999]/18 p-8 md:p-10">
         <div className="inline-flex rounded-full border border-white/15 bg-black/15 px-3 py-1 text-xs uppercase tracking-[0.24em] text-white/85">
           Certificate detail
         </div>

@@ -5,37 +5,37 @@
 @tailwind utilities;
 
 :root {
-  --cosmic-void: #06111f;
-  --cosmic-deep: #0d1b30;
-  --cosmic-nebula: #152845;
-  --cosmic-aurora-start: #79e0ff;
-  --cosmic-aurora-mid: #5e8bff;
-  --cosmic-aurora-end: #ff8b5b;
+  --cosmic-void: #9b8f81;
+  --cosmic-deep: #b2a597;
+  --cosmic-nebula: #cdc1b3;
+  --cosmic-aurora-start: #e4cfad;
+  --cosmic-aurora-mid: #f5eadb;
+  --cosmic-aurora-end: #bdb2a7;
   --cosmic-star: #FFFFFF;
-  --cosmic-accent: #79e0ff;
-  --cosmic-glow: #ffd166;
-  --brand-surface: rgba(10, 23, 40, 0.8);
-  --brand-surface-hover: rgba(17, 33, 55, 0.92);
-  --brand-muted: #d6e4f5;
-  --background: 211 57% 8%;
+  --cosmic-accent: #e4cfad;
+  --cosmic-glow: #f5eadb;
+  --brand-surface: rgba(112, 98, 83, 0.62);
+  --brand-surface-hover: rgba(126, 111, 96, 0.82);
+  --brand-muted: #f5ede5;
+  --background: 28 18% 58%;
   --foreground: 210 40% 98%;
-  --card: 212 45% 14%;
+  --card: 28 18% 46%;
   --card-foreground: 210 40% 98%;
-  --popover: 212 45% 14%;
+  --popover: 28 18% 46%;
   --popover-foreground: 210 40% 98%;
-  --primary: 200 95% 71%;
+  --primary: 39 52% 76%;
   --primary-foreground: 0 0% 100%;
-  --secondary: 214 35% 19%;
+  --secondary: 28 17% 48%;
   --secondary-foreground: 210 40% 98%;
-  --muted: 212 32% 20%;
+  --muted: 28 12% 55%;
   --muted-foreground: 214 32% 88%;
-  --accent: 198 96% 72%;
+  --accent: 34 42% 74%;
   --accent-foreground: 258 35% 10%;
   --destructive: 349 89% 60%;
   --destructive-foreground: 210 40% 98%;
-  --border: 209 33% 32%;
-  --input: 209 33% 32%;
-  --ring: 198 90% 70%;
+  --border: 28 13% 66%;
+  --input: 28 13% 66%;
+  --ring: 39 46% 76%;
   --radius: 0.75rem;
 
   --glass-bg: #16132b;
@@ -64,10 +64,10 @@
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background:
-      radial-gradient(circle at 12% 10%, rgba(88, 208, 255, 0.16), transparent 24%),
-      radial-gradient(circle at 85% 12%, rgba(255, 137, 87, 0.12), transparent 22%),
-      radial-gradient(circle at 48% 95%, rgba(255, 209, 102, 0.08), transparent 24%),
-      linear-gradient(155deg, #06111f 0%, #0d1b30 44%, #152845 100%);
+      radial-gradient(circle at 14% 12%, rgba(246, 236, 221, 0.4), transparent 24%),
+      radial-gradient(circle at 82% 14%, rgba(223, 204, 175, 0.28), transparent 24%),
+      radial-gradient(circle at 52% 92%, rgba(190, 178, 167, 0.24), transparent 28%),
+      linear-gradient(155deg, #9b8f81 0%, #b3a596 44%, #cdc1b3 100%);
     color: #e2e8f0;
     min-height: 100vh;
     overflow-x: hidden;
@@ -169,7 +169,7 @@
   /* Text Gradient — solid fallback so text stays readable */
   .text-gradient {
     color: #ffffff;
-    background-image: linear-gradient(135deg, #ffffff 0%, #ffd166 26%, #79e0ff 62%, #5e8bff 100%);
+    background-image: linear-gradient(135deg, #ffffff 0%, #f5eadb 26%, #e4cfad 60%, #bdb2a7 100%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: #ffffff;
@@ -183,7 +183,7 @@
 
   .text-gradient-animated {
     color: #ffffff;
-    background-image: linear-gradient(135deg, #ffffff, #79e0ff, #5e8bff, #ff8b5b);
+    background-image: linear-gradient(135deg, #ffffff, #f5eadb, #e4cfad, #bdb2a7);
     background-size: 300% 300%;
     -webkit-background-clip: text;
     background-clip: text;
@@ -216,8 +216,8 @@
 
   .glow-box {
     box-shadow:
-      0 0 20px rgba(121, 224, 255, 0.22),
-      0 0 60px rgba(255, 139, 91, 0.12);
+      0 0 20px rgba(244, 230, 214, 0.18),
+      0 0 60px rgba(196, 180, 163, 0.12);
   }
 
   /* Magnetic Button */
@@ -227,13 +227,13 @@
     align-items: center;
     justify-content: center;
     padding: 1rem 2.5rem;
-    background: linear-gradient(135deg, #79e0ff, #5e8bff, #ff8b5b);
+    background: linear-gradient(135deg, #f4eadc, #ddc7a5, #b7aaa0);
     border: none;
     border-radius: 100px;
     font-weight: 600;
     font-size: 1rem;
     color: #ffffff;
-    box-shadow: 0 16px 45px rgba(24, 91, 194, 0.28);
+    box-shadow: 0 16px 45px rgba(126, 111, 96, 0.18);
     cursor: pointer;
     overflow: hidden;
     transition: all 0.4s var(--spring);
@@ -408,11 +408,11 @@
 
   .bg-brand-mesh {
     background:
-      radial-gradient(ellipse 80% 58% at 10% 10%, rgba(95, 225, 255, 0.18), transparent 55%),
-      radial-gradient(ellipse 58% 44% at 88% 16%, rgba(255, 139, 91, 0.14), transparent 50%),
-      radial-gradient(ellipse 78% 58% at 50% 100%, rgba(255, 209, 102, 0.12), transparent 58%),
-      radial-gradient(ellipse 60% 42% at 76% 60%, rgba(94, 139, 255, 0.1), transparent 52%),
-      linear-gradient(155deg, #06111f 0%, #0d1b30 46%, #152845 100%);
+      radial-gradient(ellipse 80% 58% at 10% 10%, rgba(245, 235, 221, 0.28), transparent 55%),
+      radial-gradient(ellipse 58% 44% at 88% 16%, rgba(225, 206, 176, 0.2), transparent 50%),
+      radial-gradient(ellipse 78% 58% at 50% 100%, rgba(190, 178, 167, 0.2), transparent 58%),
+      radial-gradient(ellipse 60% 42% at 76% 60%, rgba(244, 234, 220, 0.16), transparent 52%),
+      linear-gradient(155deg, #9b8f81 0%, #b3a596 46%, #cdc1b3 100%);
   }
 
   /* Star Field */
@@ -476,7 +476,7 @@
   .brand-progress {
     height: 100%;
     border-radius: 9999px;
-    background: linear-gradient(90deg, #79e0ff, #5e8bff, #ff8b5b);
+    background: linear-gradient(90deg, #f5eadb, #ddc7a5, #b7aaa0);
     transition: width 0.5s ease;
   }
 
@@ -499,14 +499,14 @@
     position: absolute;
     inset: 0;
     background:
-      radial-gradient(circle at top left, rgba(121, 224, 255, 0.18), transparent 30%),
-      radial-gradient(circle at bottom right, rgba(255, 139, 91, 0.14), transparent 32%);
+      radial-gradient(circle at top left, rgba(244, 234, 220, 0.22), transparent 30%),
+      radial-gradient(circle at bottom right, rgba(212, 191, 164, 0.18), transparent 32%);
     pointer-events: none;
   }
 
   .spectrum-divider {
     height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(121, 224, 255, 0.7), rgba(255, 139, 91, 0.6), transparent);
+    background: linear-gradient(90deg, transparent, rgba(244, 234, 220, 0.75), rgba(212, 191, 164, 0.7), transparent);
   }
 
   .section-halo {

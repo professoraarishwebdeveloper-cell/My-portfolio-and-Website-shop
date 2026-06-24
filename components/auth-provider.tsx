@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
 import type { Session, User } from '@supabase/supabase-js'
 import { supabase, hasSupabaseConfig } from '@/lib/supabase'
+import { logDevelopmentError } from '@/lib/security'
 
 type Profile = {
   id: string
@@ -90,7 +91,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     try {
       setProfile(await loadOrCreateProfile(activeSession.user))
     } catch (error) {
-      console.error('Unable to load profile', error)
+      logDevelopmentError('Unable to load profile', error)
       setProfile({
         id: activeSession.user.id,
         email: activeSession.user.email ?? null,
@@ -124,7 +125,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       loadOrCreateProfile(nextSession.user)
         .then(setProfile)
         .catch((error) => {
-          console.error('Unable to sync profile', error)
+          logDevelopmentError('Unable to sync profile', error)
           setProfile({
             id: nextSession.user.id,
             email: nextSession.user.email ?? null,

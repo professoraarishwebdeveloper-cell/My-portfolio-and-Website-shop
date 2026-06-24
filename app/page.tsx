@@ -93,7 +93,7 @@ function HomeServiceCard({
     <SectionReveal delay={index * 0.08}>
       <TiltCard className="h-full">
         <div className="glass-card glass-card-hover h-full p-7">
-          <div className="mb-5 inline-flex rounded-2xl border border-white/10 bg-[#132744] p-3 text-[#79e0ff]">
+          <div className="mb-5 inline-flex rounded-2xl border border-white/10 bg-[#8d7d6b]/35 p-3 text-[#f5eadb]">
             <Icon className="h-6 w-6" />
           </div>
           <h3 className="mb-3 text-xl font-bold text-white">{title}</h3>
@@ -234,9 +234,9 @@ export default function HomePage() {
   return (
     <div className="relative z-20 overflow-hidden">
       <section className="relative z-20 min-h-screen overflow-hidden pt-24">
-        <div className="absolute left-[6%] top-24 h-40 w-40 rounded-full bg-[#79e0ff]/18 blur-3xl" />
-        <div className="absolute right-[8%] top-36 h-44 w-44 rounded-full bg-[#ff8b5b]/16 blur-3xl" />
-        <div className="absolute bottom-16 left-[40%] h-52 w-52 rounded-full bg-[#ffd166]/12 blur-3xl" />
+        <div className="absolute left-[6%] top-24 h-40 w-40 rounded-full bg-[#efe3d1]/24 blur-3xl" />
+        <div className="absolute right-[8%] top-36 h-44 w-44 rounded-full bg-[#d8c6ae]/18 blur-3xl" />
+        <div className="absolute bottom-16 left-[40%] h-52 w-52 rounded-full bg-[#f5eadb]/24 blur-3xl" />
 
         <div className="relative z-20 mx-auto grid min-h-[calc(100vh-6rem)] w-full max-w-7xl items-center gap-12 px-4 lg:grid-cols-[1.05fr_0.95fr] lg:px-8">
           <motion.div
@@ -251,7 +251,7 @@ export default function HomePage() {
               transition={{ delay: 0.15, duration: 0.5 }}
               className="brand-pill mb-5 text-sm"
             >
-              <Sparkles className="h-4 w-4 text-[#79e0ff]" />
+              <Sparkles className="h-4 w-4 text-[#f5eadb]" />
               Premium creative developer for trust-first digital experiences
             </motion.div>
 
@@ -330,7 +330,7 @@ export default function HomePage() {
       <section className="section-padding relative z-20">
         <div className="container mx-auto px-4">
           <SectionReveal className="mb-10 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#79e0ff]">Growth in numbers</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#f5eadb]">Growth in numbers</p>
             <h2 className="mt-3 text-3xl font-bold text-white drop-shadow-lg md:text-4xl">Credibility at a glance</h2>
           </SectionReveal>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
@@ -346,7 +346,7 @@ export default function HomePage() {
       <section className="section-padding relative z-20">
         <div className="container mx-auto px-4">
           <SectionReveal className="mb-16 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#79e0ff]">What we build</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#f5eadb]">What we build</p>
             <h2 className="mb-4 mt-3 text-4xl font-bold text-white drop-shadow-lg md:text-5xl">Services that feel premium before launch</h2>
             <p className="mx-auto max-w-2xl font-medium leading-[1.8] text-slate-200">
               Every engagement is designed to improve trust, clarity, and perceived value, not just add another website to the internet.
@@ -370,7 +370,7 @@ export default function HomePage() {
         <div className="container mx-auto px-4">
           <SectionReveal className="mb-16 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#79e0ff]">Selected work</p>
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#f5eadb]">Selected work</p>
               <h2 className="mb-4 mt-3 text-4xl font-bold text-white drop-shadow-lg md:text-5xl">Projects that prove the standard</h2>
               <p className="font-medium leading-[1.8] text-slate-200">
                 A stronger projects page starts with sharper stories, clearer outcomes, and cards that feel like finished work instead of placeholders.
@@ -393,7 +393,7 @@ export default function HomePage() {
       <section className="section-padding relative z-20">
         <div className="container mx-auto px-4">
           <SectionReveal className="mb-14 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#79e0ff]">Trust layer</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#f5eadb]">Trust layer</p>
             <h2 className="mt-3 text-4xl font-bold text-white md:text-5xl">Professional signals clients notice immediately</h2>
           </SectionReveal>
 
@@ -401,7 +401,7 @@ export default function HomePage() {
             {TRUST_SIGNALS.map((signal, index) => (
               <SectionReveal key={signal.title} delay={index * 0.08}>
                 <div className="premium-shell rounded-[28px] p-6">
-                  <div className="inline-flex rounded-2xl border border-white/10 bg-[#132744] p-3 text-[#79e0ff]">
+                  <div className="inline-flex rounded-2xl border border-white/10 bg-[#8d7d6b]/35 p-3 text-[#f5eadb]">
                     {index === 0 && <MessageCircle className="h-5 w-5" />}
                     {index === 1 && <Zap className="h-5 w-5" />}
                     {index === 2 && <Star className="h-5 w-5" />}
@@ -420,7 +420,7 @@ export default function HomePage() {
       <section className="section-padding relative z-20">
         <div className="container mx-auto px-4">
           <SectionReveal className="mb-14 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#79e0ff]">Delivery process</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#f5eadb]">Delivery process</p>
             <h2 className="mt-3 text-4xl font-bold text-white md:text-5xl">A clear path from brief to launch</h2>
           </SectionReveal>
 
@@ -428,7 +428,7 @@ export default function HomePage() {
             {DELIVERY_PROCESS.map((step, index) => (
               <SectionReveal key={step.title} delay={index * 0.08}>
                 <div className="glass-card h-full p-6">
-                  <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-[#132744] text-lg font-bold text-[#79e0ff]">
+                  <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-[#8d7d6b]/35 text-lg font-bold text-[#f5eadb]">
                     {index + 1}
                   </div>
                   <h3 className="text-xl font-bold text-white">{step.title}</h3>
@@ -443,7 +443,7 @@ export default function HomePage() {
       <section className="section-padding relative z-20">
         <div className="container mx-auto px-4">
           <SectionReveal className="mb-14 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#79e0ff]">Testimonials</p>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#f5eadb]">Testimonials</p>
             <h2 className="mt-3 text-4xl font-bold text-white md:text-5xl">Feedback that sounds like real clients</h2>
           </SectionReveal>
 
@@ -451,7 +451,7 @@ export default function HomePage() {
             {TESTIMONIALS.map((testimonial, index) => (
               <SectionReveal key={testimonial.name} delay={index * 0.08}>
                 <div className="premium-shell rounded-[28px] p-7">
-                  <div className="mb-6 inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.28em] text-[#79e0ff]">
+                  <div className="mb-6 inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.28em] text-[#f5eadb]">
                     Client feedback
                   </div>
                   <p className="text-lg leading-8 text-slate-100">"{testimonial.quote}"</p>

@@ -3,6 +3,7 @@
 import { useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { AlertCircle, RotateCcw } from 'lucide-react'
+import { logDevelopmentError } from '@/lib/security'
 
 export default function Error({
   error,
@@ -12,7 +13,7 @@ export default function Error({
   reset: () => void
 }) {
   useEffect(() => {
-    console.error(error)
+    logDevelopmentError('app-error', error)
   }, [error])
 
   return (

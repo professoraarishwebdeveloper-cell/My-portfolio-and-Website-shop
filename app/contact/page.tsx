@@ -7,10 +7,18 @@ import { AlertCircle, CheckCircle, Loader2, Mail, MessageCircle, Phone, Send, Sh
 import { PageHeader } from '@/components/page-header'
 import { Card3DParallax } from '@/components/3d-parallax-card'
 import { CONTACT_DETAILS, DELIVERY_PROCESS, TRUST_SIGNALS } from '@/lib/site-content'
+import {
+  contactSubmissionSchema,
+  getFriendlyErrorMessage,
+  logDevelopmentError,
+} from '@/lib/security'
+
+const CONTACT_COOLDOWN_MS = 15000
 
 export default function ContactPage() {
   const formRef = useRef(null)
   const isInView = useInView(formRef, { once: true, amount: 0.25 })
+  const lastSubmitRef = useRef(0)
 
   const [formData, setFormData] = useState({
     name: '',
@@ -21,6 +29,7 @@ export default function ContactPage() {
     timeline: '',
     preferred_contact: 'email',
     message: '',
+    company_website: '',
   })
 
   const [isSubmitting, setIsSubmitting] = useState(false)
@@ -35,14 +44,36 @@ export default function ContactPage() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    setIsSubmitting(true)
     setSubmitStatus({ type: 'idle', message: '' })
 
+    if (Date.now() - lastSubmitRef.current < CONTACT_COOLDOWN_MS) {
+      setSubmitStatus({ type: 'error', message: 'Please wait a few seconds before sending another message.' })
+      return
+    }
+
+    const parsed = contactSubmissionSchema.safeParse(formData)
+
+    if (!parsed.success) {
+      setSubmitStatus({
+        type: 'error',
+        message: parsed.error.issues[0]?.message ?? 'Please review the form and try again.',
+      })
+      return
+    }
+
+    if (parsed.data.company_website) {
+      setSubmitStatus({ type: 'success', message: 'Message sent successfully. You can expect a reply within 24 hours.' })
+      return
+    }
+
+    setIsSubmitting(true)
+    lastSubmitRef.current = Date.now()
+
     const compiledMessage = [
-      `Preferred contact: ${formData.preferred_contact}`,
-      formData.timeline ? `Timeline: ${formData.timeline}` : '',
+      `Preferred contact: ${parsed.data.preferred_contact}`,
+      parsed.data.timeline ? `Timeline: ${parsed.data.timeline}` : '',
       '',
-      formData.message,
+      parsed.data.message,
     ]
       .filter(Boolean)
       .join('\n')
@@ -50,16 +81,16 @@ export default function ContactPage() {
     try {
       const { error } = await supabase.from('contacts').insert([
         {
-          name: formData.name,
-          email: formData.email,
-          phone: formData.phone || null,
-          website_type: formData.website_type || null,
-          budget: formData.budget || null,
+          name: parsed.data.name,
+          email: parsed.data.email,
+          phone: parsed.data.phone || null,
+          website_type: parsed.data.website_type,
+          budget: parsed.data.budget || null,
           message: compiledMessage,
         },
       ])
 
-      if (error) throw new Error(error.message)
+      if (error) throw error
 
       setSubmitStatus({ type: 'success', message: 'Message sent successfully. You can expect a reply within 24 hours.' })
       setFormData({
@@ -71,9 +102,11 @@ export default function ContactPage() {
         timeline: '',
         preferred_contact: 'email',
         message: '',
+        company_website: '',
       })
-    } catch (err: any) {
-      setSubmitStatus({ type: 'error', message: `Something went wrong. Please try again. ${err.message}` })
+    } catch (err) {
+      logDevelopmentError('contact-submit', err)
+      setSubmitStatus({ type: 'error', message: getFriendlyErrorMessage('contact') })
     } finally {
       setIsSubmitting(false)
     }
@@ -91,8 +124,8 @@ export default function ContactPage() {
 
   return (
     <div className="relative z-20 min-h-screen overflow-hidden px-4 pb-20 pt-32">
-      <div className="absolute left-[10%] top-40 h-44 w-44 rounded-full bg-[#79e0ff]/14 blur-3xl" />
-      <div className="absolute right-[10%] top-32 h-52 w-52 rounded-full bg-[#ff8b5b]/12 blur-3xl" />
+      <div className="absolute left-[10%] top-40 h-44 w-44 rounded-full bg-[#f5eadb]/24 blur-3xl" />
+      <div className="absolute right-[10%] top-32 h-52 w-52 rounded-full bg-[#d8c6ae]/18 blur-3xl" />
 
       <div className="container relative z-20 mx-auto">
         <PageHeader
@@ -151,12 +184,23 @@ export default function ContactPage() {
                 </p>
 
                 <form onSubmit={handleSubmit} className="mt-8 space-y-6">
+                  <input
+                    type="text"
+                    name="company_website"
+                    value={formData.company_website}
+                    onChange={handleChange}
+                    autoComplete="off"
+                    tabIndex={-1}
+                    className="absolute left-[-9999px] h-0 w-0 opacity-0"
+                    aria-hidden="true"
+                  />
+
                   <div className="grid gap-6 md:grid-cols-2">
-                    <input type="text" name="name" value={formData.name} onChange={handleChange} required className="cosmic-input" placeholder="Full Name *" />
-                    <input type="email" name="email" value={formData.email} onChange={handleChange} required className="cosmic-input" placeholder="Email Address *" />
+                    <input type="text" name="name" value={formData.name} onChange={handleChange} required maxLength={80} className="cosmic-input" placeholder="Full Name *" />
+                    <input type="email" name="email" value={formData.email} onChange={handleChange} required maxLength={120} className="cosmic-input" placeholder="Email Address *" />
                   </div>
                   <div className="grid gap-6 md:grid-cols-2">
-                    <input type="tel" name="phone" value={formData.phone} onChange={handleChange} className="cosmic-input" placeholder="Phone Number" />
+                    <input type="tel" name="phone" value={formData.phone} onChange={handleChange} maxLength={20} className="cosmic-input" placeholder="Phone Number" />
                     <select name="website_type" value={formData.website_type} onChange={handleChange} required className="cosmic-input bg-cosmic-deep">
                       <option value="">Select Project Type *</option>
                       {websiteTypes.map((type) => <option key={type} value={type}>{type}</option>)}
@@ -167,7 +211,7 @@ export default function ContactPage() {
                       <option value="">Select Budget</option>
                       {budgetOptions.map((budget) => <option key={budget} value={budget}>{budget}</option>)}
                     </select>
-                    <input type="text" name="timeline" value={formData.timeline} onChange={handleChange} className="cosmic-input" placeholder="Timeline or target launch date" />
+                    <input type="text" name="timeline" value={formData.timeline} onChange={handleChange} maxLength={80} className="cosmic-input" placeholder="Timeline or target launch date" />
                   </div>
                   <div>
                     <label className="mb-2 block text-sm font-medium text-slate-100">Preferred contact method</label>
@@ -178,7 +222,7 @@ export default function ContactPage() {
                     </select>
                   </div>
                   <div>
-                    <textarea name="message" value={formData.message} onChange={handleChange} required rows={6} className="cosmic-input resize-none" placeholder="Tell me about the project, what success looks like, and anything the new site must communicate. *" />
+                    <textarea name="message" value={formData.message} onChange={handleChange} required rows={6} maxLength={1500} className="cosmic-input resize-none" placeholder="Tell me about the project, what success looks like, and anything the new site must communicate. *" />
                   </div>
                   <motion.button type="submit" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} disabled={isSubmitting} className="w-full magnetic-btn justify-center">
                     {isSubmitting ? <><Loader2 className="h-5 w-5 animate-spin" /> Sending...</> : <><Send className="h-5 w-5" /> Send Message</>}

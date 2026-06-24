@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { useQuotationStore } from '@/lib/store'
 import { supabase } from '@/lib/supabase'
@@ -10,6 +10,7 @@ import { useAuth } from '@/components/auth-provider'
 import { TiltCard } from '@/components/tilt-card'
 import { SectionReveal } from '@/components/section-reveal'
 import { TRUST_SIGNALS } from '@/lib/site-content'
+import { getFriendlyErrorMessage, logDevelopmentError } from '@/lib/security'
 import {
   ChevronRight,
   ChevronLeft,
@@ -99,6 +100,8 @@ const steps = [
   { id: 5, title: 'Maintenance', icon: Clock },
   { id: 6, title: 'Timeline', icon: Wallet },
 ]
+
+const ORDER_COOLDOWN_MS = 8000
 
 function formatPrice(price: number) {
   return new Intl.NumberFormat('en-IN', { style: 'currency', currency: 'INR', maximumFractionDigits: 0 }).format(price)
@@ -202,6 +205,8 @@ function PriceSummary() {
   const { user } = useAuth()
   const [isLoading, setIsLoading] = useState(false)
   const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
+  const [website, setWebsite] = useState('')
+  const lastActionRef = useRef(0)
 
   const {
     basePrice,
@@ -220,14 +225,38 @@ function PriceSummary() {
   const selectedMaintenance = maintenanceOptions.find((item) => item.id === maintenance)
   const selectedTimeline = timelineOptions.find((item) => item.id === timeline)
 
+  const validateQuoteRequest = () => {
+    if (!websiteType || !selectedWebsite) {
+      setStatus({ type: 'error', message: 'Choose a website type before continuing.' })
+      return false
+    }
+
+    if (website) {
+      setStatus({ type: 'success', message: 'Request received.' })
+      return false
+    }
+
+    if (Date.now() - lastActionRef.current < ORDER_COOLDOWN_MS) {
+      setStatus({ type: 'error', message: 'Please wait a few seconds before submitting again.' })
+      return false
+    }
+
+    return true
+  }
+
   const handleSaveQuote = async () => {
     if (!user) {
       router.push('/auth')
       return
     }
 
+    if (!validateQuoteRequest()) {
+      return
+    }
+
     setIsLoading(true)
     setStatus(null)
+    lastActionRef.current = Date.now()
 
     try {
       const { error } = await supabase.from('quotations').insert([
@@ -249,8 +278,9 @@ function PriceSummary() {
 
       if (error) throw error
       setStatus({ type: 'success', message: 'Quote saved successfully.' })
-    } catch (err: any) {
-      setStatus({ type: 'error', message: err.message })
+    } catch (err) {
+      logDevelopmentError('save-quote', err)
+      setStatus({ type: 'error', message: getFriendlyErrorMessage('quote') })
     } finally {
       setIsLoading(false)
     }
@@ -262,13 +292,13 @@ function PriceSummary() {
       return
     }
 
-    if (!websiteType) {
-      setStatus({ type: 'error', message: 'Choose a website type first.' })
+    if (!validateQuoteRequest()) {
       return
     }
 
     setIsLoading(true)
     setStatus(null)
+    lastActionRef.current = Date.now()
 
     try {
       const quoteResponse = await supabase.from('quotations').insert([
@@ -313,8 +343,9 @@ function PriceSummary() {
 
       if (orderError) throw orderError
       router.push('/dashboard')
-    } catch (err: any) {
-      setStatus({ type: 'error', message: err.message })
+    } catch (err) {
+      logDevelopmentError('place-order', err)
+      setStatus({ type: 'error', message: getFriendlyErrorMessage('order') })
     } finally {
       setIsLoading(false)
     }
@@ -378,6 +409,16 @@ function PriceSummary() {
         )}
 
         <div className="mt-6 grid gap-3">
+          <input
+            type="text"
+            name="website"
+            value={website}
+            onChange={(event) => setWebsite(event.target.value)}
+            autoComplete="off"
+            tabIndex={-1}
+            className="absolute left-[-9999px] h-0 w-0 opacity-0"
+            aria-hidden="true"
+          />
           {user ? (
             <motion.button
               onClick={handleSaveQuote}

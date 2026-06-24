@@ -70,7 +70,7 @@ export function Navbar() {
       >
         <div className="container mx-auto px-4">
           <motion.nav
-            className={`premium-shell relative flex items-center justify-between rounded-[28px] px-5 py-4 shadow-2xl transition-all duration-500 ${
+            className={`premium-shell relative flex items-center justify-between overflow-visible rounded-[28px] px-5 py-4 shadow-2xl transition-all duration-500 ${
               isScrolled ? 'py-3' : ''
             }`}
           >

@@ -147,12 +147,12 @@ export default function ProjectsPage() {
 
   return (
     <div className="relative z-20 min-h-screen overflow-hidden pb-20 pt-32">
-      <div className="absolute left-[8%] top-32 h-52 w-52 rounded-full bg-[#79e0ff]/16 blur-3xl" />
-      <div className="absolute right-[8%] top-40 h-56 w-56 rounded-full bg-[#ff8b5b]/14 blur-3xl" />
+      <div className="absolute left-[8%] top-32 h-52 w-52 rounded-full bg-[#e0cfb5]/18 blur-3xl" />
+      <div className="absolute right-[8%] top-40 h-56 w-56 rounded-full bg-[#cbbba9]/18 blur-3xl" />
       <motion.div
         animate={{ x: [0, 30, 0], y: [0, 18, 0] }}
         transition={{ duration: 16, repeat: Infinity, ease: 'easeInOut' }}
-        className="absolute bottom-24 left-[40%] h-64 w-64 rounded-full bg-[#ffd166]/10 blur-3xl"
+        className="absolute bottom-24 left-[40%] h-64 w-64 rounded-full bg-[#f3e7d5]/20 blur-3xl"
       />
 
       <div className="container relative z-20 mx-auto px-4">
@@ -259,7 +259,9 @@ export default function ProjectsPage() {
                             Visit Live Project
                           </a>
                         ) : (
-                          <span className="btn-secondary !px-5 !py-3 text-sm">Launch-ready structure</span>
+                          <Link href="/contact" className="btn-secondary !px-5 !py-3 text-sm">
+                            Request a Similar Build
+                          </Link>
                         )}
                       </div>
                     </motion.div>
@@ -295,6 +297,22 @@ export default function ProjectsPage() {
                 />
               ))}
             </div>
+
+            <SectionReveal className="mt-14">
+              <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+                {[
+                  { label: 'Portfolio depth', value: `${projects.length} curated projects` },
+                  { label: 'Case study coverage', value: 'Challenge, solution, outcome' },
+                  { label: 'Presentation quality', value: '3D cards and hover motion' },
+                  { label: 'Client readiness', value: 'Real contact path on every featured CTA' },
+                ].map((item) => (
+                  <div key={item.label} className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+                    <p className="text-lg font-semibold text-white">{item.value}</p>
+                    <p className="mt-2 text-sm text-slate-300">{item.label}</p>
+                  </div>
+                ))}
+              </div>
+            </SectionReveal>
 
             <SectionReveal className="mt-16">
               <div className="premium-shell rounded-[32px] p-8 md:p-10">
