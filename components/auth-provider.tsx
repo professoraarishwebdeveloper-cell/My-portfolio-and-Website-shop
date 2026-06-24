@@ -1,6 +1,7 @@
 'use client'
 
-import { createContext, useContext, useEffect, useMemo, useState } from 'react'
+import type { ReactNode } from 'react'
+import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import type { Session, User } from '@supabase/supabase-js'
 import { supabase, hasSupabaseConfig } from '@/lib/supabase'
 import { logDevelopmentError } from '@/lib/security'
@@ -34,12 +35,20 @@ function getDisplayName(user: User) {
   )
 }
 
-async function loadOrCreateProfile(user: User): Promise<Profile> {
-  const email = user.email ?? null
+function fallbackProfile(user: User): Profile {
+  return {
+    id: user.id,
+    email: user.email ?? null,
+    full_name: getDisplayName(user),
+    avatar_url: user.user_metadata?.avatar_url ?? null,
+    role: 'client',
+  }
+}
 
+async function loadOrCreateProfile(user: User): Promise<Profile> {
   const { data: existingProfile, error } = await supabase
     .from('profiles')
-    .select('id, email, full_name, avatar_url, role')
+    .select('id,email,full_name,avatar_url,role')
     .eq('id', user.id)
     .maybeSingle()
 
@@ -50,121 +59,147 @@ async function loadOrCreateProfile(user: User): Promise<Profile> {
   if (existingProfile) {
     return {
       id: user.id,
-      email: existingProfile.email ?? email,
+      email: existingProfile.email ?? user.email ?? null,
       full_name: existingProfile.full_name ?? getDisplayName(user),
-      avatar_url: existingProfile.avatar_url,
+      avatar_url: existingProfile.avatar_url ?? null,
       role: existingProfile.role === 'admin' ? 'admin' : 'client',
     }
   }
 
-  const profile = {
-    id: user.id,
-    email,
-    full_name: getDisplayName(user),
-    avatar_url: user.user_metadata?.avatar_url ?? null,
-    role: 'client' as const,
-  }
+  const newProfile = fallbackProfile(user)
 
-  const { error: insertError } = await supabase.from('profiles').insert(profile)
+  const { error: insertError } = await supabase.from('profiles').insert(newProfile)
+
   if (insertError) {
     throw insertError
   }
 
-  return profile
+  return newProfile
 }
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
+export function AuthProvider({ children }: { children: ReactNode }) {
   const [session, setSession] = useState<Session | null>(null)
   const [profile, setProfile] = useState<Profile | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  const refreshProfile = async () => {
-    const { data } = await supabase.auth.getSession()
-    const activeSession = data.session
+  const mountedRef = useRef(false)
+  const loadingProfileRef = useRef(false)
+  const lastLoadedUserIdRef = useRef<string | null>(null)
+
+  const syncProfile = useCallback(async (activeSession: Session | null) => {
+    if (!mountedRef.current) return
+
     setSession(activeSession)
 
-    if (!activeSession?.user || !hasSupabaseConfig) {
+    const user = activeSession?.user
+
+    if (!user || !hasSupabaseConfig) {
+      lastLoadedUserIdRef.current = null
       setProfile(null)
+      setIsLoading(false)
       return
     }
 
+    if (loadingProfileRef.current && lastLoadedUserIdRef.current === user.id) {
+      return
+    }
+
+    loadingProfileRef.current = true
+    lastLoadedUserIdRef.current = user.id
+
     try {
-      setProfile(await loadOrCreateProfile(activeSession.user))
+      const loadedProfile = await loadOrCreateProfile(user)
+
+      if (!mountedRef.current) return
+
+      setProfile(loadedProfile)
     } catch (error) {
-      logDevelopmentError('Unable to load profile', error)
-      setProfile({
-        id: activeSession.user.id,
-        email: activeSession.user.email ?? null,
-        full_name: getDisplayName(activeSession.user),
-        role: 'client',
-      })
-    }
-  }
+      logDevelopmentError('auth-profile-sync', error)
 
-  useEffect(() => {
-    let mounted = true
+      if (!mountedRef.current) return
 
-    const initialize = async () => {
-      try {
-        await refreshProfile()
-      } finally {
-        if (mounted) setIsLoading(false)
-      }
-    }
+      setProfile(fallbackProfile(user))
+    } finally {
+      loadingProfileRef.current = false
 
-    initialize()
-
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, nextSession) => {
-      setSession(nextSession)
-      if (!nextSession?.user || !hasSupabaseConfig) {
-        setProfile(null)
+      if (mountedRef.current) {
         setIsLoading(false)
-        return
       }
-
-      loadOrCreateProfile(nextSession.user)
-        .then(setProfile)
-        .catch((error) => {
-          logDevelopmentError('Unable to sync profile', error)
-          setProfile({
-            id: nextSession.user.id,
-            email: nextSession.user.email ?? null,
-            full_name: getDisplayName(nextSession.user),
-            role: 'client',
-          })
-        })
-        .finally(() => setIsLoading(false))
-    })
-
-    return () => {
-      mounted = false
-      listener.subscription.unsubscribe()
     }
   }, [])
 
-  const signOut = async () => {
+  const refreshProfile = useCallback(async () => {
+    if (!hasSupabaseConfig) {
+      setSession(null)
+      setProfile(null)
+      setIsLoading(false)
+      return
+    }
+
+    const { data, error } = await supabase.auth.getSession()
+
+    if (error) {
+      logDevelopmentError('auth-refresh-session', error)
+      setSession(null)
+      setProfile(null)
+      setIsLoading(false)
+      return
+    }
+
+    await syncProfile(data.session)
+  }, [syncProfile])
+
+  useEffect(() => {
+    mountedRef.current = true
+
+    refreshProfile()
+
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, nextSession) => {
+      setSession(nextSession)
+
+      window.setTimeout(() => {
+        syncProfile(nextSession)
+      }, 0)
+    })
+
+    return () => {
+      mountedRef.current = false
+      subscription.unsubscribe()
+    }
+  }, [refreshProfile, syncProfile])
+
+  const signOut = useCallback(async () => {
     await supabase.auth.signOut()
+    lastLoadedUserIdRef.current = null
     setSession(null)
     setProfile(null)
-  }
+    setIsLoading(false)
+  }, [])
 
-  const value = useMemo<AuthContextValue>(() => ({
-    session,
-    user: session?.user ?? null,
-    profile,
-    isAdmin: profile?.role === 'admin',
-    isLoading,
-    signOut,
-    refreshProfile,
-  }), [session, profile, isLoading])
+  const value = useMemo<AuthContextValue>(
+    () => ({
+      session,
+      user: session?.user ?? null,
+      profile,
+      isAdmin: profile?.role === 'admin',
+      isLoading,
+      signOut,
+      refreshProfile,
+    }),
+    [session, profile, isLoading, signOut, refreshProfile]
+  )
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>
 }
 
 export function useAuth() {
   const context = useContext(AuthContext)
+
   if (!context) {
     throw new Error('useAuth must be used inside AuthProvider')
   }
+
   return context
 }
