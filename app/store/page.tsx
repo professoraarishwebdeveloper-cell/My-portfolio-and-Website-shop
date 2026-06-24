@@ -10,6 +10,8 @@ import { useAuth } from '@/components/auth-provider'
 import { TiltCard } from '@/components/tilt-card'
 import { SectionReveal } from '@/components/section-reveal'
 import { TRUST_SIGNALS } from '@/lib/site-content'
+import { LineWaves } from '@/components/line-waves'
+import { ParticleWaves } from '@/components/particle-waves'
 import { getFriendlyErrorMessage, logDevelopmentError } from '@/lib/security'
 import {
   ChevronRight,
@@ -628,6 +630,16 @@ export default function StorePage() {
 
   return (
     <div className="relative z-20 min-h-screen overflow-hidden pt-24 pb-20">
+      {/* LineWaves background */}
+      <div className="absolute inset-0 z-0">
+        <LineWaves
+          preset="vibrant"
+          speed={0.28}
+          enableMouseInteraction={true}
+          brightness={0.14}
+          className="h-full w-full"
+        />
+      </div>
 
       <div className="container relative z-20 mx-auto px-4">
         <SectionReveal className="mb-10 grid gap-6 lg:grid-cols-[1.15fr_0.85fr] lg:items-end">

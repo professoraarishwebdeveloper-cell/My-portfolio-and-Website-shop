@@ -8,7 +8,6 @@ import { AuthProvider } from '@/components/auth-provider'
 import { AmbientBackground } from '@/components/ambient-background'
 import { SiteFooter } from '@/components/site-footer'
 import { defaultMetadata } from '@/lib/site-metadata'
-
 export const metadata: Metadata = defaultMetadata
 
 export default function RootLayout({

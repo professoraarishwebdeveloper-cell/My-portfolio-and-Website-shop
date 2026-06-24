@@ -117,19 +117,17 @@ export default function CertificatesPage() {
       try {
         const { data, error } = await supabase.from('certificates').select('*').order('issue_date', { ascending: false })
 
-        if (error || !data?.length) {
-          if (error) {
-            console.warn('Failed to fetch certificates, using fallback data.', error)
-          }
+        if (error) {
+          console.warn('Failed to fetch certificates, using fallback data.', error)
           setCertificates(CERTIFICATE_FALLBACKS)
-          setError(error ? 'Could not load live certificates. Showing curated credentials instead.' : null)
-        } else {
+        } else if (data?.length) {
           setCertificates(data)
+        } else {
+          setCertificates(CERTIFICATE_FALLBACKS)
         }
       } catch (err) {
         console.warn('Using fallback certificates.', err)
         setCertificates(CERTIFICATE_FALLBACKS)
-        setError('Could not load live certificates. Showing curated credentials instead.')
       } finally {
         setLoading(false)
       }
