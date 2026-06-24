@@ -8,6 +8,7 @@ import { AuthProvider } from '@/components/auth-provider'
 import { AmbientBackground } from '@/components/ambient-background'
 import { SiteFooter } from '@/components/site-footer'
 import { defaultMetadata } from '@/lib/site-metadata'
+import { PageTransition } from '@/components/page-transition'
 
 export const metadata: Metadata = defaultMetadata
 
@@ -23,10 +24,12 @@ export default function RootLayout({
           <CustomCursor />
           <SmoothScroll>
             <Navbar />
-            <main className="relative z-20 flex min-h-screen flex-col">
-              {children}
-              <SiteFooter />
-            </main>
+            <PageTransition>
+              <main className="relative z-20 flex min-h-screen flex-col">
+                {children}
+                <SiteFooter />
+              </main>
+            </PageTransition>
             <Toaster />
           </SmoothScroll>
         </AuthProvider>
