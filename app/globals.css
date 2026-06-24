@@ -64,10 +64,10 @@
     @apply bg-background text-foreground antialiased;
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
     background:
-      radial-gradient(circle at 14% 12%, rgba(246, 236, 221, 0.4), transparent 24%),
-      radial-gradient(circle at 82% 14%, rgba(223, 204, 175, 0.28), transparent 24%),
-      radial-gradient(circle at 52% 92%, rgba(190, 178, 167, 0.24), transparent 28%),
-      linear-gradient(155deg, #9b8f81 0%, #b3a596 44%, #cdc1b3 100%);
+      radial-gradient(circle at 10% 15%, rgba(245, 234, 216, 0.32), transparent 24%),
+      radial-gradient(circle at 88% 18%, rgba(216, 195, 162, 0.18), transparent 22%),
+      radial-gradient(circle at 50% 95%, rgba(204, 179, 145, 0.18), transparent 28%),
+      linear-gradient(155deg, #101523 0%, #131923 38%, #161b2b 100%);
     color: #e2e8f0;
     min-height: 100vh;
     overflow-x: hidden;
@@ -408,11 +408,10 @@
 
   .bg-brand-mesh {
     background:
-      radial-gradient(ellipse 80% 58% at 10% 10%, rgba(245, 235, 221, 0.28), transparent 55%),
-      radial-gradient(ellipse 58% 44% at 88% 16%, rgba(225, 206, 176, 0.2), transparent 50%),
-      radial-gradient(ellipse 78% 58% at 50% 100%, rgba(190, 178, 167, 0.2), transparent 58%),
-      radial-gradient(ellipse 60% 42% at 76% 60%, rgba(244, 234, 220, 0.16), transparent 52%),
-      linear-gradient(155deg, #9b8f81 0%, #b3a596 46%, #cdc1b3 100%);
+      radial-gradient(ellipse 75% 44% at 12% 12%, rgba(255, 245, 225, 0.24), transparent 48%),
+      radial-gradient(ellipse 50% 32% at 88% 18%, rgba(215, 192, 160, 0.18), transparent 48%),
+      radial-gradient(ellipse 68% 52% at 54% 100%, rgba(205, 186, 156, 0.16), transparent 52%),
+      linear-gradient(155deg, #0c111d 0%, #131625 42%, #161a27 100%);
   }
 
   /* Star Field */

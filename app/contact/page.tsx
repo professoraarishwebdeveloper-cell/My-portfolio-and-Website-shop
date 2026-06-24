@@ -92,7 +92,7 @@ export default function ContactPage() {
 
       if (error) throw error
 
-      setSubmitStatus({ type: 'success', message: 'Message sent successfully. You can expect a reply within 24 hours.' })
+      setSubmitStatus({ type: 'success', message: 'Brief received successfully. You can expect a reply within 24 hours.' })
       setFormData({
         name: '',
         email: '',
@@ -130,8 +130,8 @@ export default function ContactPage() {
       <div className="container relative z-20 mx-auto">
         <PageHeader
           eyebrow="Get in touch"
-          title="Start the Conversation Professionally"
-          description="Choose the contact method that suits you, or send a detailed project brief below. The page now gives real actions instead of weak placeholders."
+          title="Start the conversation with intent"
+          description="Choose the contact channel that suits your briefing style, or send a focused project brief with scope, timeline, and goals."
         />
 
         <div className="mx-auto mb-12 grid max-w-6xl gap-4 md:grid-cols-3">
@@ -180,7 +180,7 @@ export default function ContactPage() {
               <div className="premium-shell rounded-[32px] p-8 md:p-10">
                 <h3 className="text-2xl font-display font-bold text-white">Send a project brief</h3>
                 <p className="mt-3 text-sm leading-7 text-slate-200">
-                  Share the essentials and the message will be stored cleanly in the current contact system.
+                  Share the essentials, and your request will be delivered clearly and confidentially.
                 </p>
 
                 <form onSubmit={handleSubmit} className="mt-8 space-y-6">
@@ -225,7 +225,7 @@ export default function ContactPage() {
                     <textarea name="message" value={formData.message} onChange={handleChange} required rows={6} maxLength={1500} className="cosmic-input resize-none" placeholder="Tell me about the project, what success looks like, and anything the new site must communicate. *" />
                   </div>
                   <motion.button type="submit" whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }} disabled={isSubmitting} className="w-full magnetic-btn justify-center">
-                    {isSubmitting ? <><Loader2 className="h-5 w-5 animate-spin" /> Sending...</> : <><Send className="h-5 w-5" /> Send Message</>}
+                    {isSubmitting ? <><Loader2 className="h-5 w-5 animate-spin" /> Sending...</> : <><Send className="h-5 w-5" /> Send Brief</>}
                   </motion.button>
 
                   {submitStatus.type !== 'idle' && (

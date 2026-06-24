@@ -80,7 +80,7 @@ export function Navbar() {
                 transition={{ duration: 3, repeat: Infinity }}
                 className="text-xl font-display font-bold text-gradient-animated"
               >
-                AKPS
+                AKPS.space
               </motion.span>
               <span className="hidden text-xs uppercase tracking-[0.28em] text-slate-300 md:block">Creative systems</span>
             </Link>

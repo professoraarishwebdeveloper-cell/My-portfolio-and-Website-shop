@@ -2,26 +2,26 @@
 
 import { motion } from 'framer-motion'
 
-const orbs = [
+const blobs = [
   {
-    className: 'left-[-8%] top-[-6%] h-[520px] w-[520px] bg-[#f4eadc]/32',
-    animate: { x: [0, 40, 0], y: [0, 30, 0], scale: [1, 1.08, 1] },
-    duration: 22,
-  },
-  {
-    className: 'right-[-6%] top-[12%] h-[460px] w-[460px] bg-[#ddc7a5]/24',
-    animate: { x: [0, -35, 0], y: [0, 45, 0], scale: [1, 1.12, 1] },
-    duration: 26,
-  },
-  {
-    className: 'bottom-[-10%] left-[28%] h-[540px] w-[540px] bg-[#ebe0d1]/22',
-    animate: { x: [0, 30, 0], y: [0, -35, 0], scale: [1, 1.06, 1] },
+    className: 'left-[-12%] top-[-10%] h-[580px] w-[580px] rounded-full bg-[radial-gradient(circle_at_top_left,rgba(244,234,220,0.34),transparent_56%)]',
+    animate: { x: [0, 20, 0], y: [0, 16, 0], scale: [1, 1.03, 1] },
     duration: 24,
   },
   {
-    className: 'bottom-[8%] right-[18%] h-[320px] w-[320px] bg-[#bdb2a7]/18',
-    animate: { x: [0, -25, 0], y: [0, 20, 0], scale: [1, 1.1, 1] },
-    duration: 20,
+    className: 'right-[-10%] top-[10%] h-[480px] w-[480px] rounded-full bg-[radial-gradient(circle_at_top_right,rgba(204,181,139,0.24),transparent_56%)]',
+    animate: { x: [0, -18, 0], y: [0, 18, 0], scale: [1, 1.05, 1] },
+    duration: 28,
+  },
+  {
+    className: 'bottom-[-8%] left-[20%] h-[540px] w-[540px] rounded-full bg-[radial-gradient(circle_at_bottom_left,rgba(229,214,191,0.22),transparent_58%)]',
+    animate: { x: [0, 22, 0], y: [0, -22, 0], scale: [1, 1.02, 1] },
+    duration: 26,
+  },
+  {
+    className: 'bottom-[8%] right-[14%] h-[340px] w-[340px] rounded-full bg-[radial-gradient(circle_at_center,rgba(197,182,160,0.18),transparent_55%)]',
+    animate: { x: [0, -14, 0], y: [0, 14, 0], scale: [1, 1.06, 1] },
+    duration: 22,
   },
 ]
 
@@ -29,16 +29,17 @@ export function AmbientBackground() {
   return (
     <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
       <div className="absolute inset-0 bg-brand-mesh" />
-      {orbs.map((orb, index) => (
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.08),transparent_18%),radial-gradient(circle_at_bottom_right,rgba(255,241,212,0.06),transparent_22%)]" />
+      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.04),transparent_20%,transparent_80%,rgba(255,255,255,0.02))]" />
+      {blobs.map((blob, index) => (
         <motion.div
           key={index}
-          className={`absolute rounded-full blur-[100px] ${orb.className}`}
-          animate={orb.animate}
-          transition={{ duration: orb.duration, repeat: Infinity, ease: 'easeInOut' }}
+          className={`absolute rounded-full blur-[108px] ${blob.className}`}
+          animate={blob.animate}
+          transition={{ duration: blob.duration, repeat: Infinity, ease: 'easeInOut' }}
         />
       ))}
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,255,255,0.07),transparent_55%)]" />
-      <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(255,255,255,0.02),transparent_18%,transparent_82%,rgba(255,255,255,0.02))]" />
+      <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(255,255,255,0.04),transparent,rgba(255,255,255,0.04))]" />
     </div>
   )
 }

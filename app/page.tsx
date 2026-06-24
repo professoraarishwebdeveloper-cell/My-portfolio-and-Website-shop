@@ -303,7 +303,7 @@ export default function HomePage() {
                   whileTap={{ scale: 0.97 }}
                   className="btn-secondary rounded-full px-6 py-4 text-sm font-semibold"
                 >
-                  Use the Configurator
+                  Configure your website
                 </motion.div>
               </Link>
             </div>
@@ -373,7 +373,7 @@ export default function HomePage() {
               <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#f5eadb]">Selected work</p>
               <h2 className="mb-4 mt-3 text-4xl font-bold text-white drop-shadow-lg md:text-5xl">Projects that prove the standard</h2>
               <p className="font-medium leading-[1.8] text-slate-200">
-                A stronger projects page starts with sharper stories, clearer outcomes, and cards that feel like finished work instead of placeholders.
+                Projects should lead with clear outcomes, strong context, and polished case studies that feel complete and credible.
               </p>
             </div>
             <Link href="/projects" className="inline-flex items-center gap-2 text-sm text-brand-accent hover:text-white">

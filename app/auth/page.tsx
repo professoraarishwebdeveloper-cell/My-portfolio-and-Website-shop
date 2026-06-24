@@ -183,7 +183,7 @@ export default function AuthPage() {
             transition={{ duration: 3, repeat: Infinity }}
             className="inline-block text-4xl font-display font-bold text-gradient-animated"
           >
-            AK
+            AKPS.space
           </motion.span>
         </Link>
 

@@ -148,7 +148,7 @@ export default function CertificatesPage() {
           </div>
           <h1 className="mb-6 mt-5 text-5xl font-display font-bold text-white drop-shadow-lg md:text-7xl">Certificates</h1>
           <p className="mx-auto max-w-2xl text-lg font-medium leading-[1.8] text-slate-200">
-            A professional credentials section with clean presentation, clearer context, and no placeholder dead ends.
+            A professional credentials section built for clarity, credibility, and confident presentation.
           </p>
         </motion.div>
 
