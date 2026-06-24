@@ -23,12 +23,10 @@ export function PageTransition({ children }: PageTransitionProps) {
     fadeOut: {
       opacity: 0,
       y: 20,
-      transition: { duration: 0.4, ease: 'easeInOut' },
     },
     fadeIn: {
       opacity: 1,
       y: 0,
-      transition: { duration: 0.6, ease: 'easeOut' },
     },
   }
 
@@ -45,6 +43,11 @@ export function PageTransition({ children }: PageTransitionProps) {
       animate={transitionStage}
       variants={variants}
       onAnimationComplete={handleAnimationComplete}
+      transition={
+        transitionStage === 'fadeOut'
+          ? { duration: 0.4, ease: 'easeInOut' }
+          : { duration: 0.6, ease: 'easeOut' }
+      }
       key={displayLocation}
     >
       {children}

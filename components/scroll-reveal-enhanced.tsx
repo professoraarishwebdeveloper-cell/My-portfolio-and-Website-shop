@@ -9,6 +9,7 @@ interface ScrollRevealEnhancedProps {
   delay?: number
   direction?: 'up' | 'down' | 'left' | 'right'
   variant?: 'fade' | 'scale' | 'rotate' | 'blur'
+  className?: string
 }
 
 const directionVariants = {
@@ -30,6 +31,7 @@ export function ScrollRevealEnhanced({
   delay = 0,
   direction = 'up',
   variant = 'fade',
+  className = '',
 }: ScrollRevealEnhancedProps) {
   const { ref, inView } = useInView({
     threshold: 0.1,
@@ -47,6 +49,7 @@ export function ScrollRevealEnhanced({
   return (
     <motion.div
       ref={ref}
+      className={className}
       initial="initial"
       animate={inView ? 'animate' : 'initial'}
       variants={combinedVariants}

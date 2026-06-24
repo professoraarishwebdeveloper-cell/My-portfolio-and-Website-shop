@@ -51,7 +51,7 @@ const FALLBACK_HERO = {
   description: BRAND.description,
 }
 
-const FALLBACK_SERVICES = [
+const FALLBACK_SERVICES: Array<{ title: string; description: string; icon: any }> = [
   {
     title: 'Premium Website Development',
     description: 'Brand-forward websites with stronger hierarchy, faster trust, and a launch-ready frontend.',
@@ -398,7 +398,11 @@ export default function HomePage() {
                 >
                   <ShimmerEffect className="opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                   <div className="relative z-10">
-                    <div className="mb-4 text-4xl">{service.icon}</div>
+                    {typeof service.icon === 'string' ? (
+                      <div className="mb-4 text-4xl">{service.icon}</div>
+                    ) : (
+                      <div className="mb-4 text-4xl flex items-center justify-start">{service.icon}</div>
+                    )}
                     <h3 className="mb-3 text-xl font-bold text-white">{service.title}</h3>
                     <p className="text-sm leading-relaxed text-slate-300">{service.description}</p>
                   </div>

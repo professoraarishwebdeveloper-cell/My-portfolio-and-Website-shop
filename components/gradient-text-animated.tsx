@@ -14,25 +14,25 @@ export function GradientTextAnimated({
   className = '',
   animate = true,
 }: GradientTextAnimatedProps) {
-  const animationVariants = animate
-    ? {
-        initial: { backgroundPosition: '0% center' },
-        animate: { backgroundPosition: ['0% center', '100% center', '0% center'] },
-      }
-    : {}
-
   return (
     <motion.div
-      className={`${className} bg-gradient-to-r from-[#f5eadb] via-[#d8c6ae] to-[#8d7d6b] bg-clip-text text-transparent bg-size-200`}
-      initial="initial"
-      animate={animate ? 'animate' : undefined}
-      variants={animationVariants}
-      transition={{
-        duration: 6,
-        repeat: Infinity,
-        ease: 'easeInOut',
-      }}
-      style={animate ? { backgroundSize: '200% 200%' } : undefined}
+      className={`${className} bg-gradient-to-r from-[#f5eadb] via-[#d8c6ae] to-[#8d7d6b] bg-clip-text text-transparent`}
+      animate={
+        animate
+          ? {
+              opacity: [1, 0.8, 1],
+            }
+          : {}
+      }
+      transition={
+        animate
+          ? {
+              duration: 4,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }
+          : {}
+      }
     >
       {children}
     </motion.div>

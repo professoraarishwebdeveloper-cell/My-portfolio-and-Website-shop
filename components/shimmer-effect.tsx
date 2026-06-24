@@ -14,9 +14,10 @@ export function ShimmerEffect({ className = '', duration = 3 }: ShimmerEffectPro
       style={{
         background: 'linear-gradient(90deg, transparent, rgba(255,255,255,0.1), transparent)',
         backgroundSize: '200% 100%',
+        backgroundPosition: '200% 0',
       }}
       animate={{
-        backgroundPosition: ['200% 0', '-200% 0'],
+        backgroundPosition: ['-200% 0', '200% 0'],
       }}
       transition={{
         duration,
