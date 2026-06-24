@@ -19,6 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body className="min-h-screen bg-cosmic-void font-sans antialiased">
+        <GlobalWavesBg />
         <AuthProvider>
           <CustomCursor />
           <SmoothScroll>
@@ -30,7 +31,6 @@ export default function RootLayout({
             <Toaster />
           </SmoothScroll>
         </AuthProvider>
-        <GlobalWavesBg />
         <AmbientBackground />
         <div className="noise" aria-hidden="true" />
       </body>

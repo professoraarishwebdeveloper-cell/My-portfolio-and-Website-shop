@@ -4,12 +4,12 @@ import { LineWaves } from '@/components/line-waves'
 
 export function GlobalWavesBg() {
   return (
-    <div className="pointer-events-none fixed inset-0 z-0 overflow-hidden" aria-hidden="true">
+    <div className="fixed inset-0 overflow-hidden" style={{ zIndex: -1 }} aria-hidden="true">
       <LineWaves
         preset="warm"
         speed={0.15}
         enableMouseInteraction={true}
-        brightness={0.08}
+        brightness={0.25}
         className="h-full w-full"
       />
     </div>
