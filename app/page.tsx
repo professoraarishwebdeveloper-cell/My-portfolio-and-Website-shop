@@ -26,13 +26,6 @@ import { CtaBanner } from '@/components/cta-banner'
 import { LineWaves } from '@/components/line-waves'
 import { GradientOrb } from '@/components/gradient-orb'
 import { ParticleWaves } from '@/components/particle-waves'
-import { ScrollRevealEnhanced } from '@/components/scroll-reveal-enhanced'
-import { GradientTextAnimated } from '@/components/gradient-text-animated'
-import { HoverEnhance } from '@/components/hover-enhance'
-import { ShimmerEffect } from '@/components/shimmer-effect'
-import { FloatingElements } from '@/components/floating-elements'
-import { TextReveal } from '@/components/text-reveal'
-import { StaggerContainer } from '@/components/stagger-container'
 import {
   BRAND,
   CONTACT_DETAILS,
@@ -357,21 +350,9 @@ export default function HomePage() {
           </SectionReveal>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
             {HOME_STATS.map((stat, i) => (
-              <ScrollRevealEnhanced key={stat.label} delay={i * 0.1} direction="up" variant="scale">
-                <div className="relative rounded-2xl border border-white/10 bg-white/[0.03] p-6 backdrop-blur-sm overflow-hidden group">
-                  <ShimmerEffect className="opacity-0 group-hover:opacity-100" />
-                  <motion.div
-                    initial={{ scale: 0.5, opacity: 0 }}
-                    whileInView={{ scale: 1, opacity: 1 }}
-                    transition={{ delay: 0.2 + i * 0.08 }}
-                  >
-                    <div className="text-3xl font-bold text-[#f5eadb] mb-2">
-                      {stat.value}{stat.suffix}
-                    </div>
-                    <p className="text-sm text-slate-300">{stat.label}</p>
-                  </motion.div>
-                </div>
-              </ScrollRevealEnhanced>
+              <SectionReveal key={stat.label} delay={i * 0.08}>
+                <CounterStat value={stat.value} suffix={stat.suffix} label={stat.label} />
+              </SectionReveal>
             ))}
           </div>
         </div>
@@ -379,67 +360,48 @@ export default function HomePage() {
 
       <section className="section-padding relative z-20">
         <div className="container mx-auto px-4">
-          <ScrollRevealEnhanced direction="up" variant="fade" className="mb-16 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#f5eadb] mb-4">What we build</p>
-            <h2 className="mb-4 mt-3 text-4xl font-bold text-white drop-shadow-lg md:text-5xl">
-              <TextReveal staggerContainer={false}>Services that feel premium before launch</TextReveal>
-            </h2>
+          <SectionReveal className="mb-16 text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#f5eadb]">What we build</p>
+            <h2 className="mb-4 mt-3 text-4xl font-bold text-white drop-shadow-lg md:text-5xl">Services that feel premium before launch</h2>
             <p className="mx-auto max-w-2xl font-medium leading-[1.8] text-slate-200">
               Every engagement is designed to improve trust, clarity, and perceived value, not just add another website to the internet.
             </p>
-          </ScrollRevealEnhanced>
-          <StaggerContainer staggerDelay={0.12} className="grid gap-6 md:grid-cols-3">
+          </SectionReveal>
+          <div className="grid gap-6 md:grid-cols-3">
             {services.map((service, i) => (
-              <ScrollRevealEnhanced key={service.title} direction="up" variant="scale" delay={i * 0.1}>
-                <HoverEnhance
-                  className="group relative rounded-2xl border border-white/10 bg-gradient-to-br from-white/[0.08] to-white/[0.03] p-8 backdrop-blur-sm hover:border-[#f5eadb]/30 overflow-hidden transition-all duration-300"
-                  scaleOnHover={1.05}
-                  glowColor="rgba(245, 234, 219, 0.3)"
-                >
-                  <ShimmerEffect className="opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                  <div className="relative z-10">
-                    {typeof service.icon === 'string' ? (
-                      <div className="mb-4 text-4xl">{service.icon}</div>
-                    ) : (
-                      <div className="mb-4 text-4xl flex items-center justify-start">{service.icon}</div>
-                    )}
-                    <h3 className="mb-3 text-xl font-bold text-white">{service.title}</h3>
-                    <p className="text-sm leading-relaxed text-slate-300">{service.description}</p>
-                  </div>
-                </HoverEnhance>
-              </ScrollRevealEnhanced>
+              <HomeServiceCard
+                key={service.title}
+                title={service.title}
+                description={service.description}
+                icon={service.icon}
+                index={i}
+              />
             ))}
-          </StaggerContainer>
+          </div>
         </div>
       </section>
 
       <section className="section-padding relative z-20">
         <div className="container mx-auto px-4">
-          <ScrollRevealEnhanced className="mb-16 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between" direction="left" variant="fade">
+          <SectionReveal className="mb-16 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
             <div className="max-w-2xl">
-              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#f5eadb] mb-4">Selected work</p>
-              <h2 className="mb-4 mt-3 text-4xl font-bold text-white drop-shadow-lg md:text-5xl">
-                <TextReveal staggerContainer={false}>Projects that prove the standard</TextReveal>
-              </h2>
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#f5eadb]">Selected work</p>
+              <h2 className="mb-4 mt-3 text-4xl font-bold text-white drop-shadow-lg md:text-5xl">Projects that prove the standard</h2>
               <p className="font-medium leading-[1.8] text-slate-200">
                 Projects should lead with clear outcomes, strong context, and polished case studies that feel complete and credible.
               </p>
             </div>
-            <motion.div whileHover={{ x: 5 }} transition={{ type: 'spring', stiffness: 400 }}>
-              <Link href="/projects" className="inline-flex items-center gap-2 text-sm text-brand-accent hover:text-white">
-                Explore all projects
-                <ArrowRight className="h-4 w-4" />
-              </Link>
-            </motion.div>
-          </ScrollRevealEnhanced>
+            <Link href="/projects" className="inline-flex items-center gap-2 text-sm text-brand-accent hover:text-white">
+              Explore all projects
+              <ArrowRight className="h-4 w-4" />
+            </Link>
+          </SectionReveal>
 
-          <StaggerContainer staggerDelay={0.15} className="grid gap-6 lg:grid-cols-3">
+          <div className="grid gap-6 lg:grid-cols-3">
             {projects.map((project, i) => (
-              <ScrollRevealEnhanced key={project.id} direction="up" variant="scale" delay={i * 0.1}>
-                <ProjectPreviewCard project={project} index={i} />
-              </ScrollRevealEnhanced>
+              <ProjectPreviewCard key={project.id} project={project} index={i} />
             ))}
-          </StaggerContainer>
+          </div>
         </div>
       </section>
 
