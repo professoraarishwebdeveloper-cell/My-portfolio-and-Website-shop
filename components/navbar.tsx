@@ -1,27 +1,20 @@
 'use client'
 
-import { useEffect, useState, useRef } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Menu, X, User, LogOut, Github, Twitter, Linkedin, Mail, Shield, Sparkles } from 'lucide-react'
+import { Menu, X, User, LogOut, Mail, Shield, Sparkles, ChevronDown, Phone, MessageCircle } from 'lucide-react'
 import { useAuth } from '@/components/auth-provider'
-
-const navItems = [
-  { href: '/', label: 'Home' },
-  { href: '/about', label: 'About' },
-  { href: '/skills', label: 'Skills' },
-  { href: '/journey', label: 'Journey' },
-  { href: '/projects', label: 'Projects' },
-  { href: '/certificates', label: 'Certificates' },
-  { href: '/contact', label: 'Contact' },
-]
+import { CONTACT_DETAILS, NAVIGATION } from '@/lib/site-content'
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)
   const [isScrolled, setIsScrolled] = useState(false)
   const [scrollDirection, setScrollDirection] = useState<'up' | 'down'>('up')
+  const [isMoreOpen, setIsMoreOpen] = useState(false)
   const lastScrollY = useRef(0)
+  const moreMenuRef = useRef<HTMLDivElement>(null)
   const pathname = usePathname()
   const router = useRouter()
   const { user, isAdmin, signOut } = useAuth()
@@ -40,6 +33,7 @@ export function Navbar() {
 
   useEffect(() => {
     setIsOpen(false)
+    setIsMoreOpen(false)
   }, [pathname])
 
   useEffect(() => {
@@ -48,6 +42,17 @@ export function Navbar() {
       document.body.style.overflow = ''
     }
   }, [isOpen])
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (!moreMenuRef.current?.contains(event.target as Node)) {
+        setIsMoreOpen(false)
+      }
+    }
+
+    document.addEventListener('mousedown', handleClickOutside)
+    return () => document.removeEventListener('mousedown', handleClickOutside)
+  }, [])
 
   const handleLogout = async () => {
     await signOut()
@@ -65,55 +70,93 @@ export function Navbar() {
       >
         <div className="container mx-auto px-4">
           <motion.nav
-            className={`relative flex items-center justify-between rounded-2xl border border-white/10 bg-brand-surface/95 px-6 py-4 shadow-2xl backdrop-blur-xl transition-all duration-500 ${
+            className={`premium-shell relative flex items-center justify-between rounded-[28px] px-5 py-4 shadow-2xl transition-all duration-500 ${
               isScrolled ? 'py-3' : ''
             }`}
           >
-            <Link href="/" className="group relative z-10">
+            <Link href="/" className="group relative z-10 flex items-center gap-3">
               <motion.span
-                animate={{ scale: [1, 1.05, 1] }}
+                animate={{ scale: [1, 1.04, 1] }}
                 transition={{ duration: 3, repeat: Infinity }}
                 className="text-xl font-display font-bold text-gradient-animated"
               >
-                AK
+                AKPS
               </motion.span>
+              <span className="hidden text-xs uppercase tracking-[0.28em] text-slate-300 md:block">Creative systems</span>
             </Link>
 
-            <div className="hidden items-center gap-1 lg:flex">
-              {navItems.map((item) => {
+            <div className="hidden items-center gap-1 xl:flex">
+              {NAVIGATION.primary.map((item) => {
                 const isActive = pathname === item.href
                 return (
                   <Link key={item.href} href={item.href} className="group relative px-3 py-2 text-sm font-medium transition-all">
-                    <span className={`relative z-10 ${isActive ? 'text-white drop-shadow-lg' : 'text-white group-hover:text-slate-200'}`}>
+                    <span className={`relative z-10 ${isActive ? 'text-white' : 'text-slate-100 group-hover:text-white'}`}>
                       {item.label}
                     </span>
                     {isActive && (
                       <motion.div
                         layoutId="nav-indicator"
-                        className="absolute inset-0 rounded-lg border border-brand-accent/25 bg-brand-violet/10"
+                        className="absolute inset-0 rounded-xl border border-brand-accent/25 bg-brand-violet/10"
                         transition={{ type: 'spring', damping: 25, stiffness: 400 }}
                       />
                     )}
                   </Link>
                 )
               })}
-              <Link href="/store" className="ml-2">
-                <motion.span
-                  whileHover={{ scale: 1.04, y: -1 }}
-                  whileTap={{ scale: 0.97 }}
-                  className={`inline-flex items-center gap-1.5 rounded-full px-4 py-2 text-sm font-semibold transition-all ${
-                    pathname === '/store'
+
+              <div ref={moreMenuRef} className="relative ml-1">
+                <button
+                  type="button"
+                  onClick={() => setIsMoreOpen((current) => !current)}
+                  className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition-all ${
+                    NAVIGATION.secondary.some((item) => pathname === item.href) || isMoreOpen
                       ? 'brand-pill-active'
-                      : 'border border-brand-accent/30 bg-brand-violet/10 text-white hover:bg-brand-violet/20'
+                      : 'border-white/10 bg-brand-surface text-slate-100 hover:border-white/20 hover:text-white'
                   }`}
                 >
-                  <Sparkles className="h-3.5 w-3.5 text-brand-accent" />
-                  Store
-                </motion.span>
-              </Link>
+                  More
+                  <ChevronDown className={`h-4 w-4 transition-transform ${isMoreOpen ? 'rotate-180' : ''}`} />
+                </button>
+
+                <AnimatePresence>
+                  {isMoreOpen && (
+                    <motion.div
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: 10 }}
+                      className="premium-shell absolute right-0 top-[calc(100%+0.75rem)] w-56 rounded-3xl p-3"
+                    >
+                      {NAVIGATION.secondary.map((item) => {
+                        const isActive = pathname === item.href
+                        return (
+                          <Link
+                            key={item.href}
+                            href={item.href}
+                            className={`block rounded-2xl px-4 py-3 text-sm transition-all ${
+                              isActive ? 'bg-brand-violet/15 text-white' : 'text-slate-100 hover:bg-white/5 hover:text-white'
+                            }`}
+                          >
+                            {item.label}
+                          </Link>
+                        )
+                      })}
+                    </motion.div>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
 
             <div className="hidden items-center gap-3 lg:flex">
+              <a
+                href={CONTACT_DETAILS.whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-brand-surface px-4 py-2 text-sm text-slate-100 transition-all hover:border-brand-accent/30 hover:text-white"
+              >
+                <MessageCircle className="h-4 w-4 text-brand-accent" />
+                WhatsApp
+              </a>
+
               {user ? (
                 <>
                   <Link href="/dashboard" className="flex items-center gap-2 px-3 py-2 text-sm text-white hover:text-slate-200">
@@ -132,9 +175,14 @@ export function Navbar() {
                   </button>
                 </>
               ) : (
-                <Link href="/auth" className="magnetic-btn !px-5 !py-2.5 text-sm">
-                  Login
-                </Link>
+                <>
+                  <Link href="/auth" className="px-3 py-2 text-sm text-slate-100 hover:text-white">
+                    Client Login
+                  </Link>
+                  <Link href="/contact" className="magnetic-btn !px-5 !py-2.5 text-sm">
+                    Start a Project
+                  </Link>
+                </>
               )}
             </div>
 
@@ -157,7 +205,7 @@ export function Navbar() {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               onClick={() => setIsOpen(false)}
-              className="fixed inset-0 z-50 bg-[#0a0814]/85 backdrop-blur-sm lg:hidden"
+              className="fixed inset-0 z-50 bg-[#07111f]/88 backdrop-blur-sm lg:hidden"
             />
 
             <motion.aside
@@ -165,7 +213,7 @@ export function Navbar() {
               animate={{ x: 0 }}
               exit={{ x: '100%' }}
               transition={{ duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
-              className="fixed right-0 top-0 z-[60] flex h-full w-[min(86vw,380px)] flex-col overflow-y-auto border-l border-white/10 bg-brand-surface p-6 pt-24 shadow-2xl lg:hidden"
+              className="premium-shell fixed right-0 top-0 z-[60] flex h-full w-[min(88vw,390px)] flex-col overflow-y-auto rounded-l-[32px] p-6 pt-24 shadow-2xl lg:hidden"
             >
               <button
                 onClick={() => setIsOpen(false)}
@@ -176,7 +224,7 @@ export function Navbar() {
               </button>
 
               <div className="flex flex-col gap-2">
-                {[...navItems, { href: '/store', label: 'Store' }].map((item, i) => {
+                {[...NAVIGATION.primary, ...NAVIGATION.secondary].map((item, i) => {
                   const isActive = pathname === item.href
                   return (
                     <motion.div
@@ -188,7 +236,7 @@ export function Navbar() {
                       <Link
                         href={item.href}
                         onClick={() => setIsOpen(false)}
-                        className={`block rounded-xl px-4 py-3 text-xl font-display font-semibold transition-colors ${
+                        className={`block rounded-2xl px-4 py-3 text-xl font-display font-semibold transition-colors ${
                           isActive ? 'bg-brand-violet/15 text-white' : 'text-white hover:bg-white/5 hover:text-slate-200'
                         }`}
                       >
@@ -215,25 +263,51 @@ export function Navbar() {
                     </button>
                   </div>
                 ) : (
-                  <Link href="/auth" onClick={() => setIsOpen(false)} className="magnetic-btn inline-flex !px-8 !py-4 text-lg">
-                    Login
-                  </Link>
+                  <div className="grid gap-3">
+                    <Link href="/contact" onClick={() => setIsOpen(false)} className="magnetic-btn inline-flex !px-8 !py-4 text-lg">
+                      Start a Project
+                    </Link>
+                    <Link href="/auth" onClick={() => setIsOpen(false)} className="btn-secondary inline-flex !px-8 !py-4 text-lg">
+                      Client Login
+                    </Link>
+                  </div>
                 )}
               </div>
 
-              <div className="mt-8 flex items-center gap-6">
-                <a href="https://github.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-brand-accent">
-                  <Github className="h-6 w-6" />
+              <div className="mt-8 grid gap-3">
+                <a
+                  href={CONTACT_DETAILS.emailHref}
+                  className="inline-flex items-center gap-3 rounded-2xl border border-white/10 bg-brand-surface px-4 py-4 text-sm text-white"
+                >
+                  <Mail className="h-5 w-5 text-brand-accent" />
+                  {CONTACT_DETAILS.email}
                 </a>
-                <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-brand-accent">
-                  <Twitter className="h-6 w-6" />
+                <a
+                  href={CONTACT_DETAILS.phoneHref}
+                  className="inline-flex items-center gap-3 rounded-2xl border border-white/10 bg-brand-surface px-4 py-4 text-sm text-white"
+                >
+                  <Phone className="h-5 w-5 text-brand-accent" />
+                  {CONTACT_DETAILS.phoneDisplay}
                 </a>
-                <a href="https://linkedin.com" target="_blank" rel="noopener noreferrer" className="text-white hover:text-brand-accent">
-                  <Linkedin className="h-6 w-6" />
+                <a
+                  href={CONTACT_DETAILS.whatsappHref}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-3 rounded-2xl border border-white/10 bg-brand-surface px-4 py-4 text-sm text-white"
+                >
+                  <MessageCircle className="h-5 w-5 text-brand-accent" />
+                  Chat on WhatsApp
                 </a>
-                <a href="mailto:mr.shadow4704@gmail.com" className="text-white hover:text-brand-accent">
-                  <Mail className="h-6 w-6" />
-                </a>
+              </div>
+
+              <div className="mt-8 rounded-3xl border border-white/10 bg-[#0f1e32]/70 p-5">
+                <div className="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.28em] text-brand-accent">
+                  <Sparkles className="h-3.5 w-3.5" />
+                  Trusted delivery
+                </div>
+                <p className="mt-4 text-sm leading-7 text-slate-200">
+                  Premium websites, dashboards, and AI-backed systems designed to feel established from the first screen.
+                </p>
               </div>
             </motion.aside>
           </>

@@ -151,8 +151,8 @@ export default function AdminPage() {
   const paidRevenue = invoices
     .filter((invoice) => invoice.status === 'paid')
     .reduce((sum, invoice) => sum + Number(invoice.amount ?? 0), 0)
-  const pendingOrders = orders.filter((order) => ['new', 'pending', 'in-progress'].includes(order.order_status)).length
-  const completedOrders = orders.filter((order) => order.order_status === 'completed').length
+  const pendingOrders = orders.filter((order) => ['pending', 'processing', 'in_progress', 'review'].includes(order.status)).length
+  const completedOrders = orders.filter((order) => order.status === 'completed').length
   const recentMessages = contacts.slice(0, 5)
   const recentOrders = orders.slice(0, 5)
   const recentQuotes = quotations.slice(0, 5)
@@ -176,14 +176,14 @@ export default function AdminPage() {
 
         <div className="grid grid-cols-1 gap-6 py-6 lg:grid-cols-3">
           <DataTable title="Recent Messages" data={recentMessages} columns={['Name', 'Email', 'Message']} isLoading={loading} emptyMessage="No recent messages." />
-          <DataTable title="Recent Orders" data={recentOrders} columns={['Project Name', 'Total Amount', 'Order Status']} isLoading={loading} emptyMessage="No recent orders." />
-          <DataTable title="Recent Quote Requests" data={recentQuotes} columns={['Website Type', 'Estimated Price', 'Status']} isLoading={loading} emptyMessage="No recent quotes." />
+          <DataTable title="Recent Orders" data={recentOrders} columns={['Website Type', 'Amount', 'Status']} isLoading={loading} emptyMessage="No recent orders." />
+          <DataTable title="Recent Quote Requests" data={recentQuotes} columns={['Website Type', 'Total Price', 'Status']} isLoading={loading} emptyMessage="No recent quotes." />
         </div>
         
         <DataTable title="Profiles" data={data?.profiles ?? null} columns={['ID', 'Full Name', 'Email', 'Role']} isLoading={loading} emptyMessage="No profiles found." />
         <DataTable title="Contacts" data={data?.contacts ?? null} columns={['Name', 'Email', 'Message']} isLoading={loading} emptyMessage="No contact messages." />
-        <DataTable title="Quotations" data={data?.quotations ?? null} columns={['Website Type', 'Estimated Price', 'Status']} isLoading={loading} emptyMessage="No quotations found." />
-        <DataTable title="Orders" data={data?.orders ?? null} columns={['Project Name', 'Total Amount', 'Order Status']} isLoading={loading} emptyMessage="No orders found." />
+        <DataTable title="Quotations" data={data?.quotations ?? null} columns={['Website Type', 'Total Price', 'Status']} isLoading={loading} emptyMessage="No quotations found." />
+        <DataTable title="Orders" data={data?.orders ?? null} columns={['Website Type', 'Amount', 'Status']} isLoading={loading} emptyMessage="No orders found." />
         <DataTable title="Invoices" data={data?.invoices ?? null} columns={['Amount', 'Status']} isLoading={loading} emptyMessage="No invoices found." />
         <DataTable title="Notifications" data={data?.notifications ?? null} columns={['Message', 'Created At']} isLoading={loading} emptyMessage="No notifications found." />
 

@@ -2,6 +2,20 @@
 
 import { useState, useEffect, ReactNode } from 'react'
 import { motion } from 'framer-motion'
+import Link from 'next/link'
+import {
+  ArrowRight,
+  Bot,
+  Code,
+  Globe,
+  Layers,
+  Loader2,
+  MessageCircle,
+  ShieldCheck,
+  Sparkles,
+  Star,
+  Zap,
+} from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { HeroSphere } from '@/components/hero-sphere'
 import { CounterStat } from '@/components/counter-stat'
@@ -9,54 +23,47 @@ import { ScrollTree } from '@/components/scroll-tree'
 import { TiltCard } from '@/components/tilt-card'
 import { SectionReveal } from '@/components/section-reveal'
 import { CtaBanner } from '@/components/cta-banner'
-
-import { Loader2, ArrowRight, Sparkles, Code, Palette, Cpu, Rocket, Lightbulb, Star } from 'lucide-react'
-import Link from 'next/link'
-
-const ICONS: { [key: string]: React.ElementType } = {
-  Sparkles, Code, Palette, Cpu, Rocket, Lightbulb, Star,
-}
+import {
+  BRAND,
+  CONTACT_DETAILS,
+  DELIVERY_PROCESS,
+  SHOWCASE_PROJECTS,
+  TESTIMONIALS,
+  TRUST_SIGNALS,
+  normalizeProject,
+  type ShowcaseProject,
+} from '@/lib/site-content'
 
 const FALLBACK_HERO = {
   title: 'AARISH',
   subtitle: 'KHATIB',
-  roles: ['Creative Developer', 'Digital Architect', 'AI Builder'],
-  description:
-    'Premium digital agency craftsmanship — websites, product design, and growth-focused experiences built to perform.',
+  roles: ['Creative Developer', 'Agency Website Builder', 'AI Systems Partner'],
+  description: BRAND.description,
 }
 
 const FALLBACK_SERVICES = [
-  { title: 'Web Development', description: 'Full-stack products with React, Next.js, and modern architecture.', icon: 'Code' },
-  { title: 'UI/UX Design', description: 'Clean interfaces with depth, motion, and conversion-focused layouts.', icon: 'Palette' },
-  { title: 'AI Integration', description: 'Intelligent features powered by modern AI APIs and automation.', icon: 'Sparkles' },
-]
-
-const FALLBACK_PROJECTS = [
   {
-    title: 'Agency Platform',
-    description: 'A premium agency site with animated hero, configurator, and dashboard.',
-    technologies: ['Next.js', 'Supabase', 'Framer Motion'],
-    icon: 'Rocket',
+    title: 'Premium Website Development',
+    description: 'Brand-forward websites with stronger hierarchy, faster trust, and a launch-ready frontend.',
+    icon: Globe,
   },
   {
-    title: 'E-Commerce Suite',
-    description: 'Conversion-ready storefront with polished checkout and admin tooling.',
-    technologies: ['React', 'Tailwind', 'Stripe'],
-    icon: 'Cpu',
+    title: 'Dashboard and Product UI',
+    description: 'Cleaner interfaces for data-heavy products, admin systems, and modern internal tools.',
+    icon: Layers,
   },
   {
-    title: 'Portfolio System',
-    description: 'Cinematic personal brand experience with 3D visuals and smooth scroll.',
-    technologies: ['Three.js', 'GSAP', 'TypeScript'],
-    icon: 'Star',
+    title: 'AI Integration',
+    description: 'Practical AI features, assistants, and automation layers built around real business workflows.',
+    icon: Bot,
   },
 ]
 
 const HOME_STATS = [
   { value: 50, suffix: '+', label: 'Projects' },
-  { value: 12, suffix: '', label: 'Technologies' },
-  { value: 8, suffix: '', label: 'Certificates' },
-  { value: 6, suffix: '', label: 'Clients' },
+  { value: 15, suffix: '+', label: 'Technologies' },
+  { value: 8, suffix: '+', label: 'Certificates' },
+  { value: 12, suffix: '+', label: 'Clients' },
 ]
 
 const MagneticButton = ({ children, href }: { children: ReactNode; href: string }) => (
@@ -71,46 +78,76 @@ const MagneticButton = ({ children, href }: { children: ReactNode; href: string 
   </Link>
 )
 
-const ShowcaseCard = ({
+function HomeServiceCard({
   title,
   description,
-  technologies,
-  icon,
+  icon: Icon,
   index,
 }: {
   title: string
   description: string
-  technologies: string[]
-  icon: string
+  icon: React.ElementType
   index: number
-}) => {
-  const Icon = ICONS[icon] || Code
+}) {
   return (
-    <SectionReveal delay={index * 0.1}>
+    <SectionReveal delay={index * 0.08}>
+      <TiltCard className="h-full">
+        <div className="glass-card glass-card-hover h-full p-7">
+          <div className="mb-5 inline-flex rounded-2xl border border-white/10 bg-[#132744] p-3 text-[#79e0ff]">
+            <Icon className="h-6 w-6" />
+          </div>
+          <h3 className="mb-3 text-xl font-bold text-white">{title}</h3>
+          <p className="text-sm font-medium leading-7 text-slate-200">{description}</p>
+        </div>
+      </TiltCard>
+    </SectionReveal>
+  )
+}
+
+function ProjectPreviewCard({ project, index }: { project: ShowcaseProject; index: number }) {
+  return (
+    <SectionReveal delay={index * 0.08}>
       <TiltCard className="h-full">
         <motion.div
           whileHover={{ y: -6 }}
-          transition={{ type: 'spring', stiffness: 260, damping: 22 }}
-          className="glass-card glass-card-hover group relative flex h-full flex-col overflow-hidden border border-white/10 p-7 shadow-2xl"
+          transition={{ type: 'spring', stiffness: 240, damping: 22 }}
+          className="premium-shell group relative flex h-full flex-col overflow-hidden rounded-[28px] p-6"
         >
-          <div className="relative z-20">
-            <div className="mb-5 inline-flex rounded-2xl border border-white/10 bg-[#1e1a38] p-3 text-[#5EAEF9]">
-              <Icon className="h-6 w-6" />
-            </div>
-            <h3 className="mb-2 text-xl font-bold text-white drop-shadow-lg">{title}</h3>
-            <p className="mb-5 flex-grow text-sm font-medium leading-6 text-slate-200">{description}</p>
-            {technologies.length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {technologies.map((tech) => (
-                  <span
-                    key={tech}
-                    className="rounded-full border border-white/10 bg-[#1e1a38] px-3 py-1 text-xs text-slate-300"
-                  >
-                    {tech}
-                  </span>
-                ))}
+          <div className={`relative overflow-hidden rounded-[24px] bg-gradient-to-br ${project.accent} p-5`}>
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,0.2),transparent_42%)]" />
+            <div className="relative z-10 flex items-start justify-between gap-4">
+              <div>
+                <p className="text-xs uppercase tracking-[0.28em] text-white/70">{project.category}</p>
+                <h3 className="mt-3 text-2xl font-bold text-white">{project.title}</h3>
               </div>
-            )}
+              <div className="rounded-full border border-white/20 bg-black/15 px-3 py-1 text-xs text-white/90">
+                {project.status}
+              </div>
+            </div>
+            <div className="mt-10 grid grid-cols-3 gap-2">
+              {project.metrics.map((metric) => (
+                <div key={metric} className="rounded-2xl border border-white/15 bg-black/15 px-3 py-3 text-xs text-white/85">
+                  {metric}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-6 flex flex-1 flex-col">
+            <p className="text-sm font-medium leading-7 text-slate-200">{project.description}</p>
+
+            <div className="mt-5 flex flex-wrap gap-2">
+              {project.technologies.map((tech) => (
+                <span key={tech} className="rounded-full border border-white/10 bg-brand-surface px-3 py-1 text-xs text-slate-200">
+                  {tech}
+                </span>
+              ))}
+            </div>
+
+            <div className="mt-6 rounded-2xl border border-white/10 bg-white/[0.03] p-4">
+              <p className="text-xs uppercase tracking-[0.24em] text-brand-accent">Outcome</p>
+              <p className="mt-2 text-sm leading-7 text-slate-200">{project.outcome}</p>
+            </div>
           </div>
         </motion.div>
       </TiltCard>
@@ -119,44 +156,65 @@ const ShowcaseCard = ({
 }
 
 export default function HomePage() {
-    const [loading, setLoading] = useState(true)
-    const [heroData, setHeroData] = useState<any>(FALLBACK_HERO)
-    const [services, setServices] = useState<any[]>(FALLBACK_SERVICES)
-    const [projects, setProjects] = useState<any[]>(FALLBACK_PROJECTS)
+  const [loading, setLoading] = useState(true)
+  const [heroData, setHeroData] = useState(FALLBACK_HERO)
+  const [services, setServices] = useState(FALLBACK_SERVICES)
+  const [projects, setProjects] = useState<ShowcaseProject[]>(SHOWCASE_PROJECTS.slice(0, 3))
 
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [
-          { data: configData, error: configError },
+          { data: configData },
           { data: servicesData, error: servicesError },
           { data: projectsData, error: projectsError },
         ] = await Promise.all([
           supabase.from('site_config').select('key, value'),
-          supabase.from('services').select('title, description, icon').limit(3),
-          supabase.from('projects').select('title, description, technologies, icon').eq('featured', true).limit(3),
+          supabase.from('services').select('name, description').order('order_index', { ascending: true }).limit(3),
+          supabase
+            .from('projects')
+            .select('id, slug, title, description, long_description, category, technologies, featured, live_url')
+            .order('order_index', { ascending: true }),
         ])
 
-        const config: { [key: string]: any } =
-          configData?.reduce((acc, { key, value }) => ({ ...acc, [key]: value }), {}) || {}
+        const config: Record<string, string> =
+          configData?.reduce((acc, { key, value }) => ({ ...acc, [key]: value }), {}) ?? {}
+
+        const parsedRoles = config.hero_roles ? JSON.parse(config.hero_roles) : FALLBACK_HERO.roles
 
         setHeroData({
           title: config.hero_title || FALLBACK_HERO.title,
           subtitle: config.hero_subtitle || FALLBACK_HERO.subtitle,
-          roles: config.hero_roles ? JSON.parse(config.hero_roles) : FALLBACK_HERO.roles,
+          roles: Array.isArray(parsedRoles) && parsedRoles.length ? parsedRoles : FALLBACK_HERO.roles,
           description: config.hero_description || FALLBACK_HERO.description,
         })
 
-        setServices(servicesData?.length ? servicesData : FALLBACK_SERVICES)
-        setProjects(projectsData?.length ? projectsData : FALLBACK_PROJECTS)
-
-        if (configError || servicesError || projectsError) {
-          console.warn('Using fallback homepage content.', configError || servicesError || projectsError)
+        if (servicesData?.length) {
+          setServices(
+            servicesData.map((service, index) => ({
+              title: service.name,
+              description: service.description || FALLBACK_SERVICES[index % FALLBACK_SERVICES.length].description,
+              icon: FALLBACK_SERVICES[index % FALLBACK_SERVICES.length].icon,
+            }))
+          )
         }
-      } catch {
+
+        if (!projectsError && projectsData?.length) {
+          const normalized = projectsData.map((project, index) => normalizeProject(project, index))
+          const featured = normalized.filter((project) => project.featured).slice(0, 3)
+          setProjects((featured.length ? featured : normalized).slice(0, 3))
+        } else if (projectsError) {
+          console.warn('Using fallback homepage projects.', projectsError)
+        }
+
+        if (servicesError) {
+          console.warn('Using fallback homepage services.', servicesError)
+        }
+      } catch (error) {
+        console.warn('Using fallback homepage content.', error)
         setHeroData(FALLBACK_HERO)
         setServices(FALLBACK_SERVICES)
-        setProjects(FALLBACK_PROJECTS)
+        setProjects(SHOWCASE_PROJECTS.slice(0, 3))
       } finally {
         setLoading(false)
       }
@@ -176,6 +234,10 @@ export default function HomePage() {
   return (
     <div className="relative z-20 overflow-hidden">
       <section className="relative z-20 min-h-screen overflow-hidden pt-24">
+        <div className="absolute left-[6%] top-24 h-40 w-40 rounded-full bg-[#79e0ff]/18 blur-3xl" />
+        <div className="absolute right-[8%] top-36 h-44 w-44 rounded-full bg-[#ff8b5b]/16 blur-3xl" />
+        <div className="absolute bottom-16 left-[40%] h-52 w-52 rounded-full bg-[#ffd166]/12 blur-3xl" />
+
         <div className="relative z-20 mx-auto grid min-h-[calc(100vh-6rem)] w-full max-w-7xl items-center gap-12 px-4 lg:grid-cols-[1.05fr_0.95fr] lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 28 }}
@@ -187,44 +249,61 @@ export default function HomePage() {
               initial={{ opacity: 0, scale: 0.92 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ delay: 0.15, duration: 0.5 }}
-              className="mb-5 inline-flex items-center gap-2 rounded-full border border-white/10 bg-[#16132b]/90 px-4 py-2 text-sm text-slate-100 shadow-2xl backdrop-blur"
+              className="brand-pill mb-5 text-sm"
             >
-              <Sparkles className="h-4 w-4 text-[#5EAEF9]" />
-              Creative digital agency
+              <Sparkles className="h-4 w-4 text-[#79e0ff]" />
+              Premium creative developer for trust-first digital experiences
             </motion.div>
 
             <h1 className="text-5xl font-bold leading-[1.02] text-white drop-shadow-lg md:text-7xl lg:text-8xl">
-              <span className="block">{heroData?.title}</span>
-              <span className="text-gradient-animated mt-1 block">{heroData?.subtitle}</span>
+              <span className="block">{heroData.title}</span>
+              <span className="text-gradient-animated mt-1 block">{heroData.subtitle}</span>
             </h1>
 
             <div className="my-6 flex flex-wrap gap-3">
-              {heroData?.roles.map((role: string, i: number) => (
+              {heroData.roles.map((role: string, i: number) => (
                 <motion.span
                   key={role}
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.35 + i * 0.08 }}
-                  className="rounded-full border border-white/10 bg-[#1e1a38] px-4 py-2 text-sm text-white"
+                  className="rounded-full border border-white/10 bg-[#11233c] px-4 py-2 text-sm text-white"
                 >
                   {role}
                 </motion.span>
               ))}
             </div>
 
-            <p className="my-8 max-w-2xl text-lg font-medium leading-[1.8] text-slate-200">{heroData?.description}</p>
+            <p className="my-8 max-w-2xl text-lg font-medium leading-[1.8] text-slate-200">{heroData.description}</p>
+
+            <div className="mb-8 grid gap-3 sm:grid-cols-3">
+              <a href={CONTACT_DETAILS.emailHref} className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4 text-sm text-slate-100 transition-all hover:border-brand-accent/30 hover:text-white">
+                Email
+              </a>
+              <a href={CONTACT_DETAILS.phoneHref} className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4 text-sm text-slate-100 transition-all hover:border-brand-accent/30 hover:text-white">
+                Call
+              </a>
+              <a
+                href={CONTACT_DETAILS.whatsappHref}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="rounded-2xl border border-white/10 bg-white/[0.03] px-4 py-4 text-sm text-slate-100 transition-all hover:border-brand-accent/30 hover:text-white"
+              >
+                WhatsApp
+              </a>
+            </div>
 
             <div className="flex flex-wrap gap-4">
-              <MagneticButton href="/store">
-                Explore Services <ArrowRight className="ml-2 h-4 w-4" />
+              <MagneticButton href="/projects">
+                View Projects <ArrowRight className="ml-2 h-4 w-4" />
               </MagneticButton>
-              <Link href="/contact">
+              <Link href="/store">
                 <motion.div
                   whileHover={{ scale: 1.03, y: -2 }}
                   whileTap={{ scale: 0.97 }}
                   className="btn-secondary rounded-full px-6 py-4 text-sm font-semibold"
                 >
-                  Start a Project
+                  Use the Configurator
                 </motion.div>
               </Link>
             </div>
@@ -251,8 +330,8 @@ export default function HomePage() {
       <section className="section-padding relative z-20">
         <div className="container mx-auto px-4">
           <SectionReveal className="mb-10 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#5EAEF9]">Growth in numbers</p>
-            <h2 className="mt-3 text-3xl font-bold text-white drop-shadow-lg md:text-4xl">Trusted results</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#79e0ff]">Growth in numbers</p>
+            <h2 className="mt-3 text-3xl font-bold text-white drop-shadow-lg md:text-4xl">Credibility at a glance</h2>
           </SectionReveal>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
             {HOME_STATS.map((stat, i) => (
@@ -267,19 +346,18 @@ export default function HomePage() {
       <section className="section-padding relative z-20">
         <div className="container mx-auto px-4">
           <SectionReveal className="mb-16 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#5EAEF9]">What we do</p>
-            <h2 className="mb-4 mt-3 text-4xl font-bold text-white drop-shadow-lg md:text-5xl">Featured Expertise</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#79e0ff]">What we build</p>
+            <h2 className="mb-4 mt-3 text-4xl font-bold text-white drop-shadow-lg md:text-5xl">Services that feel premium before launch</h2>
             <p className="mx-auto max-w-2xl font-medium leading-[1.8] text-slate-200">
-              Specialized capabilities for modern digital challenges — polished, animated, and built for real growth.
+              Every engagement is designed to improve trust, clarity, and perceived value, not just add another website to the internet.
             </p>
           </SectionReveal>
           <div className="grid gap-6 md:grid-cols-3">
             {services.map((service, i) => (
-              <ShowcaseCard
+              <HomeServiceCard
                 key={service.title}
                 title={service.title}
                 description={service.description}
-                technologies={[]}
                 icon={service.icon}
                 index={i}
               />
@@ -290,23 +368,99 @@ export default function HomePage() {
 
       <section className="section-padding relative z-20">
         <div className="container mx-auto px-4">
-          <SectionReveal className="mb-16 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#5EAEF9]">Selected work</p>
-            <h2 className="mb-4 mt-3 text-4xl font-bold text-white drop-shadow-lg md:text-5xl">Featured Projects</h2>
-            <p className="mx-auto max-w-2xl font-medium leading-[1.8] text-slate-200">
-              A compact gallery of work that sets the tone for the rest of the site.
-            </p>
+          <SectionReveal className="mb-16 flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-2xl">
+              <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#79e0ff]">Selected work</p>
+              <h2 className="mb-4 mt-3 text-4xl font-bold text-white drop-shadow-lg md:text-5xl">Projects that prove the standard</h2>
+              <p className="font-medium leading-[1.8] text-slate-200">
+                A stronger projects page starts with sharper stories, clearer outcomes, and cards that feel like finished work instead of placeholders.
+              </p>
+            </div>
+            <Link href="/projects" className="inline-flex items-center gap-2 text-sm text-brand-accent hover:text-white">
+              Explore all projects
+              <ArrowRight className="h-4 w-4" />
+            </Link>
           </SectionReveal>
-          <div className="grid gap-6 md:grid-cols-3">
+
+          <div className="grid gap-6 lg:grid-cols-3">
             {projects.map((project, i) => (
-              <ShowcaseCard
-                key={project.title}
-                title={project.title}
-                description={project.description}
-                technologies={project.technologies}
-                icon={project.icon}
-                index={i}
-              />
+              <ProjectPreviewCard key={project.id} project={project} index={i} />
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section-padding relative z-20">
+        <div className="container mx-auto px-4">
+          <SectionReveal className="mb-14 text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#79e0ff]">Trust layer</p>
+            <h2 className="mt-3 text-4xl font-bold text-white md:text-5xl">Professional signals clients notice immediately</h2>
+          </SectionReveal>
+
+          <div className="grid gap-6 lg:grid-cols-4">
+            {TRUST_SIGNALS.map((signal, index) => (
+              <SectionReveal key={signal.title} delay={index * 0.08}>
+                <div className="premium-shell rounded-[28px] p-6">
+                  <div className="inline-flex rounded-2xl border border-white/10 bg-[#132744] p-3 text-[#79e0ff]">
+                    {index === 0 && <MessageCircle className="h-5 w-5" />}
+                    {index === 1 && <Zap className="h-5 w-5" />}
+                    {index === 2 && <Star className="h-5 w-5" />}
+                    {index === 3 && <ShieldCheck className="h-5 w-5" />}
+                  </div>
+                  <p className="mt-6 text-2xl font-bold text-white">{signal.value}</p>
+                  <p className="mt-2 text-sm font-semibold uppercase tracking-[0.24em] text-slate-300">{signal.title}</p>
+                  <p className="mt-4 text-sm leading-7 text-slate-200">{signal.description}</p>
+                </div>
+              </SectionReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section-padding relative z-20">
+        <div className="container mx-auto px-4">
+          <SectionReveal className="mb-14 text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#79e0ff]">Delivery process</p>
+            <h2 className="mt-3 text-4xl font-bold text-white md:text-5xl">A clear path from brief to launch</h2>
+          </SectionReveal>
+
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-4">
+            {DELIVERY_PROCESS.map((step, index) => (
+              <SectionReveal key={step.title} delay={index * 0.08}>
+                <div className="glass-card h-full p-6">
+                  <div className="mb-5 inline-flex h-12 w-12 items-center justify-center rounded-2xl border border-white/10 bg-[#132744] text-lg font-bold text-[#79e0ff]">
+                    {index + 1}
+                  </div>
+                  <h3 className="text-xl font-bold text-white">{step.title}</h3>
+                  <p className="mt-4 text-sm leading-7 text-slate-200">{step.description}</p>
+                </div>
+              </SectionReveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="section-padding relative z-20">
+        <div className="container mx-auto px-4">
+          <SectionReveal className="mb-14 text-center">
+            <p className="text-xs font-semibold uppercase tracking-[0.28em] text-[#79e0ff]">Testimonials</p>
+            <h2 className="mt-3 text-4xl font-bold text-white md:text-5xl">Feedback that sounds like real clients</h2>
+          </SectionReveal>
+
+          <div className="grid gap-6 lg:grid-cols-2">
+            {TESTIMONIALS.map((testimonial, index) => (
+              <SectionReveal key={testimonial.name} delay={index * 0.08}>
+                <div className="premium-shell rounded-[28px] p-7">
+                  <div className="mb-6 inline-flex rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs uppercase tracking-[0.28em] text-[#79e0ff]">
+                    Client feedback
+                  </div>
+                  <p className="text-lg leading-8 text-slate-100">"{testimonial.quote}"</p>
+                  <div className="mt-6">
+                    <p className="text-base font-semibold text-white">{testimonial.name}</p>
+                    <p className="text-sm text-slate-300">{testimonial.business}</p>
+                  </div>
+                </div>
+              </SectionReveal>
             ))}
           </div>
         </div>

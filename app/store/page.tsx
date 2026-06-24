@@ -9,6 +9,7 @@ import Link from 'next/link'
 import { useAuth } from '@/components/auth-provider'
 import { TiltCard } from '@/components/tilt-card'
 import { SectionReveal } from '@/components/section-reveal'
+import { TRUST_SIGNALS } from '@/lib/site-content'
 import {
   ChevronRight,
   ChevronLeft,
@@ -203,6 +204,7 @@ function PriceSummary() {
   const [status, setStatus] = useState<{ type: 'success' | 'error'; message: string } | null>(null)
 
   const {
+    basePrice,
     totalPrice,
     websiteType,
     pagesCount,
@@ -232,12 +234,15 @@ function PriceSummary() {
         {
           user_id: user.id,
           website_type: websiteType,
-          pages: pagesCount,
+          pages_count: typeof pagesCount === 'number' ? pagesCount : null,
           design_level: designLevel,
           features: selectedFeatures,
           maintenance,
           timeline,
-          estimated_price: totalPrice,
+          base_price: basePrice,
+          features_price: featuresPrice,
+          total_price: totalPrice,
+          notes: typeof pagesCount === 'string' ? 'Unlimited pages requested through the configurator.' : null,
           status: 'draft',
         },
       ])
@@ -270,13 +275,16 @@ function PriceSummary() {
         {
           user_id: user.id,
           website_type: websiteType,
-          pages: pagesCount.toString(),
+          pages_count: typeof pagesCount === 'number' ? pagesCount : null,
           design_level: designLevel,
           features: selectedFeatures,
           maintenance,
           timeline,
-          estimated_price: totalPrice,
-          status: 'converted',
+          base_price: basePrice,
+          features_price: featuresPrice,
+          total_price: totalPrice,
+          notes: typeof pagesCount === 'string' ? 'Unlimited pages requested through the configurator.' : null,
+          status: 'accepted',
         },
       ]).select('id').maybeSingle()
 
@@ -287,11 +295,19 @@ function PriceSummary() {
         {
           user_id: user.id,
           quotation_id: quoteResponse.data.id,
-          project_name: `${selectedWebsite?.name ?? 'Website'} Project`,
           website_type: websiteType,
-          total_amount: totalPrice,
-          payment_status: 'pending',
-          order_status: 'new',
+          amount: totalPrice,
+          currency: 'INR',
+          payment_status: 'unpaid',
+          status: 'pending',
+          project_details: {
+            websiteName: `${selectedWebsite?.name ?? 'Website'} Project`,
+            pagesCount,
+            designLevel,
+            maintenance,
+            timeline,
+            selectedFeatures,
+          },
         },
       ])
 
@@ -629,6 +645,16 @@ export default function StorePage() {
           </TiltCard>
         </SectionReveal>
 
+        <div className="mb-10 grid gap-4 md:grid-cols-3">
+          {TRUST_SIGNALS.slice(0, 3).map((signal) => (
+            <div key={signal.title} className="rounded-[24px] border border-white/10 bg-white/[0.03] p-5">
+              <p className="text-lg font-semibold text-white">{signal.value}</p>
+              <p className="mt-1 text-sm text-slate-300">{signal.title}</p>
+              <p className="mt-3 text-sm leading-7 text-slate-200">{signal.description}</p>
+            </div>
+          ))}
+        </div>
+
         <div className="mb-6 flex flex-wrap items-center gap-3">
           {steps.map((step) => (
             <StepPill
@@ -718,6 +744,29 @@ export default function StorePage() {
             <PriceSummary />
           </div>
         </div>
+
+        <SectionReveal className="mt-14">
+          <div className="premium-shell rounded-[32px] p-8 md:p-10">
+            <div className="grid gap-6 lg:grid-cols-4">
+              <div>
+                <p className="text-xs uppercase tracking-[0.28em] text-brand-accent">Premium guarantees</p>
+                <h2 className="mt-4 text-3xl font-bold text-white">A configurator that feels productized, not improvised.</h2>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+                <p className="text-sm font-semibold text-white">Clear scope</p>
+                <p className="mt-3 text-sm leading-7 text-slate-200">Choices are structured to reduce ambiguity before the build begins.</p>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+                <p className="text-sm font-semibold text-white">Professional support</p>
+                <p className="mt-3 text-sm leading-7 text-slate-200">Launch support and guidance stay available after the handoff.</p>
+              </div>
+              <div className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
+                <p className="text-sm font-semibold text-white">Trust-first presentation</p>
+                <p className="mt-3 text-sm leading-7 text-slate-200">Pricing, options, and workflow are designed to feel dependable for real clients.</p>
+              </div>
+            </div>
+          </div>
+        </SectionReveal>
       </div>
     </div>
   )

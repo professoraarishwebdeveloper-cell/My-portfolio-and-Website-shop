@@ -223,7 +223,7 @@ export default function AboutPage() {
                   creating beautiful, functional, and impactful digital solutions.
                 </p>
                 <p>
-                  Beyond coding, I've immersed myself in the world of trading — exploring
+                  Beyond coding, I have immersed myself in the world of trading, exploring
                   cryptocurrency markets, forex, and Indian stock markets. This unique
                   combination of technical skills and financial acumen allows me to build
                   sophisticated trading systems and analytics tools.
@@ -352,7 +352,7 @@ export default function AboutPage() {
               <TimelineMilestone
                 year="2024"
                 title="Trading & AI Exploration"
-                description=" dove into crypto trading and began experimenting with AI tools"
+                description="Dove into crypto trading and began experimenting with AI tools"
                 icon={TrendingUp}
                 isLeft={false}
               />

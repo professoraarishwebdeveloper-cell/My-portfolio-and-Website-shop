@@ -10,11 +10,11 @@ import { useAuth } from '@/components/auth-provider'
 
 // Define types for our data
 type Profile = { full_name: string; email: string; role: string; avatar_url?: string };
-type Quotation = { id: string; website_type: string; estimated_price: number; status: string };
-type Order = { id: string; project_name: string; total_amount: number; order_status: string };
+type Quotation = { id: string; website_type: string; total_price: number; status: string };
+type Order = { id: string; website_type: string; amount: number; status: string; project_details?: { websiteName?: string } | null };
 type Notification = { id: string; message: string; created_at: string };
 type Invoice = { id: string; amount: number; status: string };
-type WishlistItem = { id: string; name: string };
+type WishlistItem = { id: string; project_id: string };
 
 const StatCard = ({ label, value, isLoading }: { label: string; value: number; isLoading: boolean }) => (
   <div className="glass-card p-6">
@@ -140,7 +140,7 @@ export default function DashboardPage() {
 
         {isAdmin && (
           <div className="mb-6">
-            <Link href="/admin" className="magnetic-btn-secondary">Admin Panel</Link>
+            <Link href="/admin" className="btn-secondary">Admin Panel</Link>
           </div>
         )}
 
@@ -157,7 +157,7 @@ export default function DashboardPage() {
             data={orders} 
             isLoading={loading}
             emptyMessage="No orders placed yet."
-            renderItem={item => <li key={item.id} className="flex items-center justify-between rounded-lg p-2 hover:bg-[#0d1528]"><span className="text-slate-100">{item.project_name}</span><span className="text-cosmic-accent">{formatPrice(item.total_amount)}</span></li>}
+            renderItem={item => <li key={item.id} className="flex items-center justify-between rounded-lg p-2 hover:bg-[#0d1528]"><span className="text-slate-100">{item.project_details?.websiteName ?? item.website_type}</span><span className="text-cosmic-accent">{formatPrice(item.amount)}</span></li>}
           />
           <DataCard 
             title="Recent Quotations" 
@@ -178,7 +178,7 @@ export default function DashboardPage() {
             data={wishlists} 
             isLoading={loading}
             emptyMessage="Your wishlist is empty."
-            renderItem={item => <li key={item.id} className="rounded-lg p-2 text-slate-100 hover:bg-[#0d1528]">{item.name}</li>}
+            renderItem={item => <li key={item.id} className="rounded-lg p-2 text-slate-100 hover:bg-[#0d1528]">Saved project: {item.project_id}</li>}
           />
         </div>
       </div>
@@ -193,4 +193,4 @@ function formatPrice(price: number): string {
       currency: 'INR',
       maximumFractionDigits: 0,
     }).format(price)
-  }
+}
