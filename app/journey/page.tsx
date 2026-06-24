@@ -5,7 +5,7 @@ import { motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { Code, TrendingUp, Award, Rocket, Star, ChevronRight, MapPin } from 'lucide-react'
 import { TimelineNode3D } from '@/components/timeline-node-3d'
 import { Card3DParallax } from '@/components/3d-parallax-card'
-import { LineWaves } from '@/components/line-waves'
+
 
 // Journey data
 const journeyData = [
@@ -247,17 +247,6 @@ export default function JourneyPage() {
     <div className="relative min-h-screen">
       {/* Hero Section */}
       <section ref={heroRef} className="relative min-h-[70vh] flex items-center justify-center overflow-hidden pt-32 pb-20">
-        {/* LineWaves background */}
-        <div className="absolute inset-0 z-0">
-          <LineWaves
-            preset="cool"
-            speed={0.22}
-            enableMouseInteraction={false}
-            brightness={0.14}
-            className="h-full w-full"
-          />
-        </div>
-        
         {/* Background effects */}
         <div className="absolute inset-0 bg-gradient-to-b from-cosmic-glow/5 via-transparent to-transparent" />
 

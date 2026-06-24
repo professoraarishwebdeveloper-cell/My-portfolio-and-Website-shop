@@ -6,6 +6,7 @@ import { SmoothScroll } from '@/components/smooth-scroll'
 import { Toaster } from '@/components/ui/sonner'
 import { AuthProvider } from '@/components/auth-provider'
 import { AmbientBackground } from '@/components/ambient-background'
+import { GlobalWavesBg } from '@/components/global-waves-bg'
 import { SiteFooter } from '@/components/site-footer'
 import { defaultMetadata } from '@/lib/site-metadata'
 export const metadata: Metadata = defaultMetadata
@@ -29,6 +30,7 @@ export default function RootLayout({
             <Toaster />
           </SmoothScroll>
         </AuthProvider>
+        <GlobalWavesBg />
         <AmbientBackground />
         <div className="noise" aria-hidden="true" />
       </body>

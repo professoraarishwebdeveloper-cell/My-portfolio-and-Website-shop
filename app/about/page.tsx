@@ -6,7 +6,6 @@ import { Code, TrendingUp, Bot, Globe, Target, Rocket, Lightbulb, Heart, Award, 
 import { Particles3DVisualization } from '@/components/particles-3d-visualization'
 import { Card3DParallax } from '@/components/3d-parallax-card'
 import { use3DDepth } from '@/hooks/use3DDepth'
-import { LineWaves } from '@/components/line-waves'
 import { GradientOrb } from '@/components/gradient-orb'
 
 // Animated reveal section
@@ -122,17 +121,6 @@ export default function AboutPage() {
     <div className="relative">
       {/* Hero Section */}
       <section ref={heroRef} className="relative z-20 min-h-[80vh] flex items-center justify-center overflow-hidden pt-32 pb-20">
-        {/* LineWaves background */}
-        <div className="absolute inset-0 z-0">
-          <LineWaves
-            preset="purple"
-            speed={0.2}
-            enableMouseInteraction={true}
-            brightness={0.13}
-            className="h-full w-full"
-          />
-        </div>
-        
         {/* Background gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-cosmic-accent/5 via-transparent to-transparent" />
 

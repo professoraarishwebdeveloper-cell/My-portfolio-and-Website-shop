@@ -12,7 +12,6 @@ import {
   getFriendlyErrorMessage,
   logDevelopmentError,
 } from '@/lib/security'
-import { LineWaves } from '@/components/line-waves'
 import { AnimatedBorder } from '@/components/animated-border'
 
 const CONTACT_COOLDOWN_MS = 15000
@@ -126,17 +125,6 @@ export default function ContactPage() {
 
   return (
     <div className="relative z-20 min-h-screen overflow-hidden px-4 pb-20 pt-32">
-      {/* LineWaves background */}
-      <div className="absolute inset-0 z-0">
-        <LineWaves
-          preset="warm"
-          speed={0.25}
-          enableMouseInteraction={true}
-          brightness={0.13}
-          className="h-full w-full"
-        />
-      </div>
-      
       <div className="absolute left-[10%] top-40 h-44 w-44 rounded-full bg-[#f5eadb]/24 blur-3xl" />
       <div className="absolute right-[10%] top-32 h-52 w-52 rounded-full bg-[#d8c6ae]/18 blur-3xl" />
 
